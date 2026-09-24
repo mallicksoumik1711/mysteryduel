@@ -1,149 +1,13 @@
-// import React, { useState } from 'react';
-// import { mockCharacters } from '../data/mockCharacters';
-// import type { BoardState } from '../types';
-// import { CharacterGrid } from './CharacterGrid';
-// import { TurnIndicator } from './TurnIndicator';
-
-// interface GameRoomProps {
-//   onLeaveRoom?: () => void;
-//   roomId?: string;
-// }
-
-// export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821' }) => {
-//   // Simulate local state for the board
-//   const [boardState, setBoardState] = useState<BoardState>({});
-//   const [isYourTurn, setIsYourTurn] = useState(true);
-
-//   // Handle clicking a character card
-//   const handleCharacterClick = (characterId: string) => {
-//     setBoardState(prev => {
-//       const currentState = prev[characterId] || 'available';
-//       let nextState: 'available' | 'selected' | 'eliminated' = 'available';
-
-//       // Cycle through states: available -> selected -> eliminated -> available
-//       if (currentState === 'available') nextState = 'selected';
-//       else if (currentState === 'selected') nextState = 'eliminated';
-//       else if (currentState === 'eliminated') nextState = 'available';
-
-//       return { ...prev, [characterId]: nextState };
-//     });
-//   };
-
-//   return (
-//     <div className="relative min-h-screen w-full bg-[#0f0608] text-zinc-100 font-sans flex flex-col overflow-x-hidden select-none">
-//       {/* Grain Texture Overlay */}
-//       <div
-//         className="pointer-events-none fixed inset-0 z-50 opacity-[0.06] mix-blend-overlay"
-//         style={{
-//           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-//           backgroundSize: '256px 256px',
-//         }}
-//       />
-
-//       {/* Deep Radial Vignette Background */}
-//       <div
-//         className="pointer-events-none fixed inset-0 z-0"
-//         style={{
-//           background: 'radial-gradient(ellipse 90% 70% at 50% 40%, #2b1018 0%, #160a0d 45%, #0a0306 100%)',
-//         }}
-//       />
-
-//       {/* Side Flare Gradients */}
-//       <div
-//         className="pointer-events-none fixed inset-y-0 left-0 z-0 w-[48%]"
-//         style={{ background: 'linear-gradient(to right, rgba(120,50,20,0.55) 0%, transparent 100%)' }}
-//       />
-//       <div
-//         className="pointer-events-none fixed inset-y-0 right-0 z-0 w-[48%]"
-//         style={{ background: 'linear-gradient(to left, rgba(120,50,20,0.55) 0%, transparent 100%)' }}
-//       />
-
-//       {/* Header */}
-//       <header className="relative z-40 border-b border-white/10 bg-[#0f0608]/80 backdrop-blur-md px-6 py-4 flex justify-between items-center sticky top-0">
-//         <div className="flex items-center gap-3">
-//           <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center bg-white/5 text-white font-bold text-xs shadow-inner">
-//             MD
-//           </div>
-//           <div>
-//             <h1 className="text-lg font-bold text-white tracking-wide uppercase">
-//               MysteryDuel
-//             </h1>
-//             <p className="text-[11px] text-zinc-500 font-mono tracking-wider">
-//               {roomId}
-//             </p>
-//           </div>
-//         </div>
-
-//         <div className="flex items-center gap-3">
-//           <button
-//             onClick={() => setIsYourTurn(!isYourTurn)}
-//             className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/20 text-zinc-300 hover:bg-white/10 hover:text-white hover:border-white/35 transition-all text-xs font-medium cursor-pointer"
-//           >
-//             Toggle Turn (Debug)
-//           </button>
-//           {onLeaveRoom && (
-//             <button
-//               onClick={onLeaveRoom}
-//               className="px-3.5 py-1.5 rounded-full bg-red-950/40 border border-red-500/30 text-red-300 hover:bg-red-900/60 hover:text-white transition-all text-xs font-medium cursor-pointer"
-//             >
-//               Leave Room
-//             </button>
-//           )}
-//         </div>
-//       </header>
-
-//       {/* Main Game Content */}
-//       <main className="relative z-10 flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
-//         <TurnIndicator
-//           isYourTurn={isYourTurn}
-//           playerName="Player 1"
-//           opponentName="Player 2"
-//         />
-
-//         <div className="flex-1">
-//           <CharacterGrid
-//             characters={mockCharacters}
-//             boardState={boardState}
-//             onCharacterClick={handleCharacterClick}
-//           />
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default GameRoom;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { mockCharacters } from '../data/mockCharacters';
-import type { BoardState } from '../types';
+import type { BoardState, Character } from '../types';
 import { CharacterGrid } from './CharacterGrid';
 import { TurnIndicator } from './TurnIndicator';
 
 interface GameRoomProps {
   onLeaveRoom?: () => void;
   roomId?: string;
+  userCharacter?: Character | null;
 }
 
 interface Question {
@@ -171,7 +35,8 @@ interface LogEntry {
   timestamp: string;
 }
 
-export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821' }) => {
+export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821', userCharacter }) => {
+  const secretCharacter = userCharacter ?? mockCharacters[0];
   const [boardState, setBoardState] = useState<BoardState>({});
   const [isYourTurn, setIsYourTurn] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
@@ -332,7 +197,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
           <div className="pt-3 border-t border-white/10 flex items-center gap-3">
             <div className="w-12 h-16 rounded-lg bg-zinc-900 border border-white/20 overflow-hidden shrink-0">
               <img
-                src={mockCharacters[0]?.imageUrl}
+                src={secretCharacter?.imageUrl}
                 alt="Your secret character"
                 className="w-full h-full object-cover"
               />
@@ -340,7 +205,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
             <div>
               <span className="text-[10px] text-amber-400/90 font-mono uppercase tracking-wider block">Private</span>
               <p className="text-xs font-semibold text-white">Your Secret Character</p>
-              <p className="text-[11px] text-zinc-400">{mockCharacters[0]?.name || 'Unknown'}</p>
+              <p className="text-[11px] text-zinc-400">{secretCharacter?.name || 'Unknown'}</p>
             </div>
           </div>
         </section>
