@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-
-interface CreateRoomPageProps {
-  onBack: () => void;
-  onCreateAndStart: (roomCode: string) => void;
-}
+import { useNavigate } from 'react-router-dom';
 
 const DECKS = [
   {
@@ -41,16 +37,17 @@ const DECKS = [
   },
 ];
 
-export const CreateRoomPage: React.FC<CreateRoomPageProps> = ({ onBack, onCreateAndStart }) => {
+const CreateRoomPage: React.FC = () => {
+  const navigate = useNavigate();
   const [deck, setDeck] = useState('anime-heroes');
   const [isPrivate, setIsPrivate] = useState(true);
   const [rounds, setRounds] = useState(3);
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    // Generate random 6-character room code
-    const generatedCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    onCreateAndStart(generatedCode);
+    const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Pass roomCode via location state so pick-character page can read it
+    navigate('/pick-character', { state: { roomCode, from: 'create-room' } });
   };
 
   return (
@@ -74,7 +71,7 @@ export const CreateRoomPage: React.FC<CreateRoomPageProps> = ({ onBack, onCreate
         {/* Top Header Section */}
         <div className="p-5 sm:p-6 pb-4 border-b border-white/10 bg-white/[0.02] flex flex-col gap-3">
           <button
-            onClick={onBack}
+            onClick={() => navigate('/')}
             type="button"
             className="self-start text-xs font-mono text-zinc-400 hover:text-white transition-all flex items-center gap-2 cursor-pointer group bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10"
           >

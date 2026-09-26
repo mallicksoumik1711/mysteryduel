@@ -1,24 +1,40 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { mockCharacters } from '../data/mockCharacters';
 import type { Character } from '../types';
 
-interface PickCharacterProps {
-  onConfirm: (character: Character) => void;
-  onBack: () => void;
-}
+/**
+ * PickCharacterPage
+ *
+ * Expects location.state = { roomCode: string, from: 'create-room' | 'join-room' }
+ * passed by CreateRoomPage or JoinRoomPage via navigate().
+ *
+ * On confirm → navigates to /game-room with { roomCode, character } in state.
+ * On back    → navigates back to the originating page.
+ */
+const PickCharacterPage: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { roomCode: string; from: 'create-room' | 'join-room' } | null;
 
-export const PickCharacter: React.FC<PickCharacterProps> = ({ onConfirm, onBack }) => {
   const [selected, setSelected] = useState<Character | null>(null);
+
+  // Guard: if someone lands here directly without state, send them home
+  if (!state?.roomCode) {
+    return <Navigate to="/" replace />;
+  }
+
+  const handleConfirm = () => {
+    if (!selected) return;
+    navigate('/game-room', { state: { roomCode: state.roomCode, character: selected } });
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-[#0f0608] text-zinc-100 font-sans flex flex-col items-center justify-start px-4 py-10 overflow-hidden select-none">
       {/* Background */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 30%, #2b1018 0%, #0a0306 100%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 30%, #2b1018 0%, #0a0306 100%)' }}
       />
 
       {/* Grain overlay */}
@@ -34,7 +50,7 @@ export const PickCharacter: React.FC<PickCharacterProps> = ({ onConfirm, onBack 
         {/* Header */}
         <div className="flex items-center justify-between">
           <button
-            onClick={onBack}
+            onClick={() => navigate(`/${state.from}`)}
             className="text-xs text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             ← Back
@@ -123,15 +139,9 @@ export const PickCharacter: React.FC<PickCharacterProps> = ({ onConfirm, onBack 
           {/* Avatar preview */}
           <div className="w-12 h-16 rounded-xl overflow-hidden border border-white/20 bg-zinc-900 shrink-0">
             {selected ? (
-              <img
-                src={selected.imageUrl}
-                alt={selected.name}
-                className="w-full h-full object-cover"
-              />
+              <img src={selected.imageUrl} alt={selected.name} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-700 text-xl">
-                ?
-              </div>
+              <div className="w-full h-full flex items-center justify-center text-zinc-700 text-xl">?</div>
             )}
           </div>
 
@@ -156,7 +166,7 @@ export const PickCharacter: React.FC<PickCharacterProps> = ({ onConfirm, onBack 
           </div>
 
           <button
-            onClick={() => selected && onConfirm(selected)}
+            onClick={handleConfirm}
             disabled={!selected}
             className={`shrink-0 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 ${
               selected
@@ -172,4 +182,4 @@ export const PickCharacter: React.FC<PickCharacterProps> = ({ onConfirm, onBack 
   );
 };
 
-export default PickCharacter;
+export default PickCharacterPage;
