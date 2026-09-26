@@ -1,10 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FanCarousel } from '@/components/ui/3d-carousel';
-
-interface HomePageProps {
-  onCreateRoom: () => void;
-  onJoinRoom: () => void;
-}
 
 const heroImages = [
   'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
@@ -16,7 +12,9 @@ const heroImages = [
   'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
 ];
 
-export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) => {
+const HomePage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-screen w-full bg-[#0f0608] text-zinc-100 font-sans flex flex-col overflow-hidden select-none">
       {/* Grain Texture Overlay */}
@@ -56,13 +54,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
         {/* CTA Buttons */}
         <div className="flex items-center gap-3 mt-7">
           <button
-            onClick={onCreateRoom}
+            onClick={() => navigate('/create-room')}
             className="px-6 py-2.5 rounded-full bg-zinc-100 text-zinc-950 font-semibold text-[13px] hover:bg-white transition-all shadow-[0_0_30px_rgba(255,255,255,0.12)] active:scale-95 cursor-pointer"
           >
             Create new room
           </button>
           <button
-            onClick={onJoinRoom}
+            onClick={() => navigate('/join-room')}
             className="px-6 py-2.5 rounded-full bg-transparent border border-white/20 text-zinc-300 font-medium text-[13px] hover:bg-white/10 hover:text-white hover:border-white/35 transition-all active:scale-95 cursor-pointer"
           >
             Join existing room

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface JoinRoomPageProps {
-  onBack: () => void;
-  onJoinAndStart: (roomCode: string) => void;
-}
-
-export const JoinRoomPage: React.FC<JoinRoomPageProps> = ({ onBack, onJoinAndStart }) => {
+const JoinRoomPage: React.FC = () => {
+  const navigate = useNavigate();
   const [roomCode, setRoomCode] = useState('');
   const [playerName, setPlayerName] = useState('');
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomCode.trim()) return;
-    onJoinAndStart(roomCode.toUpperCase().trim());
+    navigate('/pick-character', {
+      state: { roomCode: roomCode.toUpperCase().trim(), from: 'join-room' },
+    });
   };
 
   const isCodeComplete = roomCode.trim().length === 6;
@@ -39,7 +38,7 @@ export const JoinRoomPage: React.FC<JoinRoomPageProps> = ({ onBack, onJoinAndSta
         {/* Top Header Section */}
         <div className="p-5 sm:p-6 pb-4 border-b border-white/10 bg-white/[0.02] flex flex-col gap-3">
           <button
-            onClick={onBack}
+            onClick={() => navigate('/')}
             type="button"
             className="self-start text-xs font-mono text-zinc-400 hover:text-white transition-all flex items-center gap-2 cursor-pointer group bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10"
           >
