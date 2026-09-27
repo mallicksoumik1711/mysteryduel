@@ -106,19 +106,6 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
-
-      {/* Dot indicators */}
-      <div className="absolute -bottom-8 flex gap-2 z-50">
-        {images.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCenterIndex(i)}
-            className={`h-[3px] rounded-full transition-all duration-300 ${
-              i === centerIndex ? 'w-6 bg-white/90' : 'w-[4px] bg-white/30 hover:bg-white/60'
-            }`}
-          />
-        ))}
-      </div>
     </div>
   );
 };
