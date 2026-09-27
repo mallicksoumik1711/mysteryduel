@@ -37,7 +37,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
     },
   ]);
 
-  // Cycle character state: available -> selected -> eliminated -> available
   const handleCharacterClick = (characterId: string) => {
     setBoardState((prev) => {
       const currentState = prev[characterId] || 'available';
@@ -63,11 +62,12 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
     setLogs((prev) => [...prev, newLog]);
     setSelectedQuestion(null);
-    setIsYourTurn(false); // Pass turn to opponent after asking
+    setIsYourTurn(false);
   };
 
   return (
-    <div className="relative h-screen w-full bg-[#090406] text-zinc-100 font-sans flex flex-col overflow-hidden select-none antialiased">
+    // Background: Rangoon Green (#171C18)
+    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col overflow-hidden select-none antialiased">
       {/* Background Micro Grain Texture */}
       <div
         className="pointer-events-none fixed inset-0 z-50 opacity-[0.035] mix-blend-overlay"
@@ -78,9 +78,9 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
       />
 
       {/* Ambient Lighting Layers */}
-      <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-rose-900/15 blur-[140px] rounded-full z-0" />
-      <div className="pointer-events-none fixed bottom-0 left-0 w-[400px] h-[400px] bg-amber-900/10 blur-[140px] rounded-full z-0" />
-      <div className="pointer-events-none fixed bottom-0 right-0 w-[400px] h-[400px] bg-red-950/20 blur-[140px] rounded-full z-0" />
+      <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-[#93DD35]/10 blur-[140px] rounded-full z-0" />
+      <div className="pointer-events-none fixed bottom-0 left-0 w-[400px] h-[400px] bg-[#202621]/40 blur-[140px] rounded-full z-0" />
+      <div className="pointer-events-none fixed bottom-0 right-0 w-[400px] h-[400px] bg-[#93DD35]/5 blur-[140px] rounded-full z-0" />
 
       <GameHeader
         roomId={roomId}
@@ -98,33 +98,33 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
         />
 
         {/* Character Board */}
-        <section className="lg:col-span-6 flex flex-col h-full min-h-0 bg-zinc-900/40 border border-white/10 rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
+        <section className="lg:col-span-6 flex flex-col h-full min-h-0 bg-[#202621]/60 border border-[#2E3830] rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="shrink-0 px-3.5 py-2.5 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
+          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-3.5 bg-rose-500 rounded-full" />
-              <h2 className="text-[11px] font-bold text-white uppercase tracking-widest font-mono">
+              <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
+              <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">
                 Tactical Board
               </h2>
             </div>
             <div className="flex items-center gap-2.5 font-mono text-[10px]">
               <div className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
-                <span className="text-zinc-400">Available</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C2CDC3]/50" />
+                <span className="text-[#C2CDC3]">Available</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                <span className="text-zinc-400">Selected</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35]" />
+                <span className="text-[#C2CDC3]">Selected</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                <span className="text-zinc-400">Eliminated</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                <span className="text-[#C2CDC3]">Eliminated</span>
               </div>
             </div>
           </div>
 
           {/* Grid Container */}
-          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20 flex flex-col justify-center">
+          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30 flex flex-col justify-center">
             <CharacterGrid
               characters={mockCharacters}
               boardState={boardState}

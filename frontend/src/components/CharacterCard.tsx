@@ -8,14 +8,13 @@ interface CharacterCardProps {
 }
 
 export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, onClick }) => {
-  // Determine styles based on character state matching DESIGN.md
-  let stateStyles = 'border-white/10 bg-white/5 hover:border-white/30 hover:bg-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]';
+  let stateStyles = 'border-[#2E3830] bg-[#202621]/80 hover:border-[#93DD35]/50 hover:bg-[#202621] shadow-[0_4px_20px_rgba(0,0,0,0.5)]';
   let opacity = 'opacity-100';
 
   if (state === 'selected') {
-    stateStyles = 'border-rose-500/80 bg-rose-950/30 ring-2 ring-rose-500/60 ring-offset-2 ring-offset-[#0f0608] shadow-[0_0_20px_rgba(225,29,72,0.3)]';
+    stateStyles = 'border-[#93DD35] bg-[#93DD35]/15 shadow-[0_0_20px_rgba(147,221,53,0.3)]';
   } else if (state === 'eliminated') {
-    stateStyles = 'border-white/5 bg-zinc-950/80 grayscale';
+    stateStyles = 'border-[#2E3830]/50 bg-[#171C18]/90 grayscale';
     opacity = 'opacity-30';
   }
 
@@ -24,8 +23,8 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
       onClick={() => onClick(character.id)}
       className={`
         relative flex flex-col items-center justify-center 
-        p-4 rounded-xl border transition-all duration-200
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50
+        p-4 rounded-md border transition-all duration-200
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-[#93DD35]/50
         w-full aspect-[3/4] cursor-pointer backdrop-blur-sm
         ${stateStyles}
         ${opacity}
@@ -33,7 +32,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
       aria-label={`${character.name} - ${state}`}
       aria-pressed={state === 'selected'}
     >
-      <div className="flex-1 w-full flex items-center justify-center overflow-hidden mb-3 p-1 rounded-xl bg-black/40 border border-white/10">
+      <div className="flex-1 w-full flex items-center justify-center overflow-hidden mb-3 p-1 rounded-md bg-[#171C18] border border-[#2E3830]">
         <img 
           src={character.imageUrl} 
           alt={`Portrait of ${character.name}`} 
@@ -43,19 +42,17 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
       </div>
       
       <div className="w-full text-center">
-        <h3 className="font-semibold text-zinc-100 text-sm tracking-wide truncate">
+        <h3 className="font-bold text-[#FFFFFF] text-sm tracking-wide truncate uppercase">
           {character.name}
         </h3>
       </div>
 
       {state === 'eliminated' && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-full h-0.5 bg-rose-500/80 -rotate-45 absolute rounded-full shadow-md shadow-rose-950"></div>
-          <div className="w-full h-0.5 bg-rose-500/80 rotate-45 absolute rounded-full shadow-md shadow-rose-950"></div>
+          <div className="w-full h-0.5 bg-[#93DD35]/80 -rotate-45 absolute rounded-full shadow-md shadow-black"></div>
+          <div className="w-full h-0.5 bg-[#93DD35]/80 rotate-45 absolute rounded-full shadow-md shadow-black"></div>
         </div>
       )}
     </button>
   );
 };
-
-

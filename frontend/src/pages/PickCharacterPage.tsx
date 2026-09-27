@@ -30,11 +30,13 @@ const PickCharacterPage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#0f0608] text-zinc-100 font-sans flex flex-col items-center justify-start px-4 py-10 overflow-hidden select-none">
-      {/* Background */}
+    // Background: Rangoon Green (#171C18)
+    <div className="relative min-h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col items-center justify-start px-4 py-10 overflow-hidden select-none">
+      
+      {/* Background Radial Gradient */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 30%, #2b1018 0%, #0a0306 100%)' }}
+        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 30%, #202621 0%, #171C18 100%)' }}
       />
 
       {/* Grain overlay */}
@@ -47,22 +49,28 @@ const PickCharacterPage: React.FC = () => {
       />
 
       <div className="relative z-10 w-full max-w-3xl flex flex-col gap-6">
-        {/* Header */}
+        
+        {/* Header navigation & step */}
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate(`/${state.from}`)}
-            className="text-xs text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-1.5 cursor-pointer bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5 rounded-lg border border-[#2E3830]"
           >
-            ← Back
+            <span>←</span>
+            <span>BACK</span>
           </button>
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-            Step 2 of 2
-          </span>
+          
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#93DD35] animate-pulse shadow-[0_0_8px_rgba(147,221,53,0.8)]" />
+            <span className="text-[10px] font-mono font-bold text-[#93DD35] uppercase tracking-widest">
+              Step 2 of 2 · Character Selection
+            </span>
+          </div>
         </div>
 
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Pick Your Character</h1>
-          <p className="text-xs text-zinc-400 mt-1">
+          <h1 className="text-2xl font-black text-[#FFFFFF] tracking-wide uppercase">Pick Your Character</h1>
+          <p className="text-xs text-[#C2CDC3] mt-1">
             Choose your secret identity. Your opponent will try to guess who you are.
           </p>
         </div>
@@ -76,34 +84,34 @@ const PickCharacterPage: React.FC = () => {
                 key={char.id}
                 type="button"
                 onClick={() => setSelected(char)}
-                className={`group relative flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all duration-200 cursor-pointer focus:outline-none ${
+                className={`group relative flex flex-col items-center gap-2 p-3 rounded-md border transition-all duration-200 cursor-pointer focus:outline-none ${
                   isSelected
-                    ? 'bg-white/15 border-white/50 shadow-[0_0_20px_rgba(255,255,255,0.08)]'
-                    : 'bg-white/[0.03] border-white/10 hover:bg-white/8 hover:border-white/25'
+                    ? 'bg-[#93DD35]/15 border-[#93DD35]/60 shadow-[0_0_20px_rgba(147,221,53,0.2)]'
+                    : 'bg-[#202621]/80 border-[#2E3830] hover:bg-[#202621] hover:border-[#93DD35]/40'
                 }`}
               >
                 {/* Selected ring pulse */}
                 {isSelected && (
-                  <span className="absolute inset-0 rounded-2xl border-2 border-white/30 animate-pulse pointer-events-none" />
+                  <span className="absolute inset-0 rounded-md border-1 border-[#93DD35] animate-pulse pointer-events-none" />
                 )}
 
                 {/* Avatar */}
                 <div
-                  className={`w-14 h-14 rounded-xl overflow-hidden border transition-all duration-200 ${
-                    isSelected ? 'border-white/40' : 'border-white/10 group-hover:border-white/20'
+                  className={`w-14 h-14 rounded-md overflow-hidden border transition-all duration-200 ${
+                    isSelected ? 'border-[#93DD35]' : 'border-[#2E3830] group-hover:border-[#93DD35]/40'
                   }`}
                 >
                   <img
                     src={char.imageUrl}
                     alt={char.name}
-                    className="w-full h-full object-cover bg-zinc-900"
+                    className="w-full h-full object-cover bg-[#171C18]"
                   />
                 </div>
 
                 {/* Name */}
                 <span
-                  className={`text-[11px] font-medium text-center leading-tight transition-colors ${
-                    isSelected ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'
+                  className={`text-[11px] font-bold text-center leading-tight transition-colors ${
+                    isSelected ? 'text-[#FFFFFF]' : 'text-[#C2CDC3] group-hover:text-[#FFFFFF]'
                   }`}
                 >
                   {char.name}
@@ -111,12 +119,12 @@ const PickCharacterPage: React.FC = () => {
 
                 {/* Checkmark badge */}
                 {isSelected && (
-                  <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                    <svg className="w-2.5 h-2.5 text-zinc-950" fill="none" viewBox="0 0 10 10">
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#93DD35] flex items-center justify-center shadow-md">
+                    <svg className="w-2.5 h-2.5 text-[#171C18]" fill="none" viewBox="0 0 10 10">
                       <path
                         d="M2 5l2 2 4-4"
                         stroke="currentColor"
-                        strokeWidth="1.5"
+                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
@@ -130,30 +138,30 @@ const PickCharacterPage: React.FC = () => {
 
         {/* Selection Preview + Confirm */}
         <div
-          className={`mt-2 rounded-2xl border p-4 flex items-center gap-4 transition-all duration-300 ${
+          className={`mt-2 rounded-md border p-4 flex items-center gap-4 transition-all duration-300 ${
             selected
-              ? 'bg-white/5 border-white/15 opacity-100'
-              : 'bg-white/[0.02] border-white/5 opacity-60'
+              ? 'bg-[#202621] border-[#93DD35]/40 opacity-100 shadow-lg shadow-black/40'
+              : 'bg-[#202621]/60 border-[#2E3830] opacity-60'
           }`}
         >
           {/* Avatar preview */}
-          <div className="w-12 h-16 rounded-xl overflow-hidden border border-white/20 bg-zinc-900 shrink-0">
+          <div className="w-12 h-16 rounded-lg overflow-hidden border border-[#2E3830] bg-[#171C18] shrink-0">
             {selected ? (
               <img src={selected.imageUrl} alt={selected.name} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-700 text-xl">?</div>
+              <div className="w-full h-full flex items-center justify-center text-[#C2CDC3]/40 text-xl font-mono">?</div>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <span className="block text-[10px] font-mono uppercase tracking-widest text-amber-400/80">
+            <span className="block text-[10px] font-mono uppercase tracking-widest text-[#93DD35]">
               Your Secret Character
             </span>
-            <p className="text-sm font-semibold text-white mt-0.5 truncate">
+            <p className="text-sm font-black text-[#FFFFFF] mt-0.5 truncate uppercase">
               {selected ? selected.name : 'None selected'}
             </p>
             {selected && (
-              <p className="text-[11px] text-zinc-400 mt-0.5">
+              <p className="text-[11px] text-[#C2CDC3] mt-0.5 font-mono">
                 {[
                   selected.hasGlasses && 'Glasses',
                   selected.hasBeard && 'Beard',
@@ -168,15 +176,17 @@ const PickCharacterPage: React.FC = () => {
           <button
             onClick={handleConfirm}
             disabled={!selected}
-            className={`shrink-0 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+            className={`shrink-0 px-5 py-3 rounded-md text-xs font-black uppercase tracking-widest transition-all duration-200 flex items-center gap-2 ${
               selected
-                ? 'bg-zinc-100 text-zinc-950 hover:bg-white shadow-[0_0_20px_rgba(255,255,255,0.12)] active:scale-95 cursor-pointer'
-                : 'bg-white/5 text-zinc-600 cursor-not-allowed'
+                ? 'bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] shadow-lg shadow-[#93DD35]/25 active:scale-98 cursor-pointer'
+                : 'bg-[#2E3830] text-[#C2CDC3]/40 cursor-not-allowed shadow-none'
             }`}
           >
-            Confirm & Play →
+            <span>Confirm & Play</span>
+            <span className={selected ? 'text-[#171C18]' : 'text-[#C2CDC3]/40'}>→</span>
           </button>
         </div>
+
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageBackground } from '../components/PageBackground';
 
 const DECKS = [
   {
@@ -47,23 +46,22 @@ const CreateRoomPage: React.FC = () => {
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    // Pass roomCode via location state so pick-character page can read it
     navigate('/pick-character', { state: { roomCode, from: 'create-room' } });
   };
 
   return (
-    <div className="relative h-screen w-full bg-[#090406] text-zinc-100 font-sans flex items-center justify-center p-4 overflow-hidden select-none antialiased">
-      <PageBackground />
+    // Background: Rangoon Green (#171C18)
+    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex items-center justify-center p-4 overflow-hidden select-none antialiased">
 
-      {/* Main Glassmorphic Card Container */}
-      <div className="relative z-10 w-full max-w-lg bg-zinc-900/50 border border-white/10 rounded-2xl backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col max-h-[92vh]">
+      {/* Main Container Card */}
+      <div className="relative z-10 w-full max-w-lg bg-[#202621]/95 border border-[#2E3830] rounded-2xl backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Top Header Section */}
-        <div className="p-5 sm:p-6 pb-4 border-b border-white/10 bg-white/[0.02] flex flex-col gap-3">
+        <div className="p-5 sm:p-6 pb-4 border-b border-[#2E3830] bg-[#171C18]/60 flex flex-col gap-3">
           <button
             onClick={() => navigate('/')}
             type="button"
-            className="self-start text-xs font-mono text-zinc-400 hover:text-white transition-all flex items-center gap-2 cursor-pointer group bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10"
+            className="self-start text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer group bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5 rounded-lg border border-[#2E3830]"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
             <span>BACK TO LOBBY</span>
@@ -72,14 +70,15 @@ const CreateRoomPage: React.FC = () => {
           <div className="flex items-center justify-between mt-1">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
-                <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest">
+                {/* Accent: Hummingbird Green (#93DD35) */}
+                <span className="w-2 h-2 rounded-full bg-[#93DD35] animate-pulse shadow-[0_0_10px_rgba(147,221,53,0.7)]" />
+                <span className="text-[10px] font-mono font-bold text-[#93DD35] uppercase tracking-widest">
                   MATCH SETUP
                 </span>
               </div>
-              <h1 className="text-xl font-black text-white tracking-wide uppercase">Create Duel Room</h1>
+              <h1 className="text-xl font-black text-[#FFFFFF] tracking-wide uppercase">Create Duel Room</h1>
             </div>
-            <span className="text-xs font-mono text-zinc-500 bg-black/40 px-2.5 py-1 rounded border border-white/5">
+            <span className="text-xs font-mono text-[#C2CDC3] bg-[#171C18] px-2.5 py-1 rounded border border-[#2E3830]">
               CUSTOM LOBBY
             </span>
           </div>
@@ -91,10 +90,10 @@ const CreateRoomPage: React.FC = () => {
           {/* Deck Selection Cards */}
           <div>
             <div className="flex items-center justify-between mb-2.5">
-              <label className="text-xs font-bold text-zinc-300 font-mono uppercase tracking-wider">
+              <label className="text-xs font-bold text-[#C2CDC3] font-mono uppercase tracking-wider">
                 1. Select Character Deck
               </label>
-              <span className="text-[10px] font-mono text-zinc-500">3 DECKS AVAILABLE</span>
+              <span className="text-[10px] font-mono text-[#C2CDC3]/70">3 DECKS AVAILABLE</span>
             </div>
 
             <div className="grid grid-cols-1 gap-2">
@@ -106,45 +105,45 @@ const CreateRoomPage: React.FC = () => {
                     onClick={() => setDeck(item.id)}
                     className={`group relative p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                       isSelected
-                        ? 'bg-gradient-to-r from-amber-500/15 via-zinc-900 to-zinc-900 border-amber-500/60 shadow-lg shadow-amber-950/20'
-                        : 'bg-black/30 border-white/10 hover:border-white/20 hover:bg-black/50'
+                        ? 'bg-gradient-to-r from-[#93DD35]/15 via-[#202621] to-[#202621] border-[#93DD35]/60 shadow-lg shadow-black/40'
+                        : 'bg-[#171C18]/60 border-[#2E3830] hover:border-[#93DD35]/40 hover:bg-[#202621]'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                           isSelected
-                            ? 'bg-amber-400 text-zinc-950 shadow-md shadow-amber-400/20'
-                            : 'bg-zinc-800 text-zinc-400 group-hover:text-zinc-200'
+                            ? 'bg-[#93DD35] text-[#171C18] shadow-md shadow-[#93DD35]/20 font-bold'
+                            : 'bg-[#2E3830]/50 text-[#C2CDC3] group-hover:text-[#93DD35]'
                         }`}
                       >
                         {item.icon}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <p className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-zinc-200'}`}>
+                          <p className={`text-xs font-bold ${isSelected ? 'text-[#FFFFFF]' : 'text-[#C2CDC3]'}`}>
                             {item.title}
                           </p>
                           <span
                             className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded ${
                               isSelected
-                                ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
-                                : 'bg-white/5 text-zinc-500'
+                                ? 'bg-[#93DD35]/20 text-[#93DD35] border border-[#93DD35]/40'
+                                : 'bg-[#2E3830]/40 text-[#C2CDC3]'
                             }`}
                           >
                             {item.badge}
                           </span>
                         </div>
-                        <p className="text-[11px] text-zinc-400 mt-0.5">{item.desc}</p>
+                        <p className="text-[11px] text-[#C2CDC3]/80 mt-0.5">{item.desc}</p>
                       </div>
                     </div>
 
                     <div
                       className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
-                        isSelected ? 'border-amber-400 bg-amber-400' : 'border-zinc-700 bg-transparent'
+                        isSelected ? 'border-[#93DD35] bg-[#93DD35]' : 'border-[#2E3830] bg-transparent'
                       }`}
                     >
-                      {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-zinc-950" />}
+                      {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-[#171C18]" />}
                     </div>
                   </div>
                 );
@@ -155,13 +154,13 @@ const CreateRoomPage: React.FC = () => {
           {/* Match Length / Rounds Segment Control */}
           <div>
             <div className="flex items-center justify-between mb-2.5">
-              <label className="text-xs font-bold text-zinc-300 font-mono uppercase tracking-wider">
+              <label className="text-xs font-bold text-[#C2CDC3] font-mono uppercase tracking-wider">
                 2. Match Structure
               </label>
-              <span className="text-[10px] font-mono text-zinc-500">BEST OF FORMAT</span>
+              <span className="text-[10px] font-mono text-[#C2CDC3]/70">BEST OF FORMAT</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 bg-black/40 p-1.5 rounded-xl border border-white/10">
+            <div className="grid grid-cols-3 gap-2 bg-[#171C18]/80 p-1.5 rounded-xl border border-[#2E3830]">
               {[1, 3, 5].map((num) => {
                 const isActive = rounds === num;
                 return (
@@ -171,12 +170,12 @@ const CreateRoomPage: React.FC = () => {
                     onClick={() => setRounds(num)}
                     className={`py-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                       isActive
-                        ? 'bg-amber-400 text-zinc-950 shadow-md shadow-amber-400/20 scale-[1.02]'
-                        : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-[#93DD35] text-[#171C18] shadow-md shadow-[#93DD35]/20 scale-[1.02]'
+                        : 'text-[#C2CDC3] hover:text-[#FFFFFF] hover:bg-[#2E3830]/50'
                     }`}
                   >
                     <span>{num} {num === 1 ? 'Round' : 'Rounds'}</span>
-                    <span className={`text-[9px] font-mono ${isActive ? 'text-zinc-900/80 font-bold' : 'text-zinc-600'}`}>
+                    <span className={`text-[9px] font-mono ${isActive ? 'text-[#171C18] font-black' : 'text-[#C2CDC3]/70'}`}>
                       {num === 1 ? 'QUICK DUEL' : `FIRST TO ${Math.ceil(num / 2)}`}
                     </span>
                   </button>
@@ -186,21 +185,21 @@ const CreateRoomPage: React.FC = () => {
           </div>
 
           {/* Privacy Toggle Section */}
-          <div className="p-3.5 bg-black/30 border border-white/10 rounded-xl flex items-center justify-between">
+          <div className="p-3.5 bg-[#171C18]/60 border border-[#2E3830] rounded-xl flex items-center justify-between">
             <div className="space-y-0.5">
               <div className="flex items-center gap-2">
-                <p className="text-xs font-bold text-zinc-200">Room Privacy</p>
+                <p className="text-xs font-bold text-[#FFFFFF]">Room Privacy</p>
                 <span
                   className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
                     isPrivate
-                      ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
-                      : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                      ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/40'
+                      : 'bg-[#C2CDC3]/15 text-[#C2CDC3] border-[#C2CDC3]/40'
                   }`}
                 >
                   {isPrivate ? 'INVITE ONLY' : 'PUBLIC LOBBY'}
                 </span>
               </div>
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-[11px] text-[#C2CDC3]">
                 {isPrivate
                   ? 'Players must enter code to join your room'
                   : 'Anyone can discover and join this match'}
@@ -212,15 +211,15 @@ const CreateRoomPage: React.FC = () => {
               onClick={() => setIsPrivate(!isPrivate)}
               className={`w-12 h-7 rounded-full transition-all relative cursor-pointer border ${
                 isPrivate
-                  ? 'bg-amber-500/20 border-amber-500/40'
-                  : 'bg-zinc-800 border-white/10'
+                  ? 'bg-[#93DD35]/20 border-[#93DD35]/60'
+                  : 'bg-[#2E3830] border-[#2E3830]'
               }`}
             >
               <span
                 className={`absolute top-1 left-1 w-4 h-4 rounded-full transition-transform duration-200 flex items-center justify-center shadow-md ${
                   isPrivate
-                    ? 'translate-x-5 bg-amber-400 text-zinc-950'
-                    : 'translate-x-0 bg-zinc-400 text-zinc-950'
+                    ? 'translate-x-5 bg-[#93DD35] text-[#171C18]'
+                    : 'translate-x-0 bg-[#C2CDC3] text-[#171C18]'
                 }`}
               >
                 {isPrivate ? (
@@ -239,7 +238,7 @@ const CreateRoomPage: React.FC = () => {
           {/* Submit Action CTA */}
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-amber-500/20 active:scale-98 flex items-center justify-center gap-2 group"
+            className="w-full py-3.5 rounded-xl bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#93DD35]/25 active:scale-98 flex items-center justify-center gap-2 group"
           >
             <span>GENERATE ROOM & START</span>
             <svg
