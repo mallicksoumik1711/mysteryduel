@@ -26,5 +26,3 @@ export const CharacterGrid: React.FC<CharacterGridProps> = ({
     </div>
   );
 };
-
-

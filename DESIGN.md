@@ -133,35 +133,35 @@ Avoid:
 
 Related information should share the same typographic treatment.
 
-## Color System and Palette
+# Updated Color System and Palette
 
-The visual theme uses a **Cinematic Crimson & Obsidian (Warm Dark Mode)** aesthetic. It provides a dark, atmospheric backdrop that brings maximum visual focus to the character images on the board.
+The visual theme has been refactored from Cinematic Crimson to the new **Rangoon Green & Hummingbird Green (Cyberpunk Green Dark Mode)** aesthetic, matching all your recently updated components.
 
 ### 1. Canvas & Atmospheric Colors
 
 | Role | Color Name | Hex / CSS Value | Tailwind Class / Usage |
 | :--- | :--- | :--- | :--- |
-| **Canvas Background** | Obsidian Black | `#0f0608` | `bg-[#0f0608]` |
-| **Vignette Spotlight** | Deep Mahogany Wine | `#2b1018` | Top-center radial radial gradient `from-[#2b1018]` |
-| **Vignette Midtone** | Dark Charcoal Plum | `#160a0d` | Radial gradient `via-[#160a0d]` |
-| **Vignette Outer** | Deep Espresso Black | `#0a0306` | Edge backdrop `to-[#0a0306]` |
-| **Ambient Side Glow** | Burnt Amber Glow | `rgba(120,50,20,0.55)` | Left/Right atmospheric screen flares |
+| **Canvas Background** | Rangoon Green | `#171C18` | `bg-[#171C18]` |
+| **Vignette Spotlight** | Dark Emerald Vignette | `#202621` | Top-center radial gradient `from-[#202621]` |
+| **Vignette Midtone** | Deep Forest Charcoal | `#171C18` | Radial gradient `via-[#171C18]` |
+| **Vignette Outer** | Obsidian Shadow | `#0e120f` | Edge backdrop `to-[#0e120f]` |
+| **Ambient Side Glow** | Hummingbird Green Glow | `rgba(147,221,53,0.06)` | Left/Right atmospheric screen flares |
 
 ### 2. Typography & Interactive Colors
 
 | Role | Color Name | Hex Code | Tailwind Equivalent |
 | :--- | :--- | :--- | :--- |
-| **Primary Headings** | Pure White | `#ffffff` | `text-white` |
-| **Body & Primary Text**| Zinc 100 | `#f4f4f5` | `text-zinc-100` |
-| **Secondary Copy** | Zinc 400 | `#a1a1aa` | `text-zinc-400` |
-| **Subdued Labels** | Zinc 500 | `#71717a` | `text-zinc-500` |
-| **Inverted CTA Text** | Zinc 950 | `#09090b` | `text-zinc-950` (Used on primary white buttons) |
+| **Primary Headings** | Ice White | `#ffffff` | `text-white` |
+| **Body & Primary Text**| Ice White / Light Sage | `#ffffff` / `#C2CDC3` | `text-[#FFFFFF]` / `text-[#C2CDC3]` |
+| **Secondary Copy** | Muted Sage | `#C2CDC3` | `text-[#C2CDC3]` |
+| **Subdued Labels** | Dark Olive Border | `#2E3830` | `border-[#2E3830]` |
+| **Inverted CTA Text** | Rangoon Dark | `#171C18` | `text-[#171C18]` (Used on primary hummingbird green buttons) |
 
 ### 3. Surface, Border & Glass Accents
 
-* **Primary Buttons:** `bg-zinc-100` with hover state `hover:bg-white` and high-contrast dark text (`text-zinc-950`).
-* **Secondary / Glass Surfaces:** `bg-white/5` with borders `border-white/20`.
-* **Subtle Card Borders:** `ring-1 ring-inset ring-white/10`.
+* **Primary Buttons:** `bg-[#93DD35]` with hover state `hover:bg-[#85c82e]` and high-contrast dark text (`text-[#171C18]`).
+* **Secondary / Glass Surfaces:** `bg-[#202621]/80` with borders `border-[#2E3830]`.
+* **Subtle Card Borders:** `ring-1 ring-inset ring-[#2E3830]`.
 * **Elevated Shadows:** `shadow-[0_20px_50px_rgba(0,0,0,0.85)]`.
 
 ### 4. Tailwind Config Extension
@@ -174,20 +174,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        obsidian: {
-          DEFAULT: '#0f0608',
-          vignette: '#2b1018',
-          mid: '#160a0d',
-          outer: '#0a0306',
+        rangoon: {
+          DEFAULT: '#171C18',
+          vignette: '#202621',
+          outer: '#0e120f',
         },
-        flare: {
-          amber: 'rgba(120, 50, 20, 0.55)',
+        hummingbird: {
+          DEFAULT: '#93DD35',
+          hover: '#85c82e',
+          glow: 'rgba(147, 221, 53, 0.06)',
+        },
+        sage: {
+          border: '#2E3830',
+          muted: '#C2CDC3',
         },
       },
       backgroundImage: {
-        'hero-vignette': 'radial-gradient(ellipse 90% 70% at 50% 40%, #2b1018 0%, #160a0d 45%, #0a0306 100%)',
-        'flare-left': 'linear-gradient(to right, rgba(120,50,20,0.55) 0%, transparent 100%)',
-        'flare-right': 'linear-gradient(to left, rgba(120,50,20,0.55) 0%, transparent 100%)',
+        'hero-vignette': 'radial-gradient(ellipse 90% 70% at 50% 40%, #202621 0%, #171C18 45%, #0e120f 100%)',
+        'flare-left': 'linear-gradient(to right, rgba(147,221,53,0.06) 0%, transparent 100%)',
+        'flare-right': 'linear-gradient(to left, rgba(147,221,53,0.06) 0%, transparent 100%)',
       },
     },
   },

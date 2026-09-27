@@ -16,20 +16,20 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   onSelectQuestion,
   onAskQuestion,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 bg-zinc-900/40 border border-white/10 rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-full min-h-0 bg-[#202621]/60 border border-[#2E3830] rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
     {/* Header */}
-    <div className="shrink-0 px-3.5 py-2.5 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
+    <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <div className="w-1.5 h-3.5 bg-emerald-500 rounded-full" />
-        <h2 className="text-[11px] font-bold text-white uppercase tracking-widest font-mono">
+        <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
+        <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">
           Interrogation
         </h2>
       </div>
       <span
         className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${
           isYourTurn
-            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-            : 'bg-zinc-800 text-zinc-500 border-white/5'
+            ? 'bg-[#93DD35]/10 text-[#93DD35] border-[#93DD35]/30'
+            : 'bg-[#171C18] text-[#C2CDC3]/50 border-[#2E3830]'
         }`}
       >
         {isYourTurn ? 'YOUR TURN' : 'WAITING'}
@@ -37,11 +37,11 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
     </div>
 
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-2">
-      <p className="shrink-0 text-[11px] text-zinc-400 font-medium leading-tight">
+      <p className="shrink-0 text-[11px] text-[#C2CDC3] font-medium leading-tight">
         {isYourTurn ? 'Select a question to submit:' : 'Waiting for opponent response...'}
       </p>
 
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30">
         {questions.map((q) => {
           const isSelected = selectedQuestion === q.id;
           return (
@@ -50,18 +50,18 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
               onClick={() => isYourTurn && onSelectQuestion(q.id)}
               className={`group relative p-2.5 rounded-lg border transition-all duration-150 ${
                 !isYourTurn
-                  ? 'opacity-40 cursor-not-allowed border-white/5 bg-black/20'
+                  ? 'opacity-40 cursor-not-allowed border-[#2E3830] bg-[#171C18]/40'
                   : isSelected
-                  ? 'bg-gradient-to-r from-amber-500/20 to-zinc-900 border-amber-500/50 shadow-md text-white'
-                  : 'bg-black/30 border-white/10 text-zinc-300 hover:border-white/25 hover:bg-black/50 cursor-pointer'
+                  ? 'bg-gradient-to-r from-[#93DD35]/20 to-[#171C18] border-[#93DD35]/60 shadow-md text-[#FFFFFF]'
+                  : 'bg-[#171C18]/80 border-[#2E3830] text-[#C2CDC3] hover:border-[#93DD35]/40 hover:bg-[#171C18] cursor-pointer'
               }`}
             >
               <div className="flex items-center justify-between mb-0.5">
-                <span className="text-[9px] font-mono text-amber-400/90 font-semibold uppercase tracking-wider">
+                <span className="text-[9px] font-mono text-[#93DD35] font-semibold uppercase tracking-wider">
                   {q.category}
                 </span>
                 {isSelected && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35] animate-ping" />
                 )}
               </div>
               <p className="text-[11px] font-medium leading-snug">{q.text}</p>
@@ -72,7 +72,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
                     e.stopPropagation();
                     onAskQuestion(q.text);
                   }}
-                  className="w-full mt-2 py-1.5 rounded bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-1"
+                  className="w-full mt-2 py-1.5 rounded bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-1"
                 >
                   <span>Submit Question</span>
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
