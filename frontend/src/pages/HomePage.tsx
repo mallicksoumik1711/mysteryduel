@@ -20,8 +20,13 @@ const HomePage: React.FC = () => {
 
   return (
     // Changed to strictly `h-screen` and `overflow-hidden` to prevent any vertical scrolling
-    <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden select-none">
-      
+    <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden overflow-hidden bg-center" style={{
+      backgroundImage: `
+      linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+      url('https://i.pinimg.com/736x/20/59/5e/20595ec67835acca47786d245daaabe2.jpg')
+    `,
+    }}>
+
       {/* Noise / Grain Texture Overlay */}
       <div
         className="pointer-events-none fixed inset-0 z-50 opacity-[0.04] mix-blend-overlay"
@@ -38,16 +43,16 @@ const HomePage: React.FC = () => {
 
       {/* Main Container: Uses h-full and flex column to dynamically fit screen height without overflow */}
       <main className="relative z-10 w-full h-full max-w-[1400px] mx-auto px-4 py-8 flex flex-col justify-between">
-        
+
         {/* CAROUSEL WRAPPER: Uses flex-1 to automatically stretch and fill available space between header and footer */}
         <div className="relative w-full flex-1 flex items-center justify-center">
-          
+
           {/* Top Embedded Text */}
           <div className="absolute top-0 md:top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center drop-shadow-xl pointer-events-none">
-             <div className="w-12 h-12 mb-2 md:mb-3 rounded-2xl bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
+            <div className="w-12 h-12 mb-2 md:mb-3 rounded-2xl bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
               <Gamepad2 className="w-7 h-7" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
+            <h1 className="londrina-solid-regular text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
               Mystery<span className="text-[#93DD35]">Duel</span>?
             </h1>
           </div>
@@ -63,7 +68,7 @@ const HomePage: React.FC = () => {
               Bring your party to life with real-time multiplayer deduction. Ask strategic questions, unravel clues, and unmask the hidden identities before time runs out.
             </p>
           </div>
-          
+
         </div>
 
         {/* Action Controls - Locked at the bottom, using shrink-0 so they never compress */}

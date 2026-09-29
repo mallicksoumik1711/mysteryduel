@@ -67,7 +67,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
   return (
     // Background: Rangoon Green (#171C18)
-    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col overflow-hidden select-none antialiased">
+    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col overflow-hidden  antialiased">
       {/* Background Micro Grain Texture */}
       <div
         className="pointer-events-none fixed inset-0 z-50 opacity-[0.035] mix-blend-overlay"

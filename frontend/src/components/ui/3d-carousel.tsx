@@ -36,7 +36,7 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
   }
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[420px] md:h-[480px] flex items-center justify-center select-none overflow-visible">
+    <div className="relative w-full h-[340px] sm:h-[420px] md:h-[480px] flex items-center justify-center  overflow-visible">
       {/* Perspective wrapper */}
       <div
         className="relative w-full max-w-7xl h-full flex items-center justify-center"
@@ -64,6 +64,7 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
                 className={`
                   w-[140px] sm:w-[165px] md:w-[185px]
                   aspect-[3/4]
+                  rounded-xl
                   overflow-hidden
                   transition-all duration-700
                   shadow-[0_20px_50px_rgba(0,0,0,0.6)]
@@ -76,7 +77,7 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
                   draggable={false}
                 />
                 {/* Bottom gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111612] via-transparent to-[#111612]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111612] via-transparent to-transparent" />
                 {/* <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-white/50" /> */}
               </div>
             </div>
