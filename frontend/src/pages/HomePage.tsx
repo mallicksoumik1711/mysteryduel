@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
              <div className="w-12 h-12 mb-2 md:mb-3 rounded-2xl bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
               <Gamepad2 className="w-7 h-7" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
+            <h1 className="londrina-solid-regular text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
               Mystery<span className="text-[#93DD35]">Duel</span>?
             </h1>
           </div>
