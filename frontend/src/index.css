@@ -35,3 +35,25 @@ body {
   font-weight: 900;
   font-style: normal;
 }
+
+::selection {
+  background-color: #93DD35;
+  color: #111612;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #93DD35;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A8E85A;
+}

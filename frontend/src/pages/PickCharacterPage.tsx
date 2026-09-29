@@ -31,7 +31,7 @@ const PickCharacterPage: React.FC = () => {
 
   return (
     // Background: Rangoon Green (#171C18)
-    <div className="relative min-h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col items-center justify-start px-4 py-10 overflow-hidden select-none">
+    <div className="relative min-h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col items-center justify-start px-4 py-10 overflow-hidden ">
       
       {/* Background Radial Gradient */}
       <div
