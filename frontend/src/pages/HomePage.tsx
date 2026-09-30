@@ -4,15 +4,15 @@ import { FanCarousel } from '@/components/ui/3d-carousel';
 import { Gamepad2 } from 'lucide-react';
 
 const characterHeroImages = [
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
+  'https://i.pinimg.com/736x/9a/8d/d8/9a8dd8cccc7aa06063a217ef1b1b1304.jpg',
+  'https://i.pinimg.com/736x/28/61/dc/2861dc5a65037a98e46909a973d29083.jpg',
+  'https://i.pinimg.com/1200x/d5/89/95/d58995c0b21f75c86a6735643ef69cde.jpg',
+  'https://i.pinimg.com/736x/a7/b6/45/a7b6459d58233a281b939d529fed2d81.jpg',
+  'https://i.pinimg.com/736x/33/66/ca/3366cadb5437c4bfae1f08b6c0968111.jpg',
+  'https://i.pinimg.com/736x/2f/50/ed/2f50edb4c04c487b4428bb58684a8e46.jpg',
+  'https://i.pinimg.com/736x/c3/6e/ed/c36eed741fed20b9b96a4b498dce6752.jpg',
+  'https://i.pinimg.com/1200x/2c/93/3d/2c933d3104a2de9f0a0570f43a25a68b.jpg',
+  'https://i.pinimg.com/736x/2c/4d/de/2c4dde5fe518bc9baab8c09aa341f94c.jpg'
 ];
 
 const HomePage: React.FC = () => {
