@@ -63,8 +63,8 @@ export const mockCharacters: Character[] = [
   },
   {
     id: 'char-7',
-    name: 'Casey',
-    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Casey',
+    name: 'Felix',
+    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Felix',
     hasGlasses: true,
     hasBeard: false,
     hasHat: false,
@@ -73,8 +73,8 @@ export const mockCharacters: Character[] = [
   },
   {
     id: 'char-8',
-    name: 'Casey',
-    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Casey',
+    name: 'Ruby',
+    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Ruby',
     hasGlasses: true,
     hasBeard: false,
     hasHat: false,
@@ -83,8 +83,8 @@ export const mockCharacters: Character[] = [
   },
   {
     id: 'char-9',
-    name: 'Casey',
-    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Casey',
+    name: 'Michael',
+    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Michael',
     hasGlasses: true,
     hasBeard: false,
     hasHat: false,
@@ -93,8 +93,8 @@ export const mockCharacters: Character[] = [
   },
   {
     id: 'char-10',
-    name: 'Casey',
-    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Casey',
+    name: 'Veronica',
+    imageUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Veronica',
     hasGlasses: true,
     hasBeard: false,
     hasHat: false,
