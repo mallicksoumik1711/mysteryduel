@@ -44,7 +44,7 @@ const JoinRoomPage: React.FC = () => {
                   MATCH DISCOVERY
                 </span>
               </div>
-              <h1 className="text-xl font-black text-[#FFFFFF] tracking-wide uppercase">Join Game Room</h1>
+              <h1 className="londrina-solid-regular text-2xl font-black text-[#FFFFFF] tracking-widest uppercase">Join Game Room</h1>
             </div>
             <span className="text-xs font-mono text-[#C2CDC3] bg-[#171C18] px-2.5 py-1 rounded border border-[#2E3830]">
               DIRECT ACCESS

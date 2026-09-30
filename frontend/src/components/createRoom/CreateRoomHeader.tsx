@@ -24,7 +24,7 @@ export const CreateRoomHeader: React.FC<CreateRoomHeaderProps> = ({ onBack }) =>
               MATCH SETUP
             </span>
           </div>
-          <h1 className="text-xl font-black text-[#FFFFFF] tracking-wide uppercase">Create Duel Room</h1>
+          <h1 className="londrina-solid-regular text-2xl font-black text-[#FFFFFF] tracking-widest uppercase">Create Duel Room</h1>
         </div>
         <span className="text-xs font-mono text-[#C2CDC3] bg-[#171C18] px-2.5 py-1 rounded border border-[#2E3830]">
           CUSTOM LOBBY
