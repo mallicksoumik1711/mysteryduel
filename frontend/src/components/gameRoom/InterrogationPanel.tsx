@@ -16,9 +16,9 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   onSelectQuestion,
   onAskQuestion,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 bg-[#202621]/60 border border-[#2E3830] rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm overflow-hidden">
     {/* Header */}
-    <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
+    <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] flex items-center justify-between">
       <div className="flex items-center gap-2">
         <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
         <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">

@@ -14,7 +14,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
   logs,
   secretCharacter,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 bg-[#202621]/60 border border-[#2E3830] rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
       <div className="flex items-center gap-2">
