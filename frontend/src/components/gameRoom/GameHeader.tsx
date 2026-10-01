@@ -11,12 +11,12 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
   onToggleTurn,
   onLeaveRoom,
 }) => (
-  <header className="shrink-0 z-20 w-full border-b border-[#2E3830] bg-[#171C18]/80 backdrop-blur-xl px-4 sm:px-6 py-2.5 flex items-center justify-between">
+  <header className="shrink-0 z-20 w-full border-b border-[#2E3830] backdrop-blur-sm px-4 sm:px-6 py-2.5 flex items-center justify-between">
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2">
         <div className="w-2.5 h-2.5 rounded-full bg-[#93DD35] shadow-[0_0_12px_rgba(147,221,53,0.8)] animate-pulse" />
-        <h1 className="text-xs font-black tracking-[0.2em] uppercase text-[#FFFFFF]">
-          Mysteryduel <span className="text-[#93DD35] font-mono text-[11px] ml-1">// ARENA</span>
+        <h1 className="londrina-solid-black text-xl font-black tracking-[0.3em] uppercase text-[#FFFFFF]">
+          Mysteryduel <span className="londrina-solid-regular text-[#93DD35] font-mono text-sm ml-1">// ARENA</span>
         </h1>
       </div>
       <div className="h-4 w-px bg-[#2E3830] hidden sm:block" />

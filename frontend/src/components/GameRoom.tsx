@@ -66,16 +66,12 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
   };
 
   return (
-    // Background: Rangoon Green (#171C18)
-    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col overflow-hidden  antialiased">
-      {/* Background Micro Grain Texture */}
-      <div
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.035] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '256px 256px',
-        }}
-      />
+    <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden overflow-hidden bg-center" style={{
+      backgroundImage: `
+      linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+      url('https://i.pinimg.com/1200x/69/0e/82/690e82b333374b47ab8f5e4804b8df0d.jpg')
+    `,
+    }}>
 
       {/* Ambient Lighting Layers */}
       <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-[#93DD35]/10 blur-[140px] rounded-full z-0" />
@@ -98,7 +94,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
         />
 
         {/* Character Board */}
-        <section className="lg:col-span-6 flex flex-col h-full min-h-0 bg-[#202621]/60 border border-[#2E3830] rounded-xl backdrop-blur-2xl shadow-xl overflow-hidden">
+        <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
           {/* Header */}
           <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -124,7 +120,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
           </div>
 
           {/* Grid Container */}
-          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30 flex flex-col justify-center">
+          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             <CharacterGrid
               characters={mockCharacters}
               boardState={boardState}
