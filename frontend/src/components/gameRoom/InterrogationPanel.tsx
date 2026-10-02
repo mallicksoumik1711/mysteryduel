@@ -41,7 +41,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
         {isYourTurn ? 'Select a question to submit:' : 'Waiting for opponent response...'}
       </p>
 
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2">
         {questions.map((q) => {
           const isSelected = selectedQuestion === q.id;
           return (
