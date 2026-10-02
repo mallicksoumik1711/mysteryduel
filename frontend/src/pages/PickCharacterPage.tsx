@@ -85,7 +85,7 @@ const PickCharacterPage: React.FC = () => {
           
           {/* Character Showcase Grid (Inspired by 3D NFT Portrait Display) */}
           <div className="lg:col-span-8 h-full overflow-y-auto pr-1 custom-scrollbar">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-10 gap-3.5 pb-2">
+            <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-8 xl:grid-cols-10 gap-3.5 pb-2">
               {mockCharacters.map((char) => {
                 const isSelected = selected?.id === char.id;
                 // const traitsCount = [char.hasGlasses, char.hasBeard, char.hasHat].filter(Boolean).length;

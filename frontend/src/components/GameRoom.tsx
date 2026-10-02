@@ -69,7 +69,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
     <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden overflow-hidden bg-center" style={{
       backgroundImage: `
       linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
-      url('https://i.pinimg.com/1200x/69/0e/82/690e82b333374b47ab8f5e4804b8df0d.jpg')
+      url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
     `,
     }}>
 
