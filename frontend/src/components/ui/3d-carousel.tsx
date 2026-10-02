@@ -78,7 +78,6 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
                 />
                 {/* Bottom gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111612] via-transparent to-transparent" />
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-white/50" /> */}
               </div>
             </div>
           );

@@ -7,6 +7,8 @@ import {
   RoomPrivacyToggle,
   CreateRoomSubmitButton,
 } from '@/components/createRoom/CreateRoomExports';
+import { RoomPageShell } from '@/components/ui/RoomPageShell';
+import { generateRoomCode } from '@/utils/roomCode';
 
 const CreateRoomPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,16 +18,12 @@ const CreateRoomPage: React.FC = () => {
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const roomCode = generateRoomCode();
     navigate('/pick-character', { state: { roomCode, from: 'create-room', deck, rounds, isPrivate } });
   };
 
   return (
-    // Background: Rangoon Green (#171C18)
-    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex items-center justify-center p-4 overflow-hidden antialiased">
-      {/* Main Container Card */}
-      <div className="relative z-10 w-full max-w-lg bg-[#202621]/95 border border-[#2E3830] rounded-2xl backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col max-h-[92vh]">
-        
+    <RoomPageShell>
         {/* Header Component */}
         <CreateRoomHeader onBack={() => navigate('/')} />
 
@@ -44,9 +42,7 @@ const CreateRoomPage: React.FC = () => {
           {/* Submit Action Button Component */}
           <CreateRoomSubmitButton />
         </form>
-
-      </div>
-    </div>
+    </RoomPageShell>
   );
 };
 

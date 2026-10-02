@@ -33,7 +33,6 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
       <div className="shrink-0 bg-[#171C18]/80 border border-[#2E3830] rounded-lg p-2.5 shadow-inner">
         <TurnIndicator
           isYourTurn={isYourTurn}
-          playerName="You"
           opponentName="Opponent"
         />
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FanCarousel } from '@/components/ui/3d-carousel';
+import { NoiseOverlay } from '@/components/ui/NoiseOverlay';
 import { Gamepad2 } from 'lucide-react';
 
 const characterHeroImages = [
@@ -19,29 +20,22 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    // Changed to strictly `h-screen` and `overflow-hidden` to prevent any vertical scrolling
-    <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden overflow-hidden bg-center" style={{
-      backgroundImage: `
-      linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
-      url('https://i.pinimg.com/736x/20/59/5e/20595ec67835acca47786d245daaabe2.jpg')
-    `,
-    }}>
+    <div
+      className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
+      style={{
+        backgroundImage: `
+        linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+        url('https://i.pinimg.com/736x/20/59/5e/20595ec67835acca47786d245daaabe2.jpg')
+      `,
+      }}
+    >
 
-      {/* Noise / Grain Texture Overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.04] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '256px 256px',
-        }}
-      />
+      <NoiseOverlay />
 
-      {/* Dynamic Background Glows */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
         <div className="w-[800px] h-[400px] bg-[#93DD35]/10 blur-[150px] rounded-[100%]" />
       </div>
 
-      {/* Main Container: Uses h-full and flex column to dynamically fit screen height without overflow */}
       <main className="relative z-10 w-full h-full max-w-[1400px] mx-auto px-4 py-8 flex flex-col justify-between">
 
         {/* CAROUSEL WRAPPER: Uses flex-1 to automatically stretch and fill available space between header and footer */}
