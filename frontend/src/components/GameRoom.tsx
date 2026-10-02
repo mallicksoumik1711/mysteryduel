@@ -66,12 +66,15 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
   };
 
   return (
-    <div className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden overflow-hidden bg-center" style={{
-      backgroundImage: `
-      linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
-      url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
-    `,
-    }}>
+    <div
+      className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
+      style={{
+        backgroundImage: `
+        linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+        url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
+      `,
+      }}
+    >
 
       {/* Ambient Lighting Layers */}
       <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-[#93DD35]/10 blur-[140px] rounded-full z-0" />
@@ -84,7 +87,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
         onLeaveRoom={onLeaveRoom}
       />
 
-      {/* Main Single-Screen Workspace */}
       <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 overflow-hidden">
 
         <MatchIntelPanel
@@ -93,9 +95,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
           secretCharacter={secretCharacter}
         />
 
-        {/* Character Board */}
         <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
-          {/* Header */}
           <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
@@ -119,7 +119,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
             </div>
           </div>
 
-          {/* Grid Container */}
           <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             <CharacterGrid
               characters={mockCharacters}

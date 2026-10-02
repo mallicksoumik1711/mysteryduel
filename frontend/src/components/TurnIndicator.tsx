@@ -2,14 +2,10 @@ import React from 'react';
 
 interface TurnIndicatorProps {
   isYourTurn: boolean;
-  playerName: string;
   opponentName: string;
 }
 
-export const TurnIndicator: React.FC<TurnIndicatorProps> = ({ 
-  isYourTurn, 
-  opponentName 
-}) => {
+export const TurnIndicator: React.FC<TurnIndicatorProps> = ({ isYourTurn, opponentName }) => {
   return (
     <div className="flex items-center justify-center p-2">
       <div 

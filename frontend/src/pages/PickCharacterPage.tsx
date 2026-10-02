@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { mockCharacters } from '../data/mockCharacters';
+import { NoiseOverlay } from '../components/ui/NoiseOverlay';
 import type { Character } from '../types';
 
 /**
@@ -36,16 +37,8 @@ const PickCharacterPage: React.FC = () => {
         }}
       />
 
-      {/* Subtle Noise Texture */}
-      <div
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.04] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '256px 256px',
-        }}
-      />
+      <NoiseOverlay />
 
-      {/* Main Full Viewport Workspace */}
       <div className="relative z-10 w-full h-full flex flex-col gap-4 overflow-hidden">
         
         {/* Top Control & Room Bar (No Headings) */}
@@ -88,7 +81,6 @@ const PickCharacterPage: React.FC = () => {
             <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-8 xl:grid-cols-10 gap-3.5 pb-2">
               {mockCharacters.map((char) => {
                 const isSelected = selected?.id === char.id;
-                // const traitsCount = [char.hasGlasses, char.hasBeard, char.hasHat].filter(Boolean).length;
 
                 return (
                   <button

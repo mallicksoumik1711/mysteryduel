@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RoomPageShell } from '@/components/ui/RoomPageShell';
 
 const JoinRoomPage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,12 +19,7 @@ const JoinRoomPage: React.FC = () => {
   const isReadyToJoin = playerName.trim().length > 0 && isCodeComplete;
 
   return (
-    // Background: Rangoon Green (#171C18)
-    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex items-center justify-center p-4 overflow-hidden  antialiased">
-
-      {/* Main Glassmorphic Card Container */}
-      <div className="relative z-10 w-full max-w-lg bg-[#202621]/95 border border-[#2E3830] rounded-2xl backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col max-h-[92vh]">
-        
+    <RoomPageShell>
         {/* Top Header Section */}
         <div className="p-5 sm:p-6 pb-4 border-b border-[#2E3830] bg-[#171C18]/60 flex flex-col gap-3">
           <button
@@ -165,9 +161,7 @@ const JoinRoomPage: React.FC = () => {
             </svg>
           </button>
         </form>
-
-      </div>
-    </div>
+    </RoomPageShell>
   );
 };
 
