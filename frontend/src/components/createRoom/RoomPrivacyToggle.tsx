@@ -7,7 +7,7 @@ interface RoomPrivacyToggleProps {
 
 export const RoomPrivacyToggle: React.FC<RoomPrivacyToggleProps> = ({ isPrivate, onTogglePrivate }) => {
   return (
-    <div className="p-3.5 bg-[#171C18]/60 border border-[#2E3830] rounded-xl flex items-center justify-between">
+    <div className="p-3.5 bg-[#171C18]/60 border border-[#2E3830] rounded-md flex items-center justify-between">
       <div className="space-y-0.5">
         <div className="flex items-center gap-2">
           <p className="text-xs font-bold text-[#FFFFFF]">Room Privacy</p>

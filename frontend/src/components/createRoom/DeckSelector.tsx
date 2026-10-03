@@ -8,37 +8,56 @@ export interface DeckItem {
   icon: React.ReactNode;
 }
 
+// export const DECKS: DeckItem[] = [
+//   {
+//     id: 'anime-heroes',
+//     title: 'Anime Heroes & Villains',
+//     desc: 'Iconic anime characters, protagonists & rivals',
+//     badge: 'POPULAR',
+//     icon: (
+//       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+//         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+//       </svg>
+//     ),
+//   },
+//   {
+//     id: 'classic-mystery',
+//     title: 'Classic Mystery Cast',
+//     desc: 'Detectives, suspects & classic noir archetypes',
+//     badge: 'CLASSIC',
+//     icon: (
+//       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+//         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+//       </svg>
+//     ),
+//   },
+//   {
+//     id: 'sci-fi',
+//     title: 'Sci-Fi Legends',
+//     desc: 'Cyberpunk hackers, aliens & space explorers',
+//     badge: 'SCI-FI',
+//     icon: (
+//       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+//         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+//       </svg>
+//     ),
+//   },
+// ];
+
 export const DECKS: DeckItem[] = [
   {
-    id: 'anime-heroes',
-    title: 'Anime Heroes & Villains',
-    desc: 'Iconic anime characters, protagonists & rivals',
+    id: 'characters',
+    title: 'Character Challenge',
+    desc: 'Ask questions, eliminate characters, and guess the hidden character',
     badge: 'POPULAR',
     icon: (
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'classic-mystery',
-    title: 'Classic Mystery Cast',
-    desc: 'Detectives, suspects & classic noir archetypes',
-    badge: 'CLASSIC',
-    icon: (
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'sci-fi',
-    title: 'Sci-Fi Legends',
-    desc: 'Cyberpunk hackers, aliens & space explorers',
-    badge: 'SCI-FI',
-    icon: (
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M13 10V3L4 14h7v7l9-11h-7z"
+        />
       </svg>
     ),
   },
@@ -66,7 +85,7 @@ export const DeckSelector: React.FC<DeckSelectorProps> = ({ selectedDeck, onSele
             <div
               key={item.id}
               onClick={() => onSelectDeck(item.id)}
-              className={`group relative p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
+              className={`group relative p-3 rounded-md border transition-all cursor-pointer flex items-center justify-between ${
                 isSelected
                   ? 'bg-gradient-to-r from-[#93DD35]/15 via-[#202621] to-[#202621] border-[#93DD35]/60 shadow-lg shadow-black/40'
                   : 'bg-[#171C18]/60 border-[#2E3830] hover:border-[#93DD35]/40 hover:bg-[#202621]'

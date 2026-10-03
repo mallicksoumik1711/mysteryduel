@@ -25,7 +25,7 @@ const JoinRoomPage: React.FC = () => {
           <button
             onClick={() => navigate('/')}
             type="button"
-            className="self-start text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer group bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5 rounded-lg border border-[#2E3830]"
+            className="self-start text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer group bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5 rounded-md border border-[#2E3830]"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
             <span>BACK TO LOBBY</span>
@@ -72,7 +72,7 @@ const JoinRoomPage: React.FC = () => {
                 placeholder="e.g. Detective Holmes"
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
-                className="w-full bg-[#171C18]/60 border border-[#2E3830] focus:border-[#93DD35]/60 focus:bg-[#171C18] rounded-xl pl-10 pr-4 py-3 text-xs text-[#FFFFFF] placeholder-[#C2CDC3]/40 focus:outline-none transition-all shadow-inner"
+                className="w-full bg-[#171C18]/60 border border-[#2E3830] focus:border-[#93DD35]/60 focus:bg-[#171C18] rounded-md pl-10 pr-4 py-3 text-xs text-[#FFFFFF] placeholder-[#C2CDC3]/40 focus:outline-none transition-all shadow-inner"
               />
             </div>
           </div>
@@ -100,7 +100,7 @@ const JoinRoomPage: React.FC = () => {
                 placeholder="X8K2M1"
                 value={roomCode}
                 onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                className={`w-full bg-[#171C18]/80 border rounded-xl py-3.5 px-4 text-center font-mono text-lg font-black tracking-[0.4em] uppercase transition-all shadow-inner placeholder:tracking-[0.3em] placeholder:text-[#C2CDC3]/30 focus:outline-none ${
+                className={`w-full bg-[#171C18]/80 border rounded-md py-3.5 px-4 text-center font-mono text-lg font-black tracking-[0.4em] uppercase transition-all shadow-inner placeholder:tracking-[0.3em] placeholder:text-[#C2CDC3]/30 focus:outline-none ${
                   isCodeComplete
                     ? 'border-[#93DD35]/60 bg-[#93DD35]/10 text-[#93DD35] shadow-[0_0_15px_rgba(147,221,53,0.15)]'
                     : 'border-[#2E3830] focus:border-[#93DD35]/60 text-[#93DD35]'
@@ -132,7 +132,7 @@ const JoinRoomPage: React.FC = () => {
           </div>
 
           {/* Quick Info Box */}
-          <div className="p-3.5 bg-[#171C18]/60 border border-[#2E3830] rounded-xl flex items-center justify-between">
+          <div className="p-3.5 bg-[#171C18]/60 border border-[#2E3830] rounded-md flex items-center justify-between">
             <div className="space-y-0.5">
               <p className="text-xs font-bold text-[#FFFFFF]">Instant Match Connection</p>
               <p className="text-[11px] text-[#C2CDC3]/70">You will join directly into the host's active lobby</p>
@@ -144,7 +144,7 @@ const JoinRoomPage: React.FC = () => {
           <button
             type="submit"
             disabled={!isReadyToJoin}
-            className={`w-full py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 group shadow-lg ${
+            className={`w-full py-3.5 rounded-md font-black text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 group shadow-lg ${
               isReadyToJoin
                 ? 'bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] shadow-[#93DD35]/25 active:scale-98'
                 : 'bg-[#2E3830] text-[#C2CDC3]/40 cursor-not-allowed shadow-none'

@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
 
           <button
             onClick={() => navigate('/join-room')}
-            className="px-6 py-2.5 rounded-full bg-[#202621]/80 border border-[#2E3830] text-[#C2CDC3] font-bold text-[13px] uppercase tracking-wider hover:bg-[#2E3830] hover:text-[#FFFFFF] hover:border-[#93DD35]/40 transition-all active:scale-95 cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#202621]/40 border border-[#2E3830] font-bold text-[13px] uppercase tracking-wider hover:bg-[#2E3830] hover:text-[#FFFFFF] hover:border-[#93DD35]/40 transition-all active:scale-95 cursor-pointer"
           >
             Join existing room
           </button>
