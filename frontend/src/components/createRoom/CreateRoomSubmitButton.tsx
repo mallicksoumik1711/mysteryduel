@@ -10,7 +10,7 @@ export const CreateRoomSubmitButton: React.FC<CreateRoomSubmitButtonProps> = ({
   return (
     <button
       type="submit"
-      className="w-full py-3.5 rounded-xl bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#93DD35]/25 active:scale-98 flex items-center justify-center gap-2 group"
+      className="w-full py-3.5 rounded-md bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#93DD35]/25 active:scale-98 flex items-center justify-center gap-2 group"
     >
       <span>{label}</span>
       <svg

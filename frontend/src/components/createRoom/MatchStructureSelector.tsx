@@ -20,7 +20,7 @@ export const MatchStructureSelector: React.FC<MatchStructureSelectorProps> = ({
         <span className="text-[10px] font-mono text-[#C2CDC3]/70">BEST OF FORMAT</span>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 bg-[#171C18]/80 p-1.5 rounded-xl border border-[#2E3830]">
+      <div className="grid grid-cols-3 gap-2 bg-[#171C18]/80 p-1.5 rounded-md border border-[#2E3830]">
         {options.map((num) => {
           const isActive = selectedRounds === num;
           return (
@@ -28,7 +28,7 @@ export const MatchStructureSelector: React.FC<MatchStructureSelectorProps> = ({
               key={num}
               type="button"
               onClick={() => onSelectRounds(num)}
-              className={`py-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+              className={`py-2.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                 isActive
                   ? 'bg-[#93DD35] text-[#171C18] shadow-md shadow-[#93DD35]/20 scale-[1.02]'
                   : 'text-[#C2CDC3] hover:text-[#FFFFFF] hover:bg-[#2E3830]/50'
