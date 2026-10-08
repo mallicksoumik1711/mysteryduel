@@ -1,0 +1,9 @@
+# MysteryDuel backend dependencies
+# Install with: pip install -r requirements.txt
+
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.7.0
+
+# TODO: Add database driver (e.g., asyncpg for PostgreSQL) when DB is chosen.
+# TODO: Add authentication library (e.g., python-jose, passlib) when auth is added.
