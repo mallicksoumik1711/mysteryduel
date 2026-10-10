@@ -1,20 +1,29 @@
 """
 MysteryDuel - FastAPI Application Entry Point
-
-TODO: Add middleware (CORS, auth, rate limiting) when APIs are implemented.
-TODO: Mount routers for each domain (rooms, characters, questions, etc.)
-TODO: Add lifespan events for DB connection pooling when a database is chosen.
 """
+
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.database.db import engine
+from app.database.base import Base
+from app.models.db_models import CharacterDB, QuestionDB
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Create database tables if they do not exist.
+    Base.metadata.create_all(bind=engine)
+    yield
+
 
 app = FastAPI(
     title="MysteryDuel API",
     description="Backend for the 2-player character guessing game MysteryDuel.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 
@@ -22,10 +31,11 @@ app = FastAPI(
 def main():
     return {"message": "Welcome to MysteryDuel API!"}
 
+
 @app.get("/health")
 def health_check():
-    """Basic health check endpoint."""
     return {"status": "ok"}
+
 
 @app.get("/test-db")
 def test_db():
