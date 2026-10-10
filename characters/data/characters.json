@@ -1,0 +1,362 @@
+[
+  {
+    "id": "char-1",
+    "name": "Felix",
+    "imageUrl": "/characters/char-1.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": true,
+      "hairColor": "grey",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-2",
+    "name": "Oliver",
+    "imageUrl": "/characters/char-2.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-3",
+    "name": "Arthur",
+    "imageUrl": "/characters/char-3.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "brown",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-4",
+    "name": "Henry",
+    "imageUrl": "/characters/char-4.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": true,
+      "hairColor": "blonde",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-5",
+    "name": "George",
+    "imageUrl": "/characters/char-5.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": true,
+      "hairColor": "red",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-6",
+    "name": "Sophie",
+    "imageUrl": "/characters/char-6.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-7",
+    "name": "Emma",
+    "imageUrl": "/characters/char-7.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "grey",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-8",
+    "name": "Olivia",
+    "imageUrl": "/characters/char-8.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "brown",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-9",
+    "name": "Charlotte",
+    "imageUrl": "/characters/char-9.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "blonde",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-10",
+    "name": "Amelia",
+    "imageUrl": "/characters/char-10.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "red",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-11",
+    "name": "Liam",
+    "imageUrl": "/characters/char-11.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": true,
+      "hairColor": "black",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-12",
+    "name": "Noah",
+    "imageUrl": "/characters/char-12.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "blonde",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-13",
+    "name": "Mason",
+    "imageUrl": "/characters/char-13.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "brown",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-14",
+    "name": "Ethan",
+    "imageUrl": "/characters/char-14.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": true,
+      "hairColor": "red",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-15",
+    "name": "Lucas",
+    "imageUrl": "/characters/char-15.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": true,
+      "hairColor": "grey",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-16",
+    "name": "Mia",
+    "imageUrl": "/characters/char-16.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-17",
+    "name": "Isabella",
+    "imageUrl": "/characters/char-17.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "blonde",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-18",
+    "name": "Ava",
+    "imageUrl": "/characters/char-18.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "brown",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-19",
+    "name": "Grace",
+    "imageUrl": "/characters/char-19.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "grey",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-20",
+    "name": "Chloe",
+    "imageUrl": "/characters/char-20.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "red",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-21",
+    "name": "Jack",
+    "imageUrl": "/characters/char-21.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-22",
+    "name": "James",
+    "imageUrl": "/characters/char-22.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": true,
+      "hairColor": "brown",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-23",
+    "name": "Benjamin",
+    "imageUrl": "/characters/char-23.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": true,
+      "hasBeard": true,
+      "hairColor": "blonde",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-24",
+    "name": "Daniel",
+    "imageUrl": "/characters/char-24.svg",
+    "traits": {
+      "gender": "male",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "red",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-25",
+    "name": "Ella",
+    "imageUrl": "/characters/char-25.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-26",
+    "name": "Lily",
+    "imageUrl": "/characters/char-26.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "brown",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-27",
+    "name": "Zoe",
+    "imageUrl": "/characters/char-27.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "blonde",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-28",
+    "name": "Hannah",
+    "imageUrl": "/characters/char-28.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "grey",
+      "skinColor": "light"
+    }
+  },
+  {
+    "id": "char-29",
+    "name": "Lucy",
+    "imageUrl": "/characters/char-29.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": false,
+      "hasBeard": false,
+      "hairColor": "red",
+      "skinColor": "dark"
+    }
+  },
+  {
+    "id": "char-30",
+    "name": "Ruby",
+    "imageUrl": "/characters/char-30.svg",
+    "traits": {
+      "gender": "female",
+      "hasGlasses": true,
+      "hasBeard": false,
+      "hairColor": "black",
+      "skinColor": "light"
+    }
+  }
+]
