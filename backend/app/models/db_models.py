@@ -13,18 +13,14 @@ class CharacterDB(Base):
     id: Mapped[str] = mapped_column(
         String,
         primary_key=True,
-        default=lambda: str(uuid.uuid4()),
     )
     name: Mapped[str] = mapped_column(String(100), nullable=False)
-    image_url: Mapped[str | None] = mapped_column(
-        String,
-        nullable=True,
-    )
-    attributes: Mapped[dict] = mapped_column(
-        JSONB,
-        nullable=False,
-        default=dict,
-    )
+    image_url: Mapped[str] = mapped_column(String, nullable=False)
+    gender: Mapped[str] = mapped_column(String(10), nullable=False)
+    has_glasses: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    has_beard: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    hair_color: Mapped[str] = mapped_column(String(20), nullable=False)
+    skin_color: Mapped[str] = mapped_column(String(10), nullable=False)
 
 
 class QuestionDB(Base):
