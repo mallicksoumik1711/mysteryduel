@@ -9,7 +9,9 @@ from sqlalchemy import text
 
 from app.database.db import engine
 from app.database.base import Base
-from app.models.db_models import CharacterDB, QuestionDB
+
+#all api calls
+from app.api.router import api_router
 
 
 @asynccontextmanager
@@ -43,3 +45,6 @@ def test_db():
         result = connection.execute(text("SELECT 1"))
 
     return {"database": result.scalar()}
+
+
+app.include_router(api_router)
