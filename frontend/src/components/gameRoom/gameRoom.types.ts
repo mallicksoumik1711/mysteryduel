@@ -1,3 +1,4 @@
+
 export interface Question {
   id: string;
   category: string;
@@ -13,12 +14,59 @@ export interface LogEntry {
 }
 
 export const MOCK_QUESTIONS: Question[] = [
-  { id: 'q1', category: 'Hair', text: 'Does the character have dark hair?' },
-  { id: 'q2', category: 'Hair', text: 'Is the character blond or light-haired?' },
-  { id: 'q3', category: 'Accessories', text: 'Is the character wearing glasses or goggles?' },
-  { id: 'q4', category: 'Accessories', text: 'Is the character wearing a hat or headwear?' },
-  { id: 'q5', category: 'Facial Features', text: 'Does the character have facial hair?' },
-  { id: 'q6', category: 'Expression', text: 'Is the character smiling or laughing?' },
-  { id: 'q7', category: 'Attire', text: 'Is the character wearing dark clothing?' },
-  { id: 'q8', category: 'Gender', text: 'Is the character female?' },
+  {
+    id: 'q1',
+    category: 'Gender',
+    text: 'Is the character male?',
+  },
+  {
+    id: 'q2',
+    category: 'Gender',
+    text: 'Is the character female?',
+  },
+  {
+    id: 'q3',
+    category: 'Hair',
+    text: 'Does the character have black hair?',
+  },
+  {
+    id: 'q4',
+    category: 'Hair',
+    text: 'Does the character have brown hair?',
+  },
+  {
+    id: 'q5',
+    category: 'Hair',
+    text: 'Does the character have blonde hair?',
+  },
+  {
+    id: 'q6',
+    category: 'Hair',
+    text: 'Does the character have grey hair?',
+  },
+  {
+    id: 'q7',
+    category: 'Hair',
+    text: 'Does the character have red hair?',
+  },
+  {
+    id: 'q8',
+    category: 'Accessories',
+    text: 'Is the character wearing glasses?',
+  },
+  {
+    id: 'q9',
+    category: 'Facial Features',
+    text: 'Does the character have a beard?',
+  },
+  {
+    id: 'q10',
+    category: 'Skin',
+    text: 'Does the character have light skin?',
+  },
+  {
+    id: 'q11',
+    category: 'Skin',
+    text: 'Does the character have dark skin?',
+  },
 ];
