@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { mockCharacters } from '../data/mockCharacters';
+import React, { useEffect, useState } from 'react';
+import { getAllCharacters } from '../services/characterService';
 import type { BoardState, Character } from '../types';
 import { CharacterGrid } from './CharacterGrid';
 import { GameHeader } from './gameRoom/GameHeader';
@@ -15,7 +15,43 @@ interface GameRoomProps {
 }
 
 export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821', userCharacter }) => {
-  const secretCharacter = userCharacter ?? mockCharacters[0];
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [charactersError, setCharactersError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCharacters() {
+      try {
+        const data = await getAllCharacters();
+
+        if (!cancelled) {
+          setCharacters(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setCharactersError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to load characters'
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingCharacters(false);
+        }
+      }
+    }
+
+    loadCharacters();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const secretCharacter = userCharacter ?? characters[0] ?? null;
   const [boardState, setBoardState] = useState<BoardState>({});
   const [isYourTurn, setIsYourTurn] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
@@ -120,11 +156,25 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
           </div>
 
           <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-            <CharacterGrid
-              characters={mockCharacters}
-              boardState={boardState}
-              onCharacterClick={handleCharacterClick}
-            />
+            {loadingCharacters ? (
+              <p className="text-sm text-[#C2CDC3]">
+                Loading characters...
+              </p>
+            ) : charactersError ? (
+              <p role="alert" className="text-sm text-red-400">
+                {charactersError}
+              </p>
+            ) : characters.length === 0 ? (
+              <p className="text-sm text-[#C2CDC3]">
+                No characters available.
+              </p>
+            ) : (
+              <CharacterGrid
+                characters={characters}
+                boardState={boardState}
+                onCharacterClick={handleCharacterClick}
+              />
+            )}
           </div>
         </section>
 
