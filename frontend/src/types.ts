@@ -2,17 +2,15 @@ export interface Character {
   id: string;
   name: string;
   imageUrl: string;
-  // Attributes we might use for questions
+  gender: 'male' | 'female';
   hasGlasses: boolean;
   hasBeard: boolean;
-  hasHat: boolean;
-  hairColor: string;
-  eyeColor: string;
+  hairColor: 'black' | 'brown' | 'blonde' | 'grey' | 'red';
+  skinColor: 'light' | 'dark';
 }
 
 export type CharacterState = 'available' | 'selected' | 'eliminated';
 
-// We map character IDs to their current state for the local player
 export type BoardState = Record<string, CharacterState>;
 
 export interface Player {

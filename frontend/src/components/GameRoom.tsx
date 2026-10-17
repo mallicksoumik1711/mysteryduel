@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { mockCharacters } from '../data/mockCharacters';
+import React, { useEffect, useState } from 'react';
+import { getAllCharacters } from '../services/characterService';
+import { getAllQuestions } from '../services/questionService';
+import type { Question } from './gameRoom/InterrogationPanel';
 import type { BoardState, Character } from '../types';
 import { CharacterGrid } from './CharacterGrid';
-import { TurnIndicator } from './TurnIndicator';
+import { GameHeader } from './gameRoom/GameHeader';
+import { MatchIntelPanel } from './gameRoom/MatchIntelPanel';
+import { InterrogationPanel } from './gameRoom/InterrogationPanel';
+import type { LogEntry } from './gameRoom/gameRoom.types';
 
 interface GameRoomProps {
   onLeaveRoom?: () => void;
@@ -10,38 +15,84 @@ interface GameRoomProps {
   userCharacter?: Character | null;
 }
 
-interface Question {
-  id: string;
-  category: string;
-  text: string;
-}
-
-const MOCK_QUESTIONS: Question[] = [
-  { id: 'q1', category: 'Hair', text: 'Does the character have dark hair?' },
-  { id: 'q2', category: 'Hair', text: 'Is the character blond or light-haired?' },
-  { id: 'q3', category: 'Accessories', text: 'Is the character wearing glasses or goggles?' },
-  { id: 'q4', category: 'Accessories', text: 'Is the character wearing a hat or headwear?' },
-  { id: 'q5', category: 'Facial Features', text: 'Does the character have facial hair?' },
-  { id: 'q6', category: 'Expression', text: 'Is the character smiling or laughing?' },
-  { id: 'q7', category: 'Attire', text: 'Is the character wearing dark clothing?' },
-  { id: 'q8', category: 'Gender', text: 'Is the character female?' },
-];
-
-interface LogEntry {
-  id: string;
-  sender: 'You' | 'Opponent';
-  text: string;
-  answer?: 'Yes' | 'No';
-  timestamp: string;
-}
-
 export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821', userCharacter }) => {
-  const secretCharacter = userCharacter ?? mockCharacters[0];
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [charactersError, setCharactersError] = useState<string | null>(null);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
+  const [questionsError, setQuestionsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadQuestions() {
+      try {
+        const data = await getAllQuestions();
+
+        if (!cancelled) {
+          setQuestions(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setQuestionsError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to load questions'
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingQuestions(false);
+        }
+      }
+    }
+
+    loadQuestions();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCharacters() {
+      try {
+        const data = await getAllCharacters();
+
+        if (!cancelled) {
+          setCharacters(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setCharactersError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to load characters'
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingCharacters(false);
+        }
+      }
+    }
+
+    loadCharacters();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const secretCharacter = userCharacter ?? characters[0] ?? null;
   const [boardState, setBoardState] = useState<BoardState>({});
   const [isYourTurn, setIsYourTurn] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
-  // Communication & activity log state
   const [logs, setLogs] = useState<LogEntry[]>([
     {
       id: '1',
@@ -59,7 +110,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
     },
   ]);
 
-  // Cycle character state: available -> selected -> eliminated -> available
   const handleCharacterClick = (characterId: string) => {
     setBoardState((prev) => {
       const currentState = prev[characterId] || 'available';
@@ -85,200 +135,96 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
     setLogs((prev) => [...prev, newLog]);
     setSelectedQuestion(null);
-    setIsYourTurn(false); // Pass turn to opponent after asking
+    setIsYourTurn(false);
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#0f0608] text-zinc-100 font-sans flex flex-col overflow-x-hidden select-none">
-      {/* Grain Texture Overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.06] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '256px 256px',
-        }}
+    <div
+      className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
+      style={{
+        backgroundImage: `
+        linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+        url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
+      `,
+      }}
+    >
+
+      {/* Ambient Lighting Layers */}
+      <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-[#93DD35]/10 blur-[140px] rounded-full z-0" />
+      <div className="pointer-events-none fixed bottom-0 left-0 w-[400px] h-[400px] bg-[#202621]/40 blur-[140px] rounded-full z-0" />
+      <div className="pointer-events-none fixed bottom-0 right-0 w-[400px] h-[400px] bg-[#93DD35]/5 blur-[140px] rounded-full z-0" />
+
+      <GameHeader
+        roomId={roomId}
+        onToggleTurn={() => setIsYourTurn(!isYourTurn)}
+        onLeaveRoom={onLeaveRoom}
       />
 
-      {/* Deep Radial Vignette Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: 'radial-gradient(ellipse 90% 70% at 50% 40%, #2b1018 0%, #160a0d 45%, #0a0306 100%)',
-        }}
-      />
+      <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 overflow-hidden">
 
-      {/* Side Flare Gradients */}
-      <div
-        className="pointer-events-none fixed inset-y-0 left-0 z-0 w-[48%]"
-        style={{ background: 'linear-gradient(to right, rgba(120,50,20,0.55) 0%, transparent 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-y-0 right-0 z-0 w-[48%]"
-        style={{ background: 'linear-gradient(to left, rgba(120,50,20,0.55) 0%, transparent 100%)' }}
-      />
+        <MatchIntelPanel
+          isYourTurn={isYourTurn}
+          logs={logs}
+          secretCharacter={secretCharacter}
+        />
 
-      {/* Main Container - Divided into 3 Sections */}
-      <main className="relative z-10 flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
-        {/* ==========================================
-            PART 1: COMMUNICATION & MATCH STATUS
-           ========================================== */}
-        <section className="lg:col-span-3 flex flex-col gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md">
-          {/* Room Controls Header */}
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <div>
-              <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 block">Room ID</span>
-              <span className="text-xs font-mono font-bold text-zinc-200">{roomId}</span>
-            </div>
+        <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
+          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsYourTurn(!isYourTurn)}
-                className="px-2 py-1 rounded-md bg-white/5 border border-white/15 text-[10px] text-zinc-400 hover:text-white transition-colors cursor-pointer"
-                title="Toggle Turn for debugging"
-              >
-                Debug Turn
-              </button>
-              {onLeaveRoom && (
-                <button
-                  onClick={onLeaveRoom}
-                  className="px-2.5 py-1 rounded-md bg-red-950/40 border border-red-500/30 text-[11px] font-medium text-red-300 hover:bg-red-900/60 hover:text-white transition-all cursor-pointer"
-                >
-                  Leave
-                </button>
-              )}
+              <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
+              <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">
+                Tactical Board
+              </h2>
+            </div>
+            <div className="flex items-center gap-2.5 font-mono text-[10px]">
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C2CDC3]/50" />
+                <span className="text-[#C2CDC3]">Available</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35]" />
+                <span className="text-[#C2CDC3]">Selected</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                <span className="text-[#C2CDC3]">Eliminated</span>
+              </div>
             </div>
           </div>
 
-          {/* Turn Status */}
-          <TurnIndicator
-            isYourTurn={isYourTurn}
-            playerName="You"
-            opponentName="Opponent"
-          />
-
-          {/* Communication & Question Log */}
-          <div className="flex flex-col gap-2">
-            <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">Communication Log</h3>
-            <div className="h-[220px] overflow-y-auto pr-1 space-y-2.5 text-xs">
-              {logs.map((log) => (
-                <div
-                  key={log.id}
-                  className={`p-2.5 rounded-xl border ${
-                    log.sender === 'You'
-                      ? 'bg-white/5 border-white/15 text-zinc-200 ml-2'
-                      : 'bg-zinc-900/80 border-white/10 text-zinc-300 mr-2'
-                  }`}
-                >
-                  <div className="flex items-center justify-between text-[10px] text-zinc-500 mb-1">
-                    <span className="font-semibold">{log.sender}</span>
-                    <span>{log.timestamp}</span>
-                  </div>
-                  <p className="leading-snug">{log.text}</p>
-                  {log.answer && (
-                    <div className="mt-1.5 pt-1.5 border-t border-white/10 flex items-center justify-between">
-                      <span className="text-[10px] text-zinc-400">Answer:</span>
-                      <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                          log.answer === 'Yes'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                        }`}
-                      >
-                        {log.answer}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Secret Character Private Card */}
-          <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-            <div className="w-12 h-16 rounded-lg bg-zinc-900 border border-white/20 overflow-hidden shrink-0">
-              <img
-                src={secretCharacter?.imageUrl}
-                alt="Your secret character"
-                className="w-full h-full object-cover"
+          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+            {loadingCharacters ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />
+                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading questions...</span>
+              </div>
+            ) : charactersError ? (
+              <p role="alert" className="text-sm text-red-400">
+                {charactersError}
+              </p>
+            ) : characters.length === 0 ? (
+              <p className="text-sm text-[#C2CDC3]">
+                No characters available.
+              </p>
+            ) : (
+              <CharacterGrid
+                characters={characters}
+                boardState={boardState}
+                onCharacterClick={handleCharacterClick}
               />
-            </div>
-            <div>
-              <span className="text-[10px] text-amber-400/90 font-mono uppercase tracking-wider block">Private</span>
-              <p className="text-xs font-semibold text-white">Your Secret Character</p>
-              <p className="text-[11px] text-zinc-400">{secretCharacter?.name || 'Unknown'}</p>
-            </div>
+            )}
           </div>
         </section>
 
-        {/* ==========================================
-            PART 2: CHARACTER BOARD
-           ========================================== */}
-        <section className="lg:col-span-6 flex flex-col gap-3">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="text-sm font-semibold text-white tracking-wide uppercase">
-              Character Board
-            </h2>
-            <span className="text-xs text-zinc-400 font-mono">
-              {mockCharacters.length} Total
-            </span>
-          </div>
-
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md">
-            <CharacterGrid
-              characters={mockCharacters}
-              boardState={boardState}
-              onCharacterClick={handleCharacterClick}
-            />
-          </div>
-        </section>
-
-        {/* ==========================================
-            PART 3: QUESTIONS LIST
-           ========================================== */}
-        <section className="lg:col-span-3 flex flex-col gap-3 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md">
-          <div className="pb-2 border-b border-white/10">
-            <h2 className="text-sm font-semibold text-white tracking-wide">Ask a Question</h2>
-            <p className="text-[11px] text-zinc-400 mt-0.5">
-              {isYourTurn ? 'Select a question to narrow down the secret character.' : 'Wait for opponent to respond...'}
-            </p>
-          </div>
-
-          <div className="max-h-[500px] overflow-y-auto pr-1 flex flex-col gap-2">
-            {MOCK_QUESTIONS.map((q) => {
-              const isSelected = selectedQuestion === q.id;
-              return (
-                <div
-                  key={q.id}
-                  onClick={() => isYourTurn && setSelectedQuestion(q.id)}
-                  className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                    !isYourTurn
-                      ? 'opacity-50 cursor-not-allowed border-white/5 bg-black/20'
-                      : isSelected
-                      ? 'bg-white/15 border-white/40 text-white'
-                      : 'bg-black/30 border-white/10 text-zinc-300 hover:border-white/25 hover:bg-black/50'
-                  }`}
-                >
-                  <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-wider block mb-1">
-                    {q.category}
-                  </span>
-                  <p className="text-xs font-medium leading-snug">{q.text}</p>
-
-                  {isSelected && isYourTurn && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAskQuestion(q.text);
-                      }}
-                      className="w-full mt-2.5 py-1.5 rounded-lg bg-zinc-100 text-zinc-950 font-semibold text-xs hover:bg-white transition-all cursor-pointer shadow-md active:scale-95"
-                    >
-                      Submit Question
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
+        <InterrogationPanel
+          isYourTurn={isYourTurn}
+          questions={questions}
+          loadingQuestions={loadingQuestions}
+          questionsError={questionsError}
+          selectedQuestion={selectedQuestion}
+          onSelectQuestion={setSelectedQuestion}
+          onAskQuestion={handleAskQuestion}
+        />
 
       </main>
     </div>
@@ -286,4 +232,3 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 };
 
 export default GameRoom;
-
