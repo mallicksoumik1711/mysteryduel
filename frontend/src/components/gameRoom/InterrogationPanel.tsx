@@ -1,9 +1,16 @@
 import React from 'react';
-import type { Question } from './gameRoom.types';
+
+export interface Question {
+  id: string;
+  text: string;
+  attribute_key: string;
+}
 
 interface InterrogationPanelProps {
   isYourTurn: boolean;
   questions: Question[];
+  loadingQuestions: boolean;
+  questionsError: string | null;
   selectedQuestion: string | null;
   onSelectQuestion: (id: string) => void;
   onAskQuestion: (text: string) => void;
@@ -12,6 +19,8 @@ interface InterrogationPanelProps {
 export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   isYourTurn,
   questions,
+  loadingQuestions,
+  questionsError,
   selectedQuestion,
   onSelectQuestion,
   onAskQuestion,
@@ -42,7 +51,16 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
       </p>
 
       <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2">
-        {questions.map((q) => {
+        {loadingQuestions ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />
+            <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading questions...</span>
+          </div>
+        ) : questionsError ? (
+          <div className="flex items-center justify-center h-full text-red-500 text-sm font-semibold">
+            {questionsError}
+          </div>
+        ) : questions.map((q) => {
           const isSelected = selectedQuestion === q.id;
           return (
             <div
@@ -58,7 +76,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
             >
               <div className="flex items-center justify-between mb-0.5">
                 <span className="text-[9px] font-mono text-[#93DD35] font-semibold uppercase tracking-wider">
-                  {q.category}
+                  {q.attribute_key.split(':')[0].replace('_', ' ')}
                 </span>
                 {isSelected && (
                   <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35] animate-ping" />
