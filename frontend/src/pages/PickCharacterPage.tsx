@@ -112,21 +112,29 @@ const PickCharacterPage: React.FC = () => {
   };
 
   return (
-    <div className="relative h-screen w-full bg-[#171C18] text-[#FFFFFF] font-sans flex flex-col p-4 sm:p-6 overflow-hidden antialiased">
+    <div
+      className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center p-4 sm:p-6 antialiased"
+      style={{
+        backgroundImage: `
+        linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+        url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
+      `,
+      }}
+    >
       {/* Background Radial Ambient Layer */}
-      <div
+      {/* <div
         className="pointer-events-none absolute inset-0 z-0 opacity-80"
         style={{
           background: 'radial-gradient(ellipse 100% 80% at 50% 20%, #202621 0%, #171C18 80%)',
         }}
-      />
+      /> */}
 
       <NoiseOverlay />
 
       <div className="relative z-10 w-full h-full flex flex-col gap-4 overflow-hidden">
 
         {/* Top Control & Room Bar (No Headings) */}
-        <div className="flex items-center justify-between shrink-0 bg-[#202621]/80 backdrop-blur-md border border-[#2E3830] rounded-xl px-4 py-3 shadow-lg">
+        <div className="flex items-center justify-between shrink-0 backdrop-blur-sm border border-[#2E3830] rounded-lg px-4 py-3 shadow-lg">
           <button
             onClick={() => navigate(`/${state.from}`)}
             className="text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer bg-[#2E3830]/60 hover:bg-[#2E3830] px-3.5 py-1.5 rounded-lg border border-[#2E3830]"
@@ -141,11 +149,6 @@ const PickCharacterPage: React.FC = () => {
             <div className="hidden sm:flex items-center gap-2 bg-[#171C18]/80 px-3 py-1 rounded-lg border border-[#2E3830] font-mono text-xs">
               <span className="text-[#C2CDC3]/60 uppercase text-[10px]">ROOM</span>
               <span className="text-[#93DD35] font-bold tracking-wider">{state.roomCode}</span>
-            </div>
-
-            <div className="flex items-center gap-2 bg-[#171C18]/80 px-3 py-1 rounded-lg border border-[#2E3830] font-mono text-xs">
-              <span className="text-[#C2CDC3]/60 uppercase text-[10px]">DECK</span>
-              <span className="text-[#FFFFFF] font-bold">ANIME HEROES</span>
             </div>
 
             <div className="flex items-center gap-2 bg-[#93DD35]/10 border border-[#93DD35]/30 px-3 py-1 rounded-lg">
@@ -171,7 +174,7 @@ const PickCharacterPage: React.FC = () => {
                     key={char.id}
                     type="button"
                     onClick={() => setSelected(char)}
-                    className={`group relative flex flex-col rounded-xl overflow-hidden border transition-all duration-200 cursor-pointer text-left focus:outline-none ${isSelected
+                    className={`group relative flex flex-col rounded-lg overflow-hidden border transition-all duration-200 cursor-pointer text-left focus:outline-none ${isSelected
                       ? 'bg-[#202621] border-[#93DD35] shadow-[0_0_25px_rgba(147,221,53,0.25)] ring-1 ring-[#93DD35]'
                       : 'bg-[#202621]/60 border-[#2E3830] hover:bg-[#202621] hover:border-[#93DD35]/50'
                       }`}
@@ -217,13 +220,13 @@ const PickCharacterPage: React.FC = () => {
           </div>
 
           {/* Right Live Intelligence Inspector & Action Sidebar */}
-          <div className="lg:col-span-4 h-full flex flex-col justify-between bg-[#202621]/90 border border-[#2E3830] rounded-2xl p-5 backdrop-blur-xl shadow-2xl overflow-y-auto custom-scrollbar">
+          <div className="lg:col-span-4 h-full flex flex-col justify-between border border-[#2E3830] rounded-lg p-5 backdrop-blur-sm shadow-2xl overflow-y-auto custom-scrollbar">
 
             {/* Inspector Details */}
             <div className="space-y-4">
 
               {/* Secret Character Display Window */}
-              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-[#2E3830] bg-gradient-to-b from-[#2E3830]/50 to-[#171C18] flex items-center justify-center p-3 shadow-inner">
+              <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden border border-[#2E3830] bg-gradient-to-b from-[#2E3830]/50 to-[#171C18] flex items-center justify-center p-3 shadow-inner">
                 {selected ? (
                   <>
                     <img
@@ -289,7 +292,7 @@ const PickCharacterPage: React.FC = () => {
                 </div>
 
                 {/* Match Guidelines & Tactical Context */}
-                <div className="p-3 bg-[#171C18]/80 rounded-xl border border-[#2E3830] space-y-1">
+                <div className="p-3 bg-[#171C18]/80 rounded-lg border border-[#2E3830] space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35]" />
                     <span className="text-[10px] font-mono text-[#93DD35] uppercase tracking-wider">
@@ -309,7 +312,7 @@ const PickCharacterPage: React.FC = () => {
               <button
                 onClick={handleConfirm}
                 disabled={!selected}
-                className={`w-full py-3.5 px-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 ${selected
+                className={`w-full py-3.5 px-4 rounded-lg text-xs font-black uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 ${selected
                   ? 'bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] shadow-lg shadow-[#93DD35]/20 active:scale-[0.98] cursor-pointer'
                   : 'bg-[#2E3830] text-[#C2CDC3]/40 cursor-not-allowed shadow-none'
                   }`}
