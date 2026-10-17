@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getAllCharacters } from '../services/characterService';
+import { getAllQuestions } from '../services/questionService';
+import type { Question } from './gameRoom/InterrogationPanel';
 import type { BoardState, Character } from '../types';
 import { CharacterGrid } from './CharacterGrid';
 import { GameHeader } from './gameRoom/GameHeader';
 import { MatchIntelPanel } from './gameRoom/MatchIntelPanel';
 import { InterrogationPanel } from './gameRoom/InterrogationPanel';
-import { MOCK_QUESTIONS } from './gameRoom/gameRoom.types';
 import type { LogEntry } from './gameRoom/gameRoom.types';
 
 interface GameRoomProps {
@@ -18,6 +19,42 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [charactersError, setCharactersError] = useState<string | null>(null);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
+  const [questionsError, setQuestionsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadQuestions() {
+      try {
+        const data = await getAllQuestions();
+
+        if (!cancelled) {
+          setQuestions(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setQuestionsError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to load questions'
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingQuestions(false);
+        }
+      }
+    }
+
+    loadQuestions();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -157,9 +194,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
           <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             {loadingCharacters ? (
-              <p className="text-sm text-[#C2CDC3]">
-                Loading characters...
-              </p>
+              <div className="flex items-center justify-center h-full">
+                <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />
+                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading questions...</span>
+              </div>
             ) : charactersError ? (
               <p role="alert" className="text-sm text-red-400">
                 {charactersError}
@@ -180,7 +218,9 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
         <InterrogationPanel
           isYourTurn={isYourTurn}
-          questions={MOCK_QUESTIONS}
+          questions={questions}
+          loadingQuestions={loadingQuestions}
+          questionsError={questionsError}
           selectedQuestion={selectedQuestion}
           onSelectQuestion={setSelectedQuestion}
           onAskQuestion={handleAskQuestion}
