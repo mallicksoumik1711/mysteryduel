@@ -30,14 +30,31 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [charactersError, setCharactersError] = useState<string | null>(null);
+  const [activeBoardView, setActiveBoardView] = useState<'mine' | 'opponent'>(
+    'mine',
+  );
 
   useEffect(() => {
     let cancelled = false;
+
     getAllCharacters()
-      .then((data) => { if (!cancelled) setCharacters(data); })
-      .catch((err) => { if (!cancelled) setCharactersError(err instanceof Error ? err.message : 'Failed to load characters'); })
-      .finally(() => { if (!cancelled) setLoadingCharacters(false); });
-    return () => { cancelled = true; };
+      .then((data) => {
+        if (!cancelled) setCharacters(data);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setCharactersError(
+            err instanceof Error ? err.message : 'Failed to load characters',
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingCharacters(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // ------------------------------------------------------------------
@@ -49,35 +66,80 @@ export const GameRoom: React.FC<GameRoomProps> = ({
 
   useEffect(() => {
     let cancelled = false;
+
     getAllQuestions()
-      .then((data) => { if (!cancelled) setQuestions(data); })
-      .catch((err) => { if (!cancelled) setQuestionsError(err instanceof Error ? err.message : 'Failed to load questions'); })
-      .finally(() => { if (!cancelled) setLoadingQuestions(false); });
-    return () => { cancelled = true; };
+      .then((data) => {
+        if (!cancelled) setQuestions(data);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setQuestionsError(
+            err instanceof Error ? err.message : 'Failed to load questions',
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingQuestions(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  // ------------------------------------------------------------------
-  // Board state (local — elimination marks are per-player UI only)
-  // ------------------------------------------------------------------
-  const [boardState, setBoardState] = useState<BoardState>({});
-  const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
-
-  const handleCharacterClick = (characterId: string) => {
-    setBoardState((prev) => {
-      const cur = prev[characterId] || 'available';
-      const next =
-        cur === 'available' ? 'selected' :
-        cur === 'selected' ? 'eliminated' :
-        'available';
-      return { ...prev, [characterId]: next };
-    });
-  };
 
   // ------------------------------------------------------------------
   // WebSocket
   // ------------------------------------------------------------------
-  const { state: socketState, askQuestion, sendAnswer } = useGameSocket(roomId, playerId);
+  const {
+    state: socketState,
+    askQuestion,
+    sendAnswer,
+    sendBoardUpdate,
+  } = useGameSocket(roomId, playerId);
 
+  // ------------------------------------------------------------------
+  // Board state
+  // ------------------------------------------------------------------
+  const [boardState, setBoardState] = useState<BoardState>({});
+  const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+
+  // Restore and synchronize this player's board from the socket state.
+  useEffect(() => {
+    setBoardState(socketState.myBoard);
+  }, [socketState.myBoard]);
+
+  const handleCharacterClick = useCallback(
+    (characterId: string) => {
+      // The opponent's board is read-only.
+      if (activeBoardView !== 'mine') return;
+
+      setBoardState((prev) => {
+        const currentState = prev[characterId] || 'available';
+
+        const nextState =
+          currentState === 'available'
+            ? 'selected'
+            : currentState === 'selected'
+              ? 'eliminated'
+              : 'available';
+
+        const updatedBoardState: BoardState = {
+          ...prev,
+          [characterId]: nextState,
+        };
+
+        // Synchronize the updated board with the server.
+        sendBoardUpdate(updatedBoardState);
+
+        return updatedBoardState;
+      });
+    },
+    [activeBoardView, sendBoardUpdate],
+  );
+
+  // ------------------------------------------------------------------
+  // Socket state
+  // ------------------------------------------------------------------
   const {
     status,
     isYourTurn,
@@ -94,19 +156,22 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   // ------------------------------------------------------------------
   const handleAskQuestion = useCallback(
     (questionText: string) => {
-      const q = questions.find((q) => q.text === questionText);
-      if (!q) return;
-      askQuestion(q.id, questionText);
+      const question = questions.find((q) => q.text === questionText);
+
+      if (!question) return;
+
+      askQuestion(question.id, questionText);
       setSelectedQuestion(null);
+      setActiveBoardView('mine');
     },
-    [questions, askQuestion]
+    [questions, askQuestion],
   );
 
   const handleAnswer = useCallback(
     (answer: boolean) => {
       sendAnswer(answer);
     },
-    [sendAnswer]
+    [sendAnswer],
   );
 
   // ------------------------------------------------------------------
@@ -120,6 +185,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
         </div>
       );
     }
+
     if (status === 'waiting_for_opponent') {
       return (
         <div className="shrink-0 text-center text-xs font-mono text-amber-400 py-1.5 border-b border-amber-500/20 bg-amber-500/5">
@@ -127,36 +193,44 @@ export const GameRoom: React.FC<GameRoomProps> = ({
         </div>
       );
     }
+
     if (status === 'error' || status === 'disconnected') {
       return (
         <div className="shrink-0 text-center text-xs font-mono text-red-400 py-1.5 border-b border-red-500/20 bg-red-500/5">
-          {status === 'error' ? `CONNECTION ERROR${socketState.errorMessage ? ': ' + socketState.errorMessage : ''}` : 'DISCONNECTED — RECONNECTING...'}
+          {status === 'error'
+            ? `CONNECTION ERROR${
+                socketState.errorMessage
+                  ? ': ' + socketState.errorMessage
+                  : ''
+              }`
+            : 'DISCONNECTED — RECONNECTING...'}
         </div>
       );
     }
+
     return null;
   })();
+
+  // The board currently being displayed.
+  const displayedBoardState =
+    activeBoardView === 'mine' ? boardState : socketState.opponentBoard;
 
   return (
     <div
       className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
       style={{
         backgroundImage: `
-        linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
-        url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
-      `,
+          linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
+          url('https://i.pinimg.com/736x/f5/e5/47/f5e5475127ab0cd4f9681e67fad5b623.jpg')
+        `,
       }}
     >
-
       {/* Ambient Lighting Layers */}
       <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-[#93DD35]/10 blur-[140px] rounded-full z-0" />
       <div className="pointer-events-none fixed bottom-0 left-0 w-[400px] h-[400px] bg-[#202621]/40 blur-[140px] rounded-full z-0" />
       <div className="pointer-events-none fixed bottom-0 right-0 w-[400px] h-[400px] bg-[#93DD35]/5 blur-[140px] rounded-full z-0" />
 
-      <GameHeader
-        roomId={roomId}
-        onLeaveRoom={onLeaveRoom}
-      />
+      <GameHeader roomId={roomId} onLeaveRoom={onLeaveRoom} />
 
       {/* Connection status banner */}
       {statusBanner}
@@ -170,7 +244,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({
       )}
 
       <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 overflow-hidden">
-
         {secretCharacter && (
           <MatchIntelPanel
             isYourTurn={isYourTurn}
@@ -182,14 +255,18 @@ export const GameRoom: React.FC<GameRoomProps> = ({
         )}
 
         <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
-          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          {/* Tactical Board Header */}
+          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 min-w-0">
               <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
               <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">
-                Tactical Board
+                {activeBoardView === 'mine'
+                  ? 'My Tactical Board'
+                  : "Opponent's Board"}
               </h2>
             </div>
-            <div className="flex items-center gap-2.5 font-mono text-[10px]">
+
+            <div className="flex items-center gap-2.5 font-mono text-[10px] shrink-0">
               <div className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C2CDC3]/50" />
                 <span className="text-[#C2CDC3]">Available</span>
@@ -205,28 +282,78 @@ export const GameRoom: React.FC<GameRoomProps> = ({
             </div>
           </div>
 
+          {/* Board View Switcher */}
+          <div className="shrink-0 px-3 py-2 flex gap-2 border-b border-[#2E3830] bg-[#171C18]/30">
+            <button
+              type="button"
+              onClick={() => setActiveBoardView('mine')}
+              aria-pressed={activeBoardView === 'mine'}
+              className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-colors ${
+                activeBoardView === 'mine'
+                  ? 'bg-[#93DD35] text-[#111612] font-bold'
+                  : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
+              }`}
+            >
+              My Board
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveBoardView('opponent')}
+              aria-pressed={activeBoardView === 'opponent'}
+              disabled={socketState.playerCount < 2}
+              className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                activeBoardView === 'opponent'
+                  ? 'bg-[#93DD35] text-[#111612] font-bold'
+                  : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
+              }`}
+            >
+              Opponent's Board
+            </button>
+          </div>
+
+          {/* Character Grid */}
           <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             {loadingCharacters ? (
               <div className="flex items-center justify-center h-full">
                 <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />
-                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading board...</span>
+                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">
+                  Loading board...
+                </span>
               </div>
             ) : charactersError ? (
-              <p role="alert" className="text-sm text-red-400">{charactersError}</p>
+              <p role="alert" className="text-sm text-red-400">
+                {charactersError}
+              </p>
             ) : characters.length === 0 ? (
-              <p className="text-sm text-[#C2CDC3]">No characters available.</p>
+              <p className="text-sm text-[#C2CDC3]">
+                No characters available.
+              </p>
             ) : (
-              <CharacterGrid
-                characters={characters}
-                boardState={boardState}
-                onCharacterClick={handleCharacterClick}
-              />
+              <>
+                {activeBoardView === 'opponent' && (
+                  <p className="mb-3 text-[10px] font-mono uppercase tracking-wider text-[#C2CDC3]">
+                    Read-only view · Opponent's eliminations update live
+                  </p>
+                )}
+
+                <CharacterGrid
+                  characters={characters}
+                  boardState={displayedBoardState}
+                  onCharacterClick={handleCharacterClick}
+                />
+              </>
             )}
           </div>
         </section>
 
         <InterrogationPanel
-          isYourTurn={isYourTurn && !waitingForAnswer && !pendingQuestion && status === 'game_started'}
+          isYourTurn={
+            isYourTurn &&
+            !waitingForAnswer &&
+            !pendingQuestion &&
+            status === 'game_started'
+          }
           questions={questions}
           loadingQuestions={loadingQuestions}
           questionsError={questionsError}
@@ -235,7 +362,6 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           onAskQuestion={handleAskQuestion}
           waitingForAnswer={waitingForAnswer}
         />
-
       </main>
     </div>
   );

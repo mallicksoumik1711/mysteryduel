@@ -6,6 +6,7 @@ Endpoint: WS /ws/{room_code}/{player_id}
 Message protocol (JSON, client → server):
   { "type": "ask_question",   "question_id": "...", "question_text": "..." }
   { "type": "answer",         "answer": true | false }
+  { "type": "board_update",   "board_state": { "char-1": "eliminated" } }
 
 Message protocol (JSON, server → client):
   { "type": "joined",             "player_id": "...", "is_your_turn": bool, "player_count": int }
@@ -16,11 +17,14 @@ Message protocol (JSON, server → client):
   { "type": "answer_received",    "question_id": "...", "question_text": "...",
                                    "asker_id": "...", "answer": bool,
                                    "next_turn": "...", "timestamp": "..." }
+  { "type": "opponent_board_updated", "player_id": "...", "board_state": {...} }
+  { "type": "my_board_restored",      "board_state": {...} }
   { "type": "opponent_disconnected", "player_id": "..." }
   { "type": "error",              "message": "..." }
 """
 
 import json
+
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.websocket.manager import manager
@@ -43,6 +47,7 @@ async def websocket_endpoint(
     try:
         while True:
             raw = await websocket.receive_text()
+
             try:
                 data = json.loads(raw)
             except json.JSONDecodeError:
@@ -50,6 +55,15 @@ async def websocket_endpoint(
                     room_code,
                     player_id,
                     {"type": "error", "message": "Invalid JSON"},
+                )
+                continue
+
+            # Reject JSON values that are not objects.
+            if not isinstance(data, dict):
+                await manager.send_to(
+                    room_code,
+                    player_id,
+                    {"type": "error", "message": "Message must be a JSON object"},
                 )
                 continue
 
@@ -65,7 +79,8 @@ async def websocket_endpoint(
 
             elif msg_type == "answer":
                 raw_answer = data.get("answer")
-                # Accept both booleans and "Yes"/"No" strings
+
+                # Accept both booleans and "Yes"/"No" strings.
                 if isinstance(raw_answer, bool):
                     answer = raw_answer
                 elif isinstance(raw_answer, str):
@@ -75,11 +90,40 @@ async def websocket_endpoint(
 
                 await manager.handle_answer(room_code, player_id, answer)
 
+            elif msg_type == "board_update":
+                board_state = data.get("board_state")
+
+                if (
+                    isinstance(board_state, dict)
+                    and all(
+                        isinstance(character_id, str)
+                        and isinstance(state, str)
+                        for character_id, state in board_state.items()
+                    )
+                ):
+                    await manager.handle_board_update(
+                        room_code=room_code,
+                        player_id=player_id,
+                        board_state=board_state,
+                    )
+                else:
+                    await manager.send_to(
+                        room_code,
+                        player_id,
+                        {
+                            "type": "error",
+                            "message": "Invalid board_state",
+                        },
+                    )
+
             else:
                 await manager.send_to(
                     room_code,
                     player_id,
-                    {"type": "error", "message": f"Unknown message type: {msg_type}"},
+                    {
+                        "type": "error",
+                        "message": f"Unknown message type: {msg_type}",
+                    },
                 )
 
     except WebSocketDisconnect:
