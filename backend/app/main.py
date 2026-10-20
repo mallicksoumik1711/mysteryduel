@@ -14,6 +14,9 @@ from app.database.base import Base
 #all api calls
 from app.api.router import api_router
 
+# WebSocket game router
+from app.websocket.router import router as ws_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -60,3 +63,4 @@ def test_db():
 
 
 app.include_router(api_router)
+app.include_router(ws_router)

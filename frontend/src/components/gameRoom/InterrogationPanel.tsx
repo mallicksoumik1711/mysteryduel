@@ -14,6 +14,8 @@ interface InterrogationPanelProps {
   selectedQuestion: string | null;
   onSelectQuestion: (id: string) => void;
   onAskQuestion: (text: string) => void;
+  /** True when we've submitted a question and are waiting for opponent's answer */
+  waitingForAnswer?: boolean;
 }
 
 export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
@@ -24,6 +26,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   selectedQuestion,
   onSelectQuestion,
   onAskQuestion,
+  waitingForAnswer = false,
 }) => (
   <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm overflow-hidden">
     {/* Header */}
@@ -47,7 +50,11 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
 
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-2">
       <p className="shrink-0 text-[11px] text-[#C2CDC3] font-medium leading-tight">
-        {isYourTurn ? 'Select a question to submit:' : 'Waiting for opponent response...'}
+        {waitingForAnswer
+          ? 'Waiting for opponent to answer...'
+          : isYourTurn
+          ? 'Select a question to submit:'
+          : 'Waiting for opponent to ask...'}
       </p>
 
       <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2">

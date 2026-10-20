@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getAllCharacters } from '../services/characterService';
 import { getAllQuestions } from '../services/questionService';
 import type { Question } from './gameRoom/InterrogationPanel';
@@ -7,136 +7,135 @@ import { CharacterGrid } from './CharacterGrid';
 import { GameHeader } from './gameRoom/GameHeader';
 import { MatchIntelPanel } from './gameRoom/MatchIntelPanel';
 import { InterrogationPanel } from './gameRoom/InterrogationPanel';
-import type { LogEntry } from './gameRoom/gameRoom.types';
+import { AnswerPrompt } from './gameRoom/AnswerPrompt';
+import { useGameSocket } from '../hooks/useGameSocket';
 
 interface GameRoomProps {
   onLeaveRoom?: () => void;
   roomId?: string;
   userCharacter?: Character | null;
+  /** Stable player identifier (e.g. generated on room join/create) */
+  playerId?: string;
 }
 
-export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-8821', userCharacter }) => {
+export const GameRoom: React.FC<GameRoomProps> = ({
+  onLeaveRoom,
+  roomId = 'ROOM-0000',
+  userCharacter,
+  playerId = 'player-' + Math.random().toString(36).slice(2, 7),
+}) => {
+  // ------------------------------------------------------------------
+  // Character board
+  // ------------------------------------------------------------------
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [charactersError, setCharactersError] = useState<string | null>(null);
 
+  useEffect(() => {
+    let cancelled = false;
+    getAllCharacters()
+      .then((data) => { if (!cancelled) setCharacters(data); })
+      .catch((err) => { if (!cancelled) setCharactersError(err instanceof Error ? err.message : 'Failed to load characters'); })
+      .finally(() => { if (!cancelled) setLoadingCharacters(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // ------------------------------------------------------------------
+  // Question list (fetched from REST — static reference data)
+  // ------------------------------------------------------------------
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [questionsError, setQuestionsError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-
-    async function loadQuestions() {
-      try {
-        const data = await getAllQuestions();
-
-        if (!cancelled) {
-          setQuestions(data);
-        }
-      } catch (error) {
-        if (!cancelled) {
-          setQuestionsError(
-            error instanceof Error
-              ? error.message
-              : 'Failed to load questions'
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setLoadingQuestions(false);
-        }
-      }
-    }
-
-    loadQuestions();
-
-    return () => {
-      cancelled = true;
-    };
+    getAllQuestions()
+      .then((data) => { if (!cancelled) setQuestions(data); })
+      .catch((err) => { if (!cancelled) setQuestionsError(err instanceof Error ? err.message : 'Failed to load questions'); })
+      .finally(() => { if (!cancelled) setLoadingQuestions(false); });
+    return () => { cancelled = true; };
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadCharacters() {
-      try {
-        const data = await getAllCharacters();
-
-        if (!cancelled) {
-          setCharacters(data);
-        }
-      } catch (error) {
-        if (!cancelled) {
-          setCharactersError(
-            error instanceof Error
-              ? error.message
-              : 'Failed to load characters'
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setLoadingCharacters(false);
-        }
-      }
-    }
-
-    loadCharacters();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const secretCharacter = userCharacter ?? characters[0] ?? null;
+  // ------------------------------------------------------------------
+  // Board state (local — elimination marks are per-player UI only)
+  // ------------------------------------------------------------------
   const [boardState, setBoardState] = useState<BoardState>({});
-  const [isYourTurn, setIsYourTurn] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
-
-  const [logs, setLogs] = useState<LogEntry[]>([
-    {
-      id: '1',
-      sender: 'Opponent',
-      text: 'Does your character have dark hair?',
-      answer: 'Yes',
-      timestamp: '10:42 AM',
-    },
-    {
-      id: '2',
-      sender: 'You',
-      text: 'Is the character wearing glasses?',
-      answer: 'No',
-      timestamp: '10:43 AM',
-    },
-  ]);
 
   const handleCharacterClick = (characterId: string) => {
     setBoardState((prev) => {
-      const currentState = prev[characterId] || 'available';
-      let nextState: 'available' | 'selected' | 'eliminated' = 'available';
-
-      if (currentState === 'available') nextState = 'selected';
-      else if (currentState === 'selected') nextState = 'eliminated';
-      else if (currentState === 'eliminated') nextState = 'available';
-
-      return { ...prev, [characterId]: nextState };
+      const cur = prev[characterId] || 'available';
+      const next =
+        cur === 'available' ? 'selected' :
+        cur === 'selected' ? 'eliminated' :
+        'available';
+      return { ...prev, [characterId]: next };
     });
   };
 
-  const handleAskQuestion = (questionText: string) => {
-    if (!isYourTurn) return;
+  // ------------------------------------------------------------------
+  // WebSocket
+  // ------------------------------------------------------------------
+  const { state: socketState, askQuestion, sendAnswer } = useGameSocket(roomId, playerId);
 
-    const newLog: LogEntry = {
-      id: Date.now().toString(),
-      sender: 'You',
-      text: questionText,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
+  const {
+    status,
+    isYourTurn,
+    pendingQuestion,
+    waitingForAnswer,
+    logs,
+  } = socketState;
 
-    setLogs((prev) => [...prev, newLog]);
-    setSelectedQuestion(null);
-    setIsYourTurn(false);
-  };
+  // Secret character reference
+  const secretCharacter = userCharacter ?? characters[0] ?? null;
+
+  // ------------------------------------------------------------------
+  // Handlers
+  // ------------------------------------------------------------------
+  const handleAskQuestion = useCallback(
+    (questionText: string) => {
+      const q = questions.find((q) => q.text === questionText);
+      if (!q) return;
+      askQuestion(q.id, questionText);
+      setSelectedQuestion(null);
+    },
+    [questions, askQuestion]
+  );
+
+  const handleAnswer = useCallback(
+    (answer: boolean) => {
+      sendAnswer(answer);
+    },
+    [sendAnswer]
+  );
+
+  // ------------------------------------------------------------------
+  // Connection status banner
+  // ------------------------------------------------------------------
+  const statusBanner: React.ReactNode = (() => {
+    if (status === 'connecting') {
+      return (
+        <div className="shrink-0 text-center text-xs font-mono text-[#93DD35] py-1.5 border-b border-[#2E3830] animate-pulse bg-[#171C18]/60">
+          CONNECTING TO ROOM...
+        </div>
+      );
+    }
+    if (status === 'waiting_for_opponent') {
+      return (
+        <div className="shrink-0 text-center text-xs font-mono text-amber-400 py-1.5 border-b border-amber-500/20 bg-amber-500/5">
+          WAITING FOR OPPONENT TO JOIN...
+        </div>
+      );
+    }
+    if (status === 'error' || status === 'disconnected') {
+      return (
+        <div className="shrink-0 text-center text-xs font-mono text-red-400 py-1.5 border-b border-red-500/20 bg-red-500/5">
+          {status === 'error' ? `CONNECTION ERROR${socketState.errorMessage ? ': ' + socketState.errorMessage : ''}` : 'DISCONNECTED — RECONNECTING...'}
+        </div>
+      );
+    }
+    return null;
+  })();
 
   return (
     <div
@@ -156,17 +155,31 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
 
       <GameHeader
         roomId={roomId}
-        onToggleTurn={() => setIsYourTurn(!isYourTurn)}
         onLeaveRoom={onLeaveRoom}
       />
 
+      {/* Connection status banner */}
+      {statusBanner}
+
+      {/* Answer prompt overlay — shown when opponent asked YOU a question */}
+      {pendingQuestion && (
+        <AnswerPrompt
+          questionText={pendingQuestion.questionText}
+          onAnswer={handleAnswer}
+        />
+      )}
+
       <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 overflow-hidden">
 
-        <MatchIntelPanel
-          isYourTurn={isYourTurn}
-          logs={logs}
-          secretCharacter={secretCharacter}
-        />
+        {secretCharacter && (
+          <MatchIntelPanel
+            isYourTurn={isYourTurn}
+            logs={logs}
+            secretCharacter={secretCharacter}
+            waitingForAnswer={waitingForAnswer}
+            opponentConnected={socketState.playerCount >= 2}
+          />
+        )}
 
         <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
           <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
@@ -196,16 +209,12 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
             {loadingCharacters ? (
               <div className="flex items-center justify-center h-full">
                 <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />
-                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading questions...</span>
+                <span className="ml-2 text-[#93DD35] text-xs font-semibold uppercase tracking-wider">Loading board...</span>
               </div>
             ) : charactersError ? (
-              <p role="alert" className="text-sm text-red-400">
-                {charactersError}
-              </p>
+              <p role="alert" className="text-sm text-red-400">{charactersError}</p>
             ) : characters.length === 0 ? (
-              <p className="text-sm text-[#C2CDC3]">
-                No characters available.
-              </p>
+              <p className="text-sm text-[#C2CDC3]">No characters available.</p>
             ) : (
               <CharacterGrid
                 characters={characters}
@@ -217,13 +226,14 @@ export const GameRoom: React.FC<GameRoomProps> = ({ onLeaveRoom, roomId = 'ROOM-
         </section>
 
         <InterrogationPanel
-          isYourTurn={isYourTurn}
+          isYourTurn={isYourTurn && !waitingForAnswer && !pendingQuestion && status === 'game_started'}
           questions={questions}
           loadingQuestions={loadingQuestions}
           questionsError={questionsError}
           selectedQuestion={selectedQuestion}
           onSelectQuestion={setSelectedQuestion}
           onAskQuestion={handleAskQuestion}
+          waitingForAnswer={waitingForAnswer}
         />
 
       </main>

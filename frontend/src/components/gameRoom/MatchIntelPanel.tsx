@@ -7,12 +7,16 @@ interface MatchIntelPanelProps {
   isYourTurn: boolean;
   logs: LogEntry[];
   secretCharacter: Character;
+  waitingForAnswer?: boolean;
+  opponentConnected?: boolean;
 }
 
 export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
   isYourTurn,
   logs,
   secretCharacter,
+  waitingForAnswer = false,
+  opponentConnected = false,
 }) => (
   <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
     {/* Header */}
@@ -31,10 +35,20 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-3">
       {/* Turn Status Widget */}
       <div className="shrink-0 bg-[#171C18]/80 border border-[#2E3830] rounded-lg p-2.5 shadow-inner">
-        <TurnIndicator
-          isYourTurn={isYourTurn}
-          opponentName="Opponent"
-        />
+        {opponentConnected ? (
+          <TurnIndicator
+            isYourTurn={isYourTurn}
+            opponentName="Opponent"
+            waitingForAnswer={waitingForAnswer}
+          />
+        ) : (
+          <div className="flex items-center gap-2 py-0.5">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider">
+              Waiting for opponent...
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Activity Log Feed */}
@@ -47,38 +61,45 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
         </div>
 
         <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30">
-          {logs.map((log) => (
-            <div
-              key={log.id}
-              className={`p-2.5 rounded-lg border transition-all ${
-                log.sender === 'You'
-                  ? 'bg-[#93DD35]/10 border-[#93DD35]/30 text-[#FFFFFF] ml-2'
-                  : 'bg-[#171C18] border-[#2E3830] text-[#C2CDC3] mr-2 shadow-sm'
-              }`}
-            >
-              <div className="flex items-center justify-between text-[9px] text-[#C2CDC3]/70 font-mono mb-1">
-                <span className={`font-bold ${log.sender === 'You' ? 'text-[#93DD35]' : 'text-[#FFFFFF]'}`}>
-                  {log.sender}
-                </span>
-                <span className="text-[#C2CDC3]/50">{log.timestamp}</span>
-              </div>
-              <p className="text-[11px] leading-snug text-[#FFFFFF] font-medium">{log.text}</p>
-              {log.answer && (
-                <div className="mt-1.5 pt-1.5 border-t border-[#2E3830] flex items-center justify-between">
-                  <span className="text-[9px] font-mono uppercase text-[#C2CDC3]/60">Response</span>
-                  <span
-                    className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border shadow-sm ${
-                      log.answer === 'Yes'
-                        ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/30'
-                        : 'bg-red-500/15 text-red-300 border-red-500/30'
-                    }`}
-                  >
-                    {log.answer}
-                  </span>
-                </div>
-              )}
+          {logs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-16 gap-1.5 opacity-50">
+              <div className="w-6 h-6 rounded-full border border-[#2E3830] flex items-center justify-center text-[#C2CDC3] font-mono text-sm">?</div>
+              <span className="text-[9px] font-mono text-[#C2CDC3] uppercase tracking-wider">No exchanges yet</span>
             </div>
-          ))}
+          ) : (
+            logs.map((log) => (
+              <div
+                key={log.id}
+                className={`p-2.5 rounded-lg border transition-all ${
+                  log.sender === 'You'
+                    ? 'bg-[#93DD35]/10 border-[#93DD35]/30 text-[#FFFFFF] ml-2'
+                    : 'bg-[#171C18] border-[#2E3830] text-[#C2CDC3] mr-2 shadow-sm'
+                }`}
+              >
+                <div className="flex items-center justify-between text-[9px] text-[#C2CDC3]/70 font-mono mb-1">
+                  <span className={`font-bold ${log.sender === 'You' ? 'text-[#93DD35]' : 'text-[#FFFFFF]'}`}>
+                    {log.sender}
+                  </span>
+                  <span className="text-[#C2CDC3]/50">{log.timestamp}</span>
+                </div>
+                <p className="text-[11px] leading-snug text-[#FFFFFF] font-medium">{log.text}</p>
+                {log.answer && (
+                  <div className="mt-1.5 pt-1.5 border-t border-[#2E3830] flex items-center justify-between">
+                    <span className="text-[9px] font-mono uppercase text-[#C2CDC3]/60">Response</span>
+                    <span
+                      className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border shadow-sm ${
+                        log.answer === 'Yes'
+                          ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/30'
+                          : 'bg-red-500/15 text-red-300 border-red-500/30'
+                      }`}
+                    >
+                      {log.answer}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </div>
 
