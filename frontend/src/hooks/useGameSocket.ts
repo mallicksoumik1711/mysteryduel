@@ -5,25 +5,30 @@
  *
  * Connection URL: ws://localhost:8000/ws/{roomCode}/{playerId}
  *
- * Inbound message types the hook handles:
- *   joined              – confirms own connection, tells you if it's your turn
- *   opponent_joined     – opponent entered the room
- *   game_start          – both players are in; game begins
- *   question_received   – opponent asked you a question; you must answer Yes/No
- *   question_sent       – your question was delivered (waiting for answer)
- *   answer_received     – an exchange completed; carry the resolved log entry
+ * Inbound message types:
+ *   joined
+ *   opponent_joined
+ *   game_start
+ *   question_received
+ *   question_sent
+ *   answer_received
  *   opponent_disconnected
+ *   opponent_board_updated
+ *   my_board_restored
  *   error
  *
- * Outbound helpers exposed:
- *   askQuestion(id, text)  – submit a selected question on your turn
- *   sendAnswer(bool)       – respond Yes/No to an incoming question
+ * Outbound helpers:
+ *   askQuestion(id, text)
+ *   sendAnswer(bool)
+ *   sendBoardUpdate(boardState)
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import type { LogEntry } from '../components/gameRoom/gameRoom.types';
+import type { BoardState } from '../types';
 
-const WS_BASE = import.meta.env.VITE_WS_BASE_URL ?? 'ws://localhost:8000';
+const WS_BASE =
+  import.meta.env.VITE_WS_BASE_URL ?? 'ws://localhost:8000';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -46,14 +51,40 @@ export interface PendingQuestion {
 export interface GameSocketState {
   status: ConnectionStatus;
   isYourTurn: boolean;
-  /** A question from the opponent that YOU need to answer */
   pendingQuestion: PendingQuestion | null;
-  /** Whether your question is awaiting the opponent's answer */
   waitingForAnswer: boolean;
   logs: LogEntry[];
   opponentId: string | null;
   playerCount: number;
   errorMessage: string | null;
+  myBoard: BoardState;
+  opponentBoard: BoardState;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const VALID_CHARACTER_STATES = new Set([
+  'available',
+  'selected',
+  'eliminated',
+]);
+
+function isBoardState(value: unknown): value is BoardState {
+  if (
+    typeof value !== 'object' ||
+    value === null ||
+    Array.isArray(value)
+  ) {
+    return false;
+  }
+
+  return Object.values(value).every(
+    (state) =>
+      typeof state === 'string' &&
+      VALID_CHARACTER_STATES.has(state),
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -72,69 +103,120 @@ export function useGameSocket(roomCode: string, playerId: string) {
     opponentId: null,
     playerCount: 0,
     errorMessage: null,
+    myBoard: {},
+    opponentBoard: {},
   });
 
   // -------------------------------------------------------------------------
   // Connect
   // -------------------------------------------------------------------------
+
   useEffect(() => {
     if (!roomCode || !playerId) return;
 
-    const url = `${WS_BASE}/ws/${encodeURIComponent(roomCode)}/${encodeURIComponent(playerId)}`;
+    const url =
+      `${WS_BASE}/ws/${encodeURIComponent(roomCode)}/${encodeURIComponent(playerId)}`;
+
     const ws = new WebSocket(url);
     wsRef.current = ws;
 
     ws.onopen = () => {
-      setState((prev) => ({ ...prev, status: 'connecting' }));
+      setState((prev) => ({
+        ...prev,
+        status: 'connected',
+        errorMessage: null,
+      }));
     };
 
     ws.onmessage = (event: MessageEvent) => {
       let msg: Record<string, unknown>;
+
       try {
-        msg = JSON.parse(event.data as string) as Record<string, unknown>;
+        const parsed: unknown = JSON.parse(event.data as string);
+
+        if (
+          typeof parsed !== 'object' ||
+          parsed === null ||
+          Array.isArray(parsed)
+        ) {
+          return;
+        }
+
+        msg = parsed as Record<string, unknown>;
       } catch {
         return;
       }
 
-      const type = msg.type as string;
+      const type = msg.type;
 
       switch (type) {
         case 'joined': {
-          const isYourTurn = msg.is_your_turn as boolean;
-          const playerCount = msg.player_count as number;
+          const isYourTurn = msg.is_your_turn === true;
+          const playerCount =
+            typeof msg.player_count === 'number'
+              ? msg.player_count
+              : 0;
+
           setState((prev) => ({
             ...prev,
-            status: playerCount < 2 ? 'waiting_for_opponent' : 'game_started',
+            status:
+              playerCount < 2
+                ? 'waiting_for_opponent'
+                : 'game_started',
             isYourTurn,
             playerCount,
+            errorMessage: null,
           }));
           break;
         }
 
         case 'opponent_joined': {
-          const opponentId = msg.opponent_id as string;
-          const playerCount = msg.player_count as number;
+          const opponentId =
+            typeof msg.opponent_id === 'string'
+              ? msg.opponent_id
+              : null;
+
+          const playerCount =
+            typeof msg.player_count === 'number'
+              ? msg.player_count
+              : 0;
+
           setState((prev) => ({
             ...prev,
             opponentId,
             playerCount,
-            status: playerCount >= 2 ? prev.status : 'waiting_for_opponent',
+            status:
+              playerCount >= 2
+                ? prev.status
+                : 'waiting_for_opponent',
           }));
           break;
         }
 
         case 'game_start': {
-          const currentTurn = msg.current_turn as string;
+          const currentTurn =
+            typeof msg.current_turn === 'string'
+              ? msg.current_turn
+              : '';
+
           setState((prev) => ({
             ...prev,
             status: 'game_started',
             isYourTurn: currentTurn === playerId,
+            playerCount: Math.max(prev.playerCount, 2),
           }));
           break;
         }
 
         case 'question_received': {
-          // Opponent asked us a question — we need to answer
+          if (
+            typeof msg.question_id !== 'string' ||
+            typeof msg.question_text !== 'string' ||
+            typeof msg.asker_id !== 'string'
+          ) {
+            break;
+          }
+
           setState((prev) => ({
             ...prev,
             pendingQuestion: {
@@ -147,7 +229,6 @@ export function useGameSocket(roomCode: string, playerId: string) {
         }
 
         case 'question_sent': {
-          // Our question was received by the server; waiting for opponent's answer
           setState((prev) => ({
             ...prev,
             waitingForAnswer: true,
@@ -156,11 +237,27 @@ export function useGameSocket(roomCode: string, playerId: string) {
         }
 
         case 'answer_received': {
-          const answer = msg.answer as boolean;
-          const nextTurn = msg.next_turn as string;
-          const questionText = msg.question_text as string;
-          const askerId = msg.asker_id as string;
-          const timestamp = (msg.timestamp as string) ?? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const answer = msg.answer === true;
+          const nextTurn =
+            typeof msg.next_turn === 'string'
+              ? msg.next_turn
+              : '';
+          const questionText =
+            typeof msg.question_text === 'string'
+              ? msg.question_text
+              : '';
+          const askerId =
+            typeof msg.asker_id === 'string'
+              ? msg.asker_id
+              : '';
+
+          const timestamp =
+            typeof msg.timestamp === 'string'
+              ? msg.timestamp
+              : new Date().toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                });
 
           const newEntry: LogEntry = {
             id: Date.now().toString(),
@@ -186,6 +283,35 @@ export function useGameSocket(roomCode: string, playerId: string) {
             status: 'waiting_for_opponent',
             opponentId: null,
             playerCount: 1,
+            opponentBoard: {},
+          }));
+          break;
+        }
+
+        case 'opponent_board_updated': {
+          if (!isBoardState(msg.board_state)) {
+            break;
+          }
+
+          setState((prev) => ({
+            ...prev,
+            opponentBoard: msg.board_state as BoardState,
+            opponentId:
+              typeof msg.player_id === 'string'
+                ? msg.player_id
+                : prev.opponentId,
+          }));
+          break;
+        }
+
+        case 'my_board_restored': {
+          if (!isBoardState(msg.board_state)) {
+            break;
+          }
+
+          setState((prev) => ({
+            ...prev,
+            myBoard: msg.board_state as BoardState,
           }));
           break;
         }
@@ -193,7 +319,10 @@ export function useGameSocket(roomCode: string, playerId: string) {
         case 'error': {
           setState((prev) => ({
             ...prev,
-            errorMessage: msg.message as string,
+            errorMessage:
+              typeof msg.message === 'string'
+                ? msg.message
+                : 'An unknown server error occurred',
           }));
           break;
         }
@@ -204,16 +333,30 @@ export function useGameSocket(roomCode: string, playerId: string) {
     };
 
     ws.onclose = () => {
-      setState((prev) => ({ ...prev, status: 'disconnected' }));
+      if (wsRef.current === ws) {
+        wsRef.current = null;
+
+        setState((prev) => ({
+          ...prev,
+          status: 'disconnected',
+        }));
+      }
     };
 
     ws.onerror = () => {
-      setState((prev) => ({ ...prev, status: 'error', errorMessage: 'WebSocket connection failed' }));
+      setState((prev) => ({
+        ...prev,
+        status: 'error',
+        errorMessage: 'WebSocket connection failed',
+      }));
     };
 
     return () => {
+      if (wsRef.current === ws) {
+        wsRef.current = null;
+      }
+
       ws.close();
-      wsRef.current = null;
     };
   }, [roomCode, playerId]);
 
@@ -223,20 +366,59 @@ export function useGameSocket(roomCode: string, playerId: string) {
 
   const askQuestion = useCallback(
     (questionId: string, questionText: string) => {
-      if (wsRef.current?.readyState === WebSocket.OPEN) {
-        wsRef.current.send(
-          JSON.stringify({ type: 'ask_question', question_id: questionId, question_text: questionText })
-        );
+      if (wsRef.current?.readyState !== WebSocket.OPEN) {
+        return;
       }
+
+      wsRef.current.send(
+        JSON.stringify({
+          type: 'ask_question',
+          question_id: questionId,
+          question_text: questionText,
+        }),
+      );
     },
-    []
+    [],
   );
 
   const sendAnswer = useCallback((answer: boolean) => {
-    if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({ type: 'answer', answer }));
+    if (wsRef.current?.readyState !== WebSocket.OPEN) {
+      return;
     }
+
+    wsRef.current.send(
+      JSON.stringify({
+        type: 'answer',
+        answer,
+      }),
+    );
   }, []);
 
-  return { state, askQuestion, sendAnswer };
+  const sendBoardUpdate = useCallback(
+    (boardState: BoardState) => {
+      if (wsRef.current?.readyState !== WebSocket.OPEN) {
+        return;
+      }
+
+      wsRef.current.send(
+        JSON.stringify({
+          type: 'board_update',
+          board_state: boardState,
+        }),
+      );
+
+      setState((prev) => ({
+        ...prev,
+        myBoard: boardState,
+      }));
+    },
+    [],
+  );
+
+  return {
+    state,
+    askQuestion,
+    sendAnswer,
+    sendBoardUpdate,
+  };
 }

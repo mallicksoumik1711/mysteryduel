@@ -60,7 +60,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
           <span className="text-[9px] text-[#C2CDC3]/60 font-mono">{logs.length} messages</span>
         </div>
 
-        <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-[#2E3830] hover:scrollbar-thumb-[#93DD35]/30">
+        <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1">
           {logs.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-16 gap-1.5 opacity-50">
               <div className="w-6 h-6 rounded-full border border-[#2E3830] flex items-center justify-center text-[#C2CDC3] font-mono text-sm">?</div>
