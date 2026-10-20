@@ -13,7 +13,16 @@ import type { Character } from '../types';
 const PickCharacterPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as { roomCode: string; from: 'create-room' | 'join-room' } | null;
+  const state = location.state as { roomCode: string; from: 'create-room' | 'join-room'; playerName?: string } | null;
+
+  // Stable player ID for this session – derived from room + join source so it
+  // stays the same if this component re-renders (e.g. on HMR).
+  const playerIdRef = React.useRef<string>(
+    state?.playerName
+      ? state.playerName.toLowerCase().replace(/\s+/g, '-')
+      : `${state?.from === 'create-room' ? 'host' : 'guest'}-${state?.roomCode ?? 'x'}`
+  );
+  const playerId = playerIdRef.current;
 
 
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -108,7 +117,7 @@ const PickCharacterPage: React.FC = () => {
 
   const handleConfirm = () => {
     if (!selected) return;
-    navigate('/game-room', { state: { roomCode: state.roomCode, character: selected } });
+    navigate('/game-room', { state: { roomCode: state.roomCode, character: selected, playerId } });
   };
 
   return (

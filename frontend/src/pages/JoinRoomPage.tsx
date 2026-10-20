@@ -11,7 +11,7 @@ const JoinRoomPage: React.FC = () => {
     e.preventDefault();
     if (!roomCode.trim()) return;
     navigate('/pick-character', {
-      state: { roomCode: roomCode.toUpperCase().trim(), from: 'join-room' },
+      state: { roomCode: roomCode.toUpperCase().trim(), from: 'join-room', playerName: playerName.trim() },
     });
   };
 
