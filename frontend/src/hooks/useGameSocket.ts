@@ -51,6 +51,9 @@ export interface PendingQuestion {
 export interface GameSocketState {
   status: ConnectionStatus;
   isYourTurn: boolean;
+  isEliminating: boolean;
+  isOpponentEliminating: boolean;
+  lastAnswer: { questionText: string; answer: boolean; askerId: string } | null;
   pendingQuestion: PendingQuestion | null;
   waitingForAnswer: boolean;
   logs: LogEntry[];
@@ -97,6 +100,9 @@ export function useGameSocket(roomCode: string, playerId: string) {
   const [state, setState] = useState<GameSocketState>({
     status: 'connecting',
     isYourTurn: false,
+    isEliminating: false,
+    isOpponentEliminating: false,
+    lastAnswer: null,
     pendingQuestion: null,
     waitingForAnswer: false,
     logs: [],
@@ -238,10 +244,6 @@ export function useGameSocket(roomCode: string, playerId: string) {
 
         case 'answer_received': {
           const answer = msg.answer === true;
-          const nextTurn =
-            typeof msg.next_turn === 'string'
-              ? msg.next_turn
-              : '';
           const questionText =
             typeof msg.question_text === 'string'
               ? msg.question_text
@@ -250,6 +252,15 @@ export function useGameSocket(roomCode: string, playerId: string) {
             typeof msg.asker_id === 'string'
               ? msg.asker_id
               : '';
+          const eliminatingPlayer =
+            typeof msg.eliminating_player === 'string'
+              ? msg.eliminating_player
+              : askerId;
+
+          const isMeEliminating = eliminatingPlayer === playerId;
+          const isOppEliminating = Boolean(
+            eliminatingPlayer && eliminatingPlayer !== playerId,
+          );
 
           const timestamp =
             typeof msg.timestamp === 'string'
@@ -269,10 +280,33 @@ export function useGameSocket(roomCode: string, playerId: string) {
 
           setState((prev) => ({
             ...prev,
-            isYourTurn: nextTurn === playerId,
+            // When an answer is given, elimination phase begins - questions are blocked until elimination is done
+            isYourTurn: false,
+            isEliminating: isMeEliminating,
+            isOpponentEliminating: isOppEliminating,
+            lastAnswer: {
+              questionText,
+              answer,
+              askerId,
+            },
             pendingQuestion: null,
             waitingForAnswer: false,
             logs: [...prev.logs, newEntry],
+          }));
+          break;
+        }
+
+        case 'elimination_done': {
+          const nextTurn =
+            typeof msg.next_turn === 'string'
+              ? msg.next_turn
+              : '';
+
+          setState((prev) => ({
+            ...prev,
+            isEliminating: false,
+            isOpponentEliminating: false,
+            isYourTurn: nextTurn === playerId,
           }));
           break;
         }
@@ -415,10 +449,28 @@ export function useGameSocket(roomCode: string, playerId: string) {
     [],
   );
 
+  const sendEliminationDone = useCallback(() => {
+    if (wsRef.current?.readyState !== WebSocket.OPEN) {
+      return;
+    }
+
+    wsRef.current.send(
+      JSON.stringify({
+        type: 'elimination_done',
+      }),
+    );
+
+    setState((prev) => ({
+      ...prev,
+      isEliminating: false,
+    }));
+  }, []);
+
   return {
     state,
     askQuestion,
     sendAnswer,
     sendBoardUpdate,
+    sendEliminationDone,
   };
 }

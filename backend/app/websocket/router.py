@@ -116,6 +116,9 @@ async def websocket_endpoint(
                         },
                     )
 
+            elif msg_type == "elimination_done":
+                await manager.handle_elimination_done(room_code, player_id)
+
             else:
                 await manager.send_to(
                     room_code,

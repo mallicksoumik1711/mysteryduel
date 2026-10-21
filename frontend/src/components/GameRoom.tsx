@@ -95,6 +95,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
     askQuestion,
     sendAnswer,
     sendBoardUpdate,
+    sendEliminationDone,
   } = useGameSocket(roomId, playerId);
 
   // ------------------------------------------------------------------
@@ -102,6 +103,27 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   // ------------------------------------------------------------------
   const [boardState, setBoardState] = useState<BoardState>({});
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+
+  // Automatically shift to opponent's board while opponent is eliminating characters
+  useEffect(() => {
+    if (socketState.isOpponentEliminating) {
+      setActiveBoardView('opponent');
+    }
+  }, [socketState.isOpponentEliminating]);
+
+  // When opponent finishes elimination, shift back to your board if it's your turn
+  useEffect(() => {
+    if (!socketState.isOpponentEliminating && socketState.isYourTurn) {
+      setActiveBoardView('mine');
+    }
+  }, [socketState.isOpponentEliminating, socketState.isYourTurn]);
+
+  // If you are eliminating characters, make sure you are on 'mine' board
+  useEffect(() => {
+    if (socketState.isEliminating) {
+      setActiveBoardView('mine');
+    }
+  }, [socketState.isEliminating]);
 
   // Restore and synchronize this player's board from the socket state.
   useEffect(() => {
@@ -313,6 +335,49 @@ export const GameRoom: React.FC<GameRoomProps> = ({
             </button>
           </div>
 
+          {/* Elimination Phase Action Banner for active player */}
+          {socketState.isEliminating && (
+            <div className="shrink-0 px-3.5 py-2.5 bg-gradient-to-r from-[#93DD35]/20 via-[#171C18] to-[#93DD35]/10 border-b border-[#93DD35]/40 flex items-center justify-between gap-3 shadow-md animate-fade-in">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#93DD35] animate-ping shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs font-black text-[#93DD35] uppercase font-mono tracking-wide truncate">
+                    Elimination Phase Active
+                  </p>
+                  <p className="text-[10px] text-[#C2CDC3] truncate">
+                    Click characters below to eliminate them, then notify opponent
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                id="done-eliminating-btn"
+                onClick={sendEliminationDone}
+                className="shrink-0 px-3 py-1.5 rounded-lg bg-[#93DD35] hover:bg-[#85c82e] active:scale-[0.97] text-[#111612] font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+                Done Eliminating
+              </button>
+            </div>
+          )}
+
+          {/* Opponent Eliminating Notice Banner */}
+          {socketState.isOpponentEliminating && (
+            <div className="shrink-0 px-3.5 py-2 bg-amber-500/10 border-b border-amber-500/25 flex items-center justify-between gap-3 animate-fade-in">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                <p className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wide truncate">
+                  Opponent is eliminating characters · Viewing live updates
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-amber-200/70 uppercase shrink-0 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30">
+                Live View
+              </span>
+            </div>
+          )}
+
           {/* Character Grid */}
           <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             {loadingCharacters ? (
@@ -353,6 +418,8 @@ export const GameRoom: React.FC<GameRoomProps> = ({
             isYourTurn &&
             !waitingForAnswer &&
             !pendingQuestion &&
+            !socketState.isEliminating &&
+            !socketState.isOpponentEliminating &&
             status === 'game_started'
           }
           questions={questions}
@@ -362,6 +429,9 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           onSelectQuestion={setSelectedQuestion}
           onAskQuestion={handleAskQuestion}
           waitingForAnswer={waitingForAnswer}
+          isOpponentEliminating={socketState.isOpponentEliminating}
+          isEliminating={socketState.isEliminating}
+          onDoneEliminating={sendEliminationDone}
         />
       </main>
     </div>
