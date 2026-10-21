@@ -438,6 +438,8 @@ class RoomState:
         self.characters: dict[str, str] = {}
         # whose turn it is to ASK a question (player_id or None until 2 players joined)
         self.current_turn: Optional[str] = None
+        # player currently eliminating characters after receiving an answer
+        self.eliminating_player: Optional[str] = None
         # pending question waiting for an answer: {"question_id", "question_text", "asker_id"}
         self.pending_question: Optional[dict] = None
         # ordered log of resolved exchanges [{asker, text, answer, timestamp}]
@@ -670,6 +672,14 @@ class ConnectionManager:
         if not room:
             return
 
+        if room.eliminating_player:
+            await self.send_to(
+                room_code,
+                player_id,
+                {"type": "error", "message": "Opponent is currently eliminating characters"},
+            )
+            return
+
         if room.current_turn != player_id:
             await self.send_to(
                 room_code,
@@ -718,7 +728,7 @@ class ConnectionManager:
     ) -> None:
         """
         The non-active player answers Yes / No.
-        Broadcast the resolved exchange, switch turns.
+        Broadcast the resolved exchange and enter elimination phase for the asker.
         """
         room = self._rooms.get(room_code)
         if not room:
@@ -744,19 +754,21 @@ class ConnectionManager:
         import datetime
         timestamp = datetime.datetime.utcnow().strftime("%H:%M")
 
+        asker_id = pq["asker_id"]
         entry = {
             "question_id": pq["question_id"],
             "question_text": pq["question_text"],
-            "asker_id": pq["asker_id"],
+            "asker_id": asker_id,
             "answer": answer,
             "timestamp": timestamp,
         }
         room.history.append(entry)
         room.pending_question = None
 
-        # Switch turns
-        room.current_turn = pq["asker_id"]  # The asker already used their turn; now it's the OTHER player
-        room.current_turn = room.other_player(pq["asker_id"])
+        # Asker enters the elimination phase
+        room.eliminating_player = asker_id
+        # While elimination is happening, no player can ask questions yet
+        room.current_turn = None
 
         await self.broadcast(
             room_code,
@@ -764,10 +776,45 @@ class ConnectionManager:
                 "type": "answer_received",
                 "question_id": entry["question_id"],
                 "question_text": entry["question_text"],
-                "asker_id": entry["asker_id"],
+                "asker_id": asker_id,
                 "answer": answer,
-                "next_turn": room.current_turn,
+                "eliminating_player": asker_id,
+                "next_turn": room.other_player(asker_id),
                 "timestamp": timestamp,
+            },
+        )
+
+    async def handle_elimination_done(
+        self,
+        room_code: str,
+        player_id: str,
+    ) -> None:
+        """
+        The eliminating player notifies that they finished eliminating characters.
+        The turn now officially shifts to the opponent to ask their question.
+        """
+        room = self._rooms.get(room_code)
+        if not room:
+            return
+
+        if room.eliminating_player and room.eliminating_player != player_id:
+            await self.send_to(
+                room_code,
+                player_id,
+                {"type": "error", "message": "You are not the eliminating player"},
+            )
+            return
+
+        room.eliminating_player = None
+        next_turn = room.other_player(player_id)
+        room.current_turn = next_turn
+
+        await self.broadcast(
+            room_code,
+            {
+                "type": "elimination_done",
+                "player_id": player_id,
+                "next_turn": next_turn,
             },
         )
 
