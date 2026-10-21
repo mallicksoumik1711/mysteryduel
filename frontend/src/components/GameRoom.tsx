@@ -240,6 +240,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
         <AnswerPrompt
           questionText={pendingQuestion.questionText}
           onAnswer={handleAnswer}
+          secretCharacter={secretCharacter}
         />
       )}
 
