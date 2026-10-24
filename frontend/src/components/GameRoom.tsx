@@ -103,6 +103,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   // ------------------------------------------------------------------
   const [boardState, setBoardState] = useState<BoardState>({});
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+  const [guessCharacterId, setGuessCharacterId] = useState<string | null>(null);
 
   // Automatically shift to opponent's board while opponent is eliminating characters
   useEffect(() => {
@@ -138,17 +139,26 @@ export const GameRoom: React.FC<GameRoomProps> = ({
       setBoardState((prev) => {
         const currentState = prev[characterId] || 'available';
 
-        const nextState =
-          currentState === 'available'
-            ? 'selected'
-            : currentState === 'selected'
-              ? 'eliminated'
-              : 'available';
+        let updatedBoardState: BoardState;
 
-        const updatedBoardState: BoardState = {
-          ...prev,
-          [characterId]: nextState,
-        };
+        if (currentState === 'available') {
+          // available → selected.
+          // Enforce single-selection: push any existing "selected" character back to "available".
+          const withPrevDeselected = Object.fromEntries(
+            Object.entries(prev).map(([id, state]) =>
+              state === 'selected' ? [id, 'available'] : [id, state],
+            ),
+          ) as BoardState;
+          updatedBoardState = { ...withPrevDeselected, [characterId]: 'selected' };
+          setGuessCharacterId(characterId);
+        } else if (currentState === 'selected') {
+          // selected → eliminated (second click).
+          updatedBoardState = { ...prev, [characterId]: 'eliminated' };
+          setGuessCharacterId(null);
+        } else {
+          // eliminated → available (third click).
+          updatedBoardState = { ...prev, [characterId]: 'available' };
+        }
 
         // Synchronize the updated board with the server.
         sendBoardUpdate(updatedBoardState);
@@ -306,7 +316,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           </div>
 
           {/* Board View Switcher */}
-          <div className="shrink-0 px-3 py-2 flex gap-2 border-b border-[#2E3830] bg-[#171C18]/30">
+          <div className="shrink-0 px-3 py-2 flex items-center gap-2 border-b border-[#2E3830] bg-[#171C18]/30">
             <button
               type="button"
               onClick={() => setActiveBoardView('mine')}
@@ -332,6 +342,23 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               }`}
             >
               Opponent's Board
+            </button>
+
+            {/* Guess Character — highlighted when an avatar is selected */}
+            <button
+              type="button"
+              id="guess-character-btn"
+              disabled={!guessCharacterId}
+              className={`ml-auto px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${
+                guessCharacterId
+                  ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
+                  : 'bg-[#202621] text-[#C2CDC3]/50 cursor-not-allowed opacity-50'
+              }`}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Guess Character
             </button>
           </div>
 
