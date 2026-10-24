@@ -8,6 +8,7 @@ import { GameHeader } from './gameRoom/GameHeader';
 import { MatchIntelPanel } from './gameRoom/MatchIntelPanel';
 import { InterrogationPanel } from './gameRoom/InterrogationPanel';
 import { AnswerPrompt } from './gameRoom/AnswerPrompt';
+import { GuessConfirmModal } from './gameRoom/GuessConfirmModal';
 import { useGameSocket } from '../hooks/useGameSocket';
 
 interface GameRoomProps {
@@ -104,6 +105,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   const [boardState, setBoardState] = useState<BoardState>({});
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [guessCharacterId, setGuessCharacterId] = useState<string | null>(null);
+  const [showGuessModal, setShowGuessModal] = useState(false);
 
   // Automatically shift to opponent's board while opponent is eliminating characters
   useEffect(() => {
@@ -247,6 +249,11 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   const displayedBoardState =
     activeBoardView === 'mine' ? boardState : socketState.opponentBoard;
 
+  // Resolve the full character object for the guess modal.
+  const guessCharacter = guessCharacterId
+    ? characters.find((c) => c.id === guessCharacterId) ?? null
+    : null;
+
   return (
     <div
       className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
@@ -349,6 +356,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               type="button"
               id="guess-character-btn"
               disabled={!guessCharacterId}
+              onClick={() => guessCharacterId && setShowGuessModal(true)}
               className={`ml-auto px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${
                 guessCharacterId
                   ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
@@ -461,6 +469,18 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           onDoneEliminating={sendEliminationDone}
         />
       </main>
+
+      {/* ── Guess Character Confirmation Modal ── */}
+      {showGuessModal && guessCharacter && (
+        <GuessConfirmModal
+          character={guessCharacter}
+          onCancel={() => setShowGuessModal(false)}
+          onConfirm={() => {
+            // TODO: wire up guess submission
+            setShowGuessModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };
