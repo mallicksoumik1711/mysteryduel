@@ -9,6 +9,7 @@ import { MatchIntelPanel } from './gameRoom/MatchIntelPanel';
 import { InterrogationPanel } from './gameRoom/InterrogationPanel';
 import { AnswerPrompt } from './gameRoom/AnswerPrompt';
 import { GuessConfirmModal } from './gameRoom/GuessConfirmModal';
+import { GameOverOverlay } from './gameRoom/GameOverOverlay';
 import { useGameSocket } from '../hooks/useGameSocket';
 
 interface GameRoomProps {
@@ -97,6 +98,8 @@ export const GameRoom: React.FC<GameRoomProps> = ({
     sendAnswer,
     sendBoardUpdate,
     sendEliminationDone,
+    sendSetCharacter,
+    sendGuess,
   } = useGameSocket(roomId, playerId);
 
   // ------------------------------------------------------------------
@@ -132,6 +135,19 @@ export const GameRoom: React.FC<GameRoomProps> = ({
   useEffect(() => {
     setBoardState(socketState.myBoard);
   }, [socketState.myBoard]);
+
+  // Register the player's secret character with the server once the socket is
+  // established and the secret character is known.
+  const secretCharacterForEffect = userCharacter ?? characters[0] ?? null;
+  useEffect(() => {
+    if (
+      (socketState.status === 'game_started' || socketState.status === 'waiting_for_opponent' || socketState.status === 'connected') &&
+      secretCharacterForEffect
+    ) {
+      sendSetCharacter(secretCharacterForEffect.id);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socketState.status, secretCharacterForEffect?.id]);
 
   const handleCharacterClick = useCallback(
     (characterId: string) => {
@@ -254,6 +270,19 @@ export const GameRoom: React.FC<GameRoomProps> = ({
     ? characters.find((c) => c.id === guessCharacterId) ?? null
     : null;
 
+  // ------------------------------------------------------------------
+  // Guess result / game over
+  // ------------------------------------------------------------------
+  const { guessResult, gameOver } = socketState;
+
+  // The character that was guessed (used in the overlay).
+  const guessedCharacter = guessResult
+    ? characters.find((c) => c.id === guessResult.characterId) ?? null
+    : null;
+
+  const isLocalPlayerWinner =
+    gameOver !== null && gameOver.winnerId === playerId;
+
   return (
     <div
       className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
@@ -355,10 +384,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({
             <button
               type="button"
               id="guess-character-btn"
-              disabled={!guessCharacterId}
+              disabled={!guessCharacterId || gameOver !== null}
               onClick={() => guessCharacterId && setShowGuessModal(true)}
               className={`ml-auto px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${
-                guessCharacterId
+                guessCharacterId && gameOver === null
                   ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
                   : 'bg-[#202621] text-[#C2CDC3]/50 cursor-not-allowed opacity-50'
               }`}
@@ -476,9 +505,19 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           character={guessCharacter}
           onCancel={() => setShowGuessModal(false)}
           onConfirm={() => {
-            // TODO: wire up guess submission
+            sendGuess(guessCharacter.id);
             setShowGuessModal(false);
           }}
+        />
+      )}
+
+      {/* ── Game Over Overlay ── */}
+      {gameOver && (
+        <GameOverOverlay
+          character={guessedCharacter}
+          isWinner={isLocalPlayerWinner}
+          correct={guessResult?.correct ?? false}
+          onLeave={onLeaveRoom ?? (() => window.location.reload())}
         />
       )}
     </div>

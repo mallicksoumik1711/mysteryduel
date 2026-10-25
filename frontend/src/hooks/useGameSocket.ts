@@ -12,15 +12,21 @@
  *   question_received
  *   question_sent
  *   answer_received
+ *   elimination_done
  *   opponent_disconnected
  *   opponent_board_updated
  *   my_board_restored
+ *   guess_result
+ *   game_over
  *   error
  *
  * Outbound helpers:
  *   askQuestion(id, text)
  *   sendAnswer(bool)
  *   sendBoardUpdate(boardState)
+ *   sendEliminationDone()
+ *   sendSetCharacter(characterId)
+ *   sendGuess(characterId)
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
@@ -62,6 +68,18 @@ export interface GameSocketState {
   errorMessage: string | null;
   myBoard: BoardState;
   opponentBoard: BoardState;
+  /** Set when a guess has been evaluated (cleared on new game) */
+  guessResult: {
+    guesserId: string;
+    characterId: string;
+    correct: boolean;
+    timestamp: string;
+  } | null;
+  /** Set when the game is over */
+  gameOver: {
+    winnerId: string;
+    timestamp: string;
+  } | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -111,6 +129,8 @@ export function useGameSocket(roomCode: string, playerId: string) {
     errorMessage: null,
     myBoard: {},
     opponentBoard: {},
+    guessResult: null,
+    gameOver: null,
   });
 
   // -------------------------------------------------------------------------
@@ -350,6 +370,48 @@ export function useGameSocket(roomCode: string, playerId: string) {
           break;
         }
 
+        case 'guess_result': {
+          const guesserId =
+            typeof msg.guesser_id === 'string' ? msg.guesser_id : '';
+          const characterId =
+            typeof msg.character_id === 'string' ? msg.character_id : '';
+          const correct = msg.correct === true;
+          const timestamp =
+            typeof msg.timestamp === 'string'
+              ? msg.timestamp
+              : new Date().toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                });
+
+          setState((prev) => ({
+            ...prev,
+            guessResult: { guesserId, characterId, correct, timestamp },
+          }));
+          break;
+        }
+
+        case 'game_over': {
+          const winnerId =
+            typeof msg.winner_id === 'string' ? msg.winner_id : '';
+          const timestamp =
+            typeof msg.timestamp === 'string'
+              ? msg.timestamp
+              : new Date().toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                });
+
+          setState((prev) => ({
+            ...prev,
+            isYourTurn: false,
+            isEliminating: false,
+            isOpponentEliminating: false,
+            gameOver: { winnerId, timestamp },
+          }));
+          break;
+        }
+
         case 'error': {
           setState((prev) => ({
             ...prev,
@@ -466,11 +528,45 @@ export function useGameSocket(roomCode: string, playerId: string) {
     }));
   }, []);
 
+  const sendSetCharacter = useCallback(
+    (characterId: string) => {
+      if (wsRef.current?.readyState !== WebSocket.OPEN) {
+        return;
+      }
+
+      wsRef.current.send(
+        JSON.stringify({
+          type: 'set_character',
+          character_id: characterId,
+        }),
+      );
+    },
+    [],
+  );
+
+  const sendGuess = useCallback(
+    (characterId: string) => {
+      if (wsRef.current?.readyState !== WebSocket.OPEN) {
+        return;
+      }
+
+      wsRef.current.send(
+        JSON.stringify({
+          type: 'guess_character',
+          character_id: characterId,
+        }),
+      );
+    },
+    [],
+  );
+
   return {
     state,
     askQuestion,
     sendAnswer,
     sendBoardUpdate,
     sendEliminationDone,
+    sendSetCharacter,
+    sendGuess,
   };
 }

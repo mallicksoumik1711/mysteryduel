@@ -4,9 +4,11 @@ WebSocket router for MysteryDuel game rooms.
 Endpoint: WS /ws/{room_code}/{player_id}
 
 Message protocol (JSON, client → server):
-  { "type": "ask_question",   "question_id": "...", "question_text": "..." }
-  { "type": "answer",         "answer": true | false }
-  { "type": "board_update",   "board_state": { "char-1": "eliminated" } }
+  { "type": "ask_question",     "question_id": "...", "question_text": "..." }
+  { "type": "answer",           "answer": true | false }
+  { "type": "board_update",     "board_state": { "char-1": "eliminated" } }
+  { "type": "elimination_done" }
+  { "type": "guess_character",  "character_id": "char-5" }
 
 Message protocol (JSON, server → client):
   { "type": "joined",             "player_id": "...", "is_your_turn": bool, "player_count": int }
@@ -16,9 +18,13 @@ Message protocol (JSON, server → client):
   { "type": "question_received",  "question_id": "...", "question_text": "...", "asker_id": "..." }
   { "type": "answer_received",    "question_id": "...", "question_text": "...",
                                    "asker_id": "...", "answer": bool,
-                                   "next_turn": "...", "timestamp": "..." }
+                                   "eliminating_player": "...", "next_turn": "...", "timestamp": "..." }
   { "type": "opponent_board_updated", "player_id": "...", "board_state": {...} }
   { "type": "my_board_restored",      "board_state": {...} }
+  { "type": "elimination_done",   "player_id": "...", "next_turn": "..." }
+  { "type": "guess_result",       "guesser_id": "...", "character_id": "...",
+                                   "correct": bool, "timestamp": "..." }
+  { "type": "game_over",          "winner_id": "...", "timestamp": "..." }
   { "type": "opponent_disconnected", "player_id": "..." }
   { "type": "error",              "message": "..." }
 """
@@ -116,8 +122,46 @@ async def websocket_endpoint(
                         },
                     )
 
+            elif msg_type == "set_character":
+                char_id = data.get("character_id")
+
+                if isinstance(char_id, str) and char_id:
+                    await manager.handle_set_character(
+                        room_code=room_code,
+                        player_id=player_id,
+                        character_id=char_id,
+                    )
+                else:
+                    await manager.send_to(
+                        room_code,
+                        player_id,
+                        {
+                            "type": "error",
+                            "message": "set_character requires a non-empty 'character_id' string",
+                        },
+                    )
+
             elif msg_type == "elimination_done":
                 await manager.handle_elimination_done(room_code, player_id)
+
+            elif msg_type == "guess_character":
+                character_id = data.get("character_id")
+
+                if isinstance(character_id, str) and character_id:
+                    await manager.handle_guess(
+                        room_code=room_code,
+                        player_id=player_id,
+                        character_id=character_id,
+                    )
+                else:
+                    await manager.send_to(
+                        room_code,
+                        player_id,
+                        {
+                            "type": "error",
+                            "message": "guess_character requires a non-empty 'character_id' string",
+                        },
+                    )
 
             else:
                 await manager.send_to(
