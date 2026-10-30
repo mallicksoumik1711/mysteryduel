@@ -26,7 +26,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
       type="button"
       onClick={() => onClick(character.id)}
       className={`
-        group relative flex flex-col rounded-xl overflow-hidden border transition-all duration-200 
+        group relative flex flex-col   overflow-hidden border transition-all duration-200 
         cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#93DD35]/50
         w-full ${containerStyles} ${opacity}
       `}
@@ -35,20 +35,19 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
     >
       {/* 3D Portrait Box with Studio Backlight */}
       <div className="relative w-full aspect-[3/4] bg-gradient-to-b from-[#2E3830]/50 via-[#202621] to-[#171C18] overflow-hidden flex items-center justify-center p-1.5 sm:p-2">
-        
+
         {/* Interactive Lighting Overlay */}
-        <div 
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            isSelected 
-              ? 'opacity-100 bg-[radial-gradient(circle_at_center,rgba(147,221,53,0.25)_0%,transparent_70%)]' 
-              : 'opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)]'
-          }`} 
+        <div
+          className={`absolute inset-0 transition-opacity duration-300 ${isSelected
+            ? 'opacity-100 bg-[radial-gradient(circle_at_center,rgba(147,221,53,0.25)_0%,transparent_70%)]'
+            : 'opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)]'
+            }`}
         />
 
         <img
           src={character.imageUrl}
           alt={character.name}
-          className="w-full h-full object-cover rounded-lg transform group-hover:scale-105 transition-transform duration-300 relative z-10"
+          className="w-full h-full object-cover   transform group-hover:scale-105 transition-transform duration-300 relative z-10"
           loading="lazy"
         />
 
@@ -78,9 +77,8 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({ character, state, 
 
       {/* Card Label */}
       <div className="p-1.5 sm:p-2 bg-[#171C18]/80 border-t border-[#2E3830]/80 flex flex-col justify-center">
-        <span className={`text-[10px] sm:text-xs font-bold truncate text-center transition-colors ${
-          isSelected ? 'text-[#93DD35]' : isEliminated ? 'text-[#C2CDC3]/50 line-through' : 'text-[#FFFFFF] group-hover:text-[#93DD35]'
-        }`}>
+        <span className={`text-[10px] sm:text-xs font-bold truncate text-center transition-colors ${isSelected ? 'text-[#93DD35]' : isEliminated ? 'text-[#C2CDC3]/50 line-through' : 'text-[#FFFFFF] group-hover:text-[#93DD35]'
+          }`}>
           {character.name}
         </span>
       </div>

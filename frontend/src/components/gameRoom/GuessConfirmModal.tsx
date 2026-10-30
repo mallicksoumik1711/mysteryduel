@@ -20,19 +20,17 @@ function TraitBadge({
 }) {
   return (
     <div
-      className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg border text-center min-w-[72px] ${
-        accent
-          ? 'border-[#93DD35]/40 bg-[#93DD35]/10'
-          : 'border-[#2E3830] bg-[#1A201B]'
-      }`}
+      className={`flex flex-col items-center gap-0.5 px-3 py-2   border text-center min-w-[72px] ${accent
+        ? 'border-[#93DD35]/40 bg-[#93DD35]/10'
+        : 'border-[#2E3830] bg-[#1A201B]'
+        }`}
     >
       <span className="text-[9px] font-mono uppercase tracking-widest text-[#C2CDC3]/60">
         {label}
       </span>
       <span
-        className={`text-xs font-bold capitalize ${
-          accent ? 'text-[#93DD35]' : 'text-[#E8F0E9]'
-        }`}
+        className={`text-xs font-bold capitalize ${accent ? 'text-[#93DD35]' : 'text-[#E8F0E9]'
+          }`}
       >
         {value}
       </span>
@@ -43,11 +41,10 @@ function TraitBadge({
 function BoolBadge({ label, value }: { label: string; value: boolean }) {
   return (
     <div
-      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-mono ${
-        value
-          ? 'border-[#93DD35]/40 bg-[#93DD35]/10 text-[#93DD35]'
-          : 'border-[#2E3830] bg-[#1A201B] text-[#C2CDC3]/50 line-through'
-      }`}
+      className={`flex items-center gap-1.5 px-3 py-2   border text-xs font-mono ${value
+        ? 'border-[#93DD35]/40 bg-[#93DD35]/10 text-[#93DD35]'
+        : 'border-[#2E3830] bg-[#1A201B] text-[#C2CDC3]/50 line-through'
+        }`}
     >
       <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${value ? 'bg-[#93DD35]' : 'bg-[#C2CDC3]/30'}`} />
       {label}
@@ -76,7 +73,7 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
       />
 
       {/* Panel */}
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-[#2E3830] bg-[#141A15] shadow-[0_0_80px_rgba(147,221,53,0.14)] overflow-hidden">
+      <div className="relative z-10 w-full max-w-md   border border-[#2E3830] bg-[#141A15] shadow-[0_0_80px_rgba(147,221,53,0.14)] overflow-hidden">
         {/* Top accent bar */}
         <div className="h-[3px] w-full bg-gradient-to-r from-[#93DD35]/0 via-[#93DD35] to-[#93DD35]/0" />
 
@@ -99,7 +96,7 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
             >
               Final Guess · Suspect Profile
             </p>
-            <h3 className="text-2xl font-black text-white tracking-wide">
+            <h3 className="text-2xl font-black text-white tracking-wider londrina-solid-regular">
               {character.name}
             </h3>
             <p className="text-sm text-[#C2CDC3]/70 leading-relaxed max-w-xs mx-auto">
@@ -131,12 +128,12 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
           <div className="w-full border-t border-[#2E3830]" />
 
           {/* ── Actions ── */}
-          <div className="flex gap-3 w-full">
+          <div className="flex gap-3 w-full londrina-solid-regular">
             <button
               type="button"
               id="guess-modal-cancel-btn"
               onClick={onCancel}
-              className="flex-1 py-3 rounded-xl border border-[#2E3830] bg-[#202621] text-[#C2CDC3] text-sm font-mono uppercase tracking-wide hover:bg-[#2E3830] active:scale-[0.97] transition-all"
+              className="flex-1 py-3 border border-[#2E3830] bg-[#202621] text-[#C2CDC3] text-xl font-mono uppercase tracking-wide hover:bg-[#2E3830] active:scale-[0.97] transition-all"
             >
               Cancel
             </button>
@@ -144,7 +141,7 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
               type="button"
               id="guess-modal-confirm-btn"
               onClick={onConfirm}
-              className="flex-1 py-3 rounded-xl bg-[#93DD35] hover:bg-[#85c82e] active:scale-[0.97] text-[#111612] text-sm font-black uppercase tracking-wide transition-all shadow-[0_0_20px_rgba(147,221,53,0.35)]"
+              className="flex-1 py-3 bg-[#93DD35] hover:bg-[#85c82e] active:scale-[0.97] text-[#111612] text-xl font-black uppercase tracking-wide transition-all shadow-[0_0_20px_rgba(147,221,53,0.35)]"
             >
               Yes, Guess!
             </button>

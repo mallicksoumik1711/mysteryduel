@@ -18,7 +18,7 @@ export const RoomPageShell: React.FC<RoomPageShellProps> = ({ children }) => (
       `,
     }}
   >
-    <div className="relative z-10 w-full max-w-lg border border-[#2E3830] rounded-sm backdrop-blur-sm shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="relative z-10 w-full max-w-lg border border-[#2E3830]   backdrop-blur-sm shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col max-h-[92vh]">
       {children}
     </div>
   </div>

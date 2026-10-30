@@ -18,7 +18,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
         </h1>
       </div>
       <div className="h-4 w-px bg-[#2E3830] hidden sm:block" />
-      <div className="hidden sm:flex items-center gap-2 bg-[#202621] px-2.5 py-0.5 rounded-md border border-[#2E3830]">
+      <div className="hidden sm:flex items-center gap-2 bg-[#202621] px-2.5 py-0.5   border border-[#2E3830]">
         <span className="text-[10px] font-mono text-[#C2CDC3] uppercase tracking-wider">ROOM:</span>
         <span className="text-xs font-mono font-bold text-[#93DD35]">{roomId}</span>
       </div>
@@ -29,7 +29,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
         <button
           id="leave-game-btn"
           onClick={onLeaveRoom}
-          className="px-3 py-1 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-[11px] font-semibold text-red-300 hover:text-white transition-all shadow-md cursor-pointer active:scale-95"
+          className="px-3 py-1   bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-[11px] font-semibold text-red-300 hover:text-white transition-all shadow-md cursor-pointer active:scale-95"
         >
           Leave Game
         </button>

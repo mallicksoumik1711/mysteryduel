@@ -10,7 +10,7 @@ export const CreateRoomHeader: React.FC<CreateRoomHeaderProps> = ({ onBack }) =>
       <button
         onClick={onBack}
         type="button"
-        className="self-start text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer group bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5 rounded-lg border border-[#2E3830]"
+        className="self-start text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer group bg-[#2E3830]/50 hover:bg-[#2E3830] px-3 py-1.5   border border-[#2E3830]"
       >
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         <span>BACK TO LOBBY</span>

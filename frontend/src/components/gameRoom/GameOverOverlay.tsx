@@ -54,7 +54,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
 
       {/* Card */}
       <div
-        className="relative z-10 w-full max-w-sm rounded-2xl overflow-hidden"
+        className="relative z-10 w-full max-w-sm   overflow-hidden"
         style={{
           background: 'linear-gradient(160deg, #141A15 0%, #0D110E 100%)',
           border: `1px solid ${accentColor}40`,
@@ -81,12 +81,12 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
             >
               {isWinner ? 'Mystery Solved' : 'Game Over'}
             </p>
-            <h2 className="text-3xl font-black text-white tracking-wide">
+            <h2 className="text-3xl font-black text-white tracking-wider londrina-solid-regular">
               {isWinner ? 'You Win!' : 'You Lose!'}
             </h2>
             <p className="text-sm text-[#C2CDC3]/70 leading-relaxed">
               {isWinner
-                ? 'Brilliant deduction — you cracked the case!'
+                ? 'Brilliant deduction, you cracked the case!'
                 : correct
                   ? 'Your opponent cracked the case first.'
                   : 'Wrong guess — the mystery lives on.'}
@@ -129,7 +129,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
             type="button"
             id="game-over-leave-btn"
             onClick={onLeave}
-            className="w-full py-3.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all active:scale-[0.97]"
+            className="w-full py-3.5 text-3xl londrina-solid-regular font-black uppercase tracking-wider transition-all active:scale-[0.97]"
             style={{
               background: accentColor,
               color: '#111612',

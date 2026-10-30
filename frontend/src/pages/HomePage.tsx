@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
 
           {/* Top Embedded Text */}
           <div className="absolute top-0 md:top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center drop-shadow-xl pointer-events-none">
-            <div className="w-12 h-12 mb-2 md:mb-3 rounded-2xl bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
+            <div className="w-12 h-12 mb-2 md:mb-3 rounded-full bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
               <Gamepad2 className="w-7 h-7" />
             </div>
             <h1 className="londrina-solid-regular text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
