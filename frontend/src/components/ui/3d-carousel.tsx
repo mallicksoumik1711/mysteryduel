@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface FanCarouselProps {
   images: string[];
@@ -20,32 +20,46 @@ const SLOT_STYLES: Record<number, { rotateY: number; translateX: number; transla
 };
 
 const VISIBLE_COUNT = 9;
-const HALF = Math.floor(VISIBLE_COUNT / 2); // 3
+const HALF = Math.floor(VISIBLE_COUNT / 2); // 4
 
 export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
   const total = images.length;
   const [centerIndex, setCenterIndex] = useState(Math.floor(total / 2));
+  const prevOffsetsRef = useRef<Record<number, number>>({});
 
   const handlePrev = () => setCenterIndex((p) => (p - 1 + total) % total);
   const handleNext = () => setCenterIndex((p) => (p + 1) % total);
 
-  // Build ordered list of image indices to display
-  const slots: number[] = [];
-  for (let i = -HALF; i <= HALF; i++) {
-    slots.push((centerIndex + i + total) % total);
-  }
+  // Calculate current slot offset for each image
+  const currentOffsets: Record<number, number> = {};
+  images.forEach((_, imgIndex) => {
+    let offset = imgIndex - centerIndex;
+    while (offset > HALF) offset -= total;
+    while (offset < -HALF) offset += total;
+    currentOffsets[imgIndex] = offset;
+  });
+
+  useEffect(() => {
+    prevOffsetsRef.current = currentOffsets;
+  });
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[420px] md:h-[480px] flex items-center justify-center  overflow-visible">
+    <div className="relative w-full h-[340px] sm:h-[420px] md:h-[480px] flex items-center justify-center select-none overflow-visible">
       {/* Perspective wrapper */}
       <div
         className="relative w-full max-w-7xl h-full flex items-center justify-center"
         style={{ perspective: '1000px', perspectiveOrigin: '50% 50%' }}
       >
-        {slots.map((imgIndex, slotPos) => {
-          const offset = slotPos - HALF; // -4 to +4
+        {/* Render elements in stable image order so React never re-orders DOM nodes.
+            Re-ordering DOM nodes in React cancels CSS transitions in browsers when navigating backwards. */}
+        {images.map((imgUrl, imgIndex) => {
+          const offset = currentOffsets[imgIndex];
           const s = SLOT_STYLES[offset];
+          if (!s) return null;
+
           const isCenter = offset === 0;
+          const prevOffset = prevOffsetsRef.current[imgIndex];
+          const hasWrapped = prevOffset !== undefined && Math.abs(offset - prevOffset) > HALF;
 
           return (
             <div
@@ -56,38 +70,43 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
                 zIndex: s.zIndex,
                 transform: `translateX(${s.translateX}px) translateZ(${s.translateZ}px) rotateY(${s.rotateY}deg) scale(${s.scale})`,
                 opacity: s.opacity,
-                transition: 'transform 1.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s ease',
+                transition: hasWrapped
+                  ? 'opacity 0.4s ease'
+                  : 'transform 1.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s ease',
                 transformStyle: 'preserve-3d',
               }}
             >
               <div
                 className={`
+                  relative
                   w-[140px] sm:w-[165px] md:w-[185px]
                   aspect-[3/4]
                   rounded-xl
                   overflow-hidden
+                  isolate
+                  [clip-path:inset(0_round_0.75rem)]
                   transition-all duration-700
                   shadow-[0_20px_50px_rgba(0,0,0,0.6)]
                 `}
               >
                 <img
-                  src={images[imgIndex]}
+                  src={imgUrl}
                   alt={`Card ${imgIndex + 1}`}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="w-full h-full object-cover rounded-xl pointer-events-none"
                   draggable={false}
                 />
-                {/* Bottom gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111612] via-transparent to-transparent" />
+                {/* Bottom gradient with rounded corners */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-[#111612] via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Nav Arrows */}
+      {/* Nav Arrows with higher z-index so outer 3D cards cannot intercept clicks */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 sm:left-10 z-50 p-3 rounded-full bg-black/40 border border-white/10 text-white hover:bg-white/10 hover:border-white/25 transition-all backdrop-blur-md"
+        className="absolute left-2 sm:left-10 z-[100] p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
         aria-label="Previous"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -96,7 +115,7 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-2 sm:right-10 z-50 p-3 rounded-full bg-black/40 border border-white/10 text-white hover:bg-white/10 hover:border-white/25 transition-all backdrop-blur-md"
+        className="absolute right-2 sm:right-10 z-[100] p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
         aria-label="Next"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
