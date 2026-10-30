@@ -75,7 +75,6 @@ export const DeckSelector: React.FC<DeckSelectorProps> = ({ selectedDeck, onSele
         <label className="text-xs font-bold text-[#C2CDC3] font-mono uppercase tracking-wider">
           1. Select Character Deck
         </label>
-        <span className="text-[10px] font-mono text-[#C2CDC3]/70">3 DECKS AVAILABLE</span>
       </div>
 
       <div className="grid grid-cols-1 gap-2">
