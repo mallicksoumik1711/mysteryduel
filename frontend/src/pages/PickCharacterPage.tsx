@@ -85,7 +85,7 @@ const PickCharacterPage: React.FC = () => {
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 rounded-lg bg-[#93DD35] text-[#171C18]"
+          className="px-4 py-2   bg-[#93DD35] text-[#171C18]"
         >
           RETRY
         </button>
@@ -107,7 +107,7 @@ const PickCharacterPage: React.FC = () => {
         <p className="text-red-400">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 rounded-lg bg-[#93DD35] text-[#171C18]"
+          className="px-4 py-2   bg-[#93DD35] text-[#171C18]"
         >
           RETRY
         </button>
@@ -143,10 +143,10 @@ const PickCharacterPage: React.FC = () => {
       <div className="relative z-10 w-full h-full flex flex-col gap-4 overflow-hidden">
 
         {/* Top Control & Room Bar (No Headings) */}
-        <div className="flex items-center justify-between shrink-0 backdrop-blur-sm border border-[#2E3830] rounded-lg px-4 py-3 shadow-lg">
+        <div className="flex items-center justify-between shrink-0 backdrop-blur-sm border border-[#2E3830]   px-4 py-3 shadow-lg">
           <button
             onClick={() => navigate(`/${state.from}`)}
-            className="text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer bg-[#2E3830]/60 hover:bg-[#2E3830] px-3.5 py-1.5 rounded-lg border border-[#2E3830]"
+            className="text-xs font-mono text-[#C2CDC3] hover:text-[#FFFFFF] transition-all flex items-center gap-2 cursor-pointer bg-[#2E3830]/60 hover:bg-[#2E3830] px-3.5 py-1.5   border border-[#2E3830]"
           >
             <span>←</span>
             <span>BACK</span>
@@ -155,12 +155,12 @@ const PickCharacterPage: React.FC = () => {
           <h1 className="londrina-solid-regular text-2xl font-black text-[#93DD35] tracking-widest uppercase">Pick a character</h1>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-2 bg-[#171C18]/80 px-3 py-1 rounded-lg border border-[#2E3830] font-mono text-xs">
+            <div className="hidden sm:flex items-center gap-2 bg-[#171C18]/80 px-3 py-1   border border-[#2E3830] font-mono text-xs">
               <span className="text-[#C2CDC3]/60 uppercase text-[10px]">ROOM</span>
               <span className="text-[#93DD35] font-bold tracking-wider">{state.roomCode}</span>
             </div>
 
-            <div className="flex items-center gap-2 bg-[#93DD35]/10 border border-[#93DD35]/30 px-3 py-1 rounded-lg">
+            <div className="flex items-center gap-2 bg-[#93DD35]/10 border border-[#93DD35]/30 px-3 py-1  ">
               <span className="w-2 h-2 rounded-full bg-[#93DD35] animate-pulse shadow-[0_0_8px_rgba(147,221,53,0.8)]" />
               <span className="text-[11px] font-mono font-bold text-[#93DD35] uppercase tracking-wider">
                 STEP 2 / 2
@@ -183,7 +183,7 @@ const PickCharacterPage: React.FC = () => {
                     key={char.id}
                     type="button"
                     onClick={() => setSelected(char)}
-                    className={`group relative flex flex-col rounded-lg overflow-hidden border transition-all duration-200 cursor-pointer text-left focus:outline-none ${isSelected
+                    className={`group relative flex flex-col   overflow-hidden border transition-all duration-200 cursor-pointer text-left focus:outline-none ${isSelected
                       ? 'bg-[#202621] border-[#93DD35] shadow-[0_0_25px_rgba(147,221,53,0.25)] ring-1 ring-[#93DD35]'
                       : 'bg-[#202621]/60 border-[#2E3830] hover:bg-[#202621] hover:border-[#93DD35]/50'
                       }`}
@@ -197,7 +197,7 @@ const PickCharacterPage: React.FC = () => {
                       <img
                         src={char.imageUrl}
                         alt={char.name}
-                        className="w-full h-full object-cover rounded-lg transform group-hover:scale-105 transition-transform duration-300 relative z-10"
+                        className="w-full h-full object-cover   transform group-hover:scale-105 transition-transform duration-300 relative z-10"
                       />
 
                       {/* Selected Checkmark Badge */}
@@ -229,13 +229,13 @@ const PickCharacterPage: React.FC = () => {
           </div>
 
           {/* Right Live Intelligence Inspector & Action Sidebar */}
-          <div className="lg:col-span-4 h-full flex flex-col justify-between border border-[#2E3830] rounded-lg p-5 backdrop-blur-sm shadow-2xl overflow-y-auto custom-scrollbar">
+          <div className="lg:col-span-4 h-full flex flex-col justify-between border border-[#2E3830]   p-5 backdrop-blur-sm shadow-2xl overflow-y-auto custom-scrollbar">
 
             {/* Inspector Details */}
             <div className="space-y-4">
 
               {/* Secret Character Display Window */}
-              <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden border border-[#2E3830] bg-gradient-to-b from-[#2E3830]/50 to-[#171C18] flex items-center justify-center p-3 shadow-inner">
+              <div className="relative w-full aspect-[2/1]   overflow-hidden border border-[#2E3830] bg-gradient-to-b from-[#2E3830]/50 to-[#171C18] flex items-center justify-center p-3 shadow-inner">
                 {selected ? (
                   <>
                     <img
@@ -269,14 +269,14 @@ const PickCharacterPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2 rounded-lg border border-[#2E3830]">
+                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2   border border-[#2E3830]">
                     <span className="text-xs font-mono text-[#C2CDC3]">NAME</span>
                     <span className="text-xs font-bold text-[#FFFFFF] uppercase">
                       {selected ? selected.name : 'select a character'}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2 rounded-lg border border-[#2E3830]">
+                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2   border border-[#2E3830]">
                     <span className="text-xs font-mono text-[#C2CDC3]">
                       GENDER
                     </span>
@@ -285,14 +285,14 @@ const PickCharacterPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2 rounded-lg border border-[#2E3830]">
+                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2   border border-[#2E3830]">
                     <span className="text-xs font-mono text-[#C2CDC3]">EYEWEAR</span>
                     <span className={`text-xs font-mono font-bold ${selected?.hasGlasses ? 'text-[#93DD35]' : 'text-[#C2CDC3]/40'}`}>
                       {selected ? (selected.hasGlasses ? 'PRESENT' : 'ABSENT') : 'select a character'}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2 rounded-lg border border-[#2E3830]">
+                  <div className="flex justify-between items-center bg-[#171C18]/60 p-2   border border-[#2E3830]">
                     <span className="text-xs font-mono text-[#C2CDC3]">FACIAL HAIR</span>
                     <span className={`text-xs font-mono font-bold ${selected?.hasBeard ? 'text-[#93DD35]' : 'text-[#C2CDC3]/40'}`}>
                       {selected ? (selected.hasBeard ? 'PRESENT' : 'ABSENT') : 'select a character'}
@@ -301,7 +301,7 @@ const PickCharacterPage: React.FC = () => {
                 </div>
 
                 {/* Match Guidelines & Tactical Context */}
-                <div className="p-3 bg-[#171C18]/80 rounded-lg border border-[#2E3830] space-y-1">
+                <div className="p-3 bg-[#171C18]/80   border border-[#2E3830] space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#93DD35]" />
                     <span className="text-[10px] font-mono text-[#93DD35] uppercase tracking-wider">
@@ -321,7 +321,7 @@ const PickCharacterPage: React.FC = () => {
               <button
                 onClick={handleConfirm}
                 disabled={!selected}
-                className={`w-full py-3.5 px-4 rounded-lg text-xs font-black uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 ${selected
+                className={`w-full py-3.5 px-4   text-xs font-black uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 ${selected
                   ? 'bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] shadow-lg shadow-[#93DD35]/20 active:scale-[0.98] cursor-pointer'
                   : 'bg-[#2E3830] text-[#C2CDC3]/40 cursor-not-allowed shadow-none'
                   }`}

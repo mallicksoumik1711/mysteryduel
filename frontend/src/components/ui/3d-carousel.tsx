@@ -8,15 +8,15 @@ interface FanCarouselProps {
 // Outer cards are brought forward (+Z, larger scale, highest zIndex)
 // Center card is pushed back (-Z, smaller scale, lowest zIndex)
 const SLOT_STYLES: Record<number, { rotateY: number; translateX: number; translateZ: number; scale: number; opacity: number; zIndex: number }> = {
-  [-4]: { rotateY: 105,  translateX: -610, translateZ: 330,  scale: 1.85, opacity: 1.00, zIndex: 50 },
-  [-3]: { rotateY: 88,  translateX: -510, translateZ: 200,  scale: 1.45, opacity: 1.00, zIndex: 40 },
-  [-2]: { rotateY: 58,  translateX: -365, translateZ: 100,   scale: 1.25, opacity: 1.00, zIndex: 30 },
-  [-1]: { rotateY: 40,  translateX: -195, translateZ: -10,  scale: 1.15, opacity: 1.00, zIndex: 20 },
-  [ 0]: { rotateY:  0,  translateX:    0, translateZ: 10,  scale: 1.05, opacity: 1.00, zIndex: 10 },
-  [ 1]: { rotateY: -40, translateX:  195, translateZ: -10,  scale: 1.15, opacity: 1.00, zIndex: 20 },
-  [ 2]: { rotateY: -58, translateX:  365, translateZ: 100,   scale: 1.25, opacity: 1.00, zIndex: 30 },
-  [ 3]: { rotateY: -88, translateX:  510, translateZ: 200,  scale: 1.45, opacity: 1.00, zIndex: 40 },
-  [ 4]: { rotateY: -105, translateX:  610, translateZ: 330,  scale: 1.85, opacity: 1.00, zIndex: 50 },
+  [-4]: { rotateY: 105, translateX: -610, translateZ: 330, scale: 1.85, opacity: 1.00, zIndex: 50 },
+  [-3]: { rotateY: 88, translateX: -510, translateZ: 200, scale: 1.45, opacity: 1.00, zIndex: 40 },
+  [-2]: { rotateY: 58, translateX: -365, translateZ: 100, scale: 1.25, opacity: 1.00, zIndex: 30 },
+  [-1]: { rotateY: 40, translateX: -195, translateZ: -10, scale: 1.15, opacity: 1.00, zIndex: 20 },
+  [0]: { rotateY: 0, translateX: 0, translateZ: 10, scale: 1.05, opacity: 1.00, zIndex: 10 },
+  [1]: { rotateY: -40, translateX: 195, translateZ: -10, scale: 1.15, opacity: 1.00, zIndex: 20 },
+  [2]: { rotateY: -58, translateX: 365, translateZ: 100, scale: 1.25, opacity: 1.00, zIndex: 30 },
+  [3]: { rotateY: -88, translateX: 510, translateZ: 200, scale: 1.45, opacity: 1.00, zIndex: 40 },
+  [4]: { rotateY: -105, translateX: 610, translateZ: 330, scale: 1.85, opacity: 1.00, zIndex: 50 },
 };
 
 const VISIBLE_COUNT = 9;

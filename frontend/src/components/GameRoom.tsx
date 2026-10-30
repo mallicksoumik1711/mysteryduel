@@ -146,7 +146,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
     ) {
       sendSetCharacter(secretCharacterForEffect.id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketState.status, secretCharacterForEffect?.id]);
 
   const handleCharacterClick = useCallback(
@@ -248,11 +248,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({
       return (
         <div className="shrink-0 text-center text-xs font-mono text-red-400 py-1.5 border-b border-red-500/20 bg-red-500/5">
           {status === 'error'
-            ? `CONNECTION ERROR${
-                socketState.errorMessage
-                  ? ': ' + socketState.errorMessage
-                  : ''
-              }`
+            ? `CONNECTION ERROR${socketState.errorMessage
+              ? ': ' + socketState.errorMessage
+              : ''
+            }`
             : 'DISCONNECTED — RECONNECTING...'}
         </div>
       );
@@ -323,7 +322,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           />
         )}
 
-        <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
+        <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
           {/* Tactical Board Header */}
           <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
@@ -357,11 +356,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               type="button"
               onClick={() => setActiveBoardView('mine')}
               aria-pressed={activeBoardView === 'mine'}
-              className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-colors ${
-                activeBoardView === 'mine'
-                  ? 'bg-[#93DD35] text-[#111612] font-bold'
-                  : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
-              }`}
+              className={`px-3 py-1.5   text-xs font-mono uppercase tracking-wide transition-colors ${activeBoardView === 'mine'
+                ? 'bg-[#93DD35] text-[#111612] font-bold'
+                : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
+                }`}
             >
               My Board
             </button>
@@ -371,11 +369,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               onClick={() => setActiveBoardView('opponent')}
               aria-pressed={activeBoardView === 'opponent'}
               disabled={socketState.playerCount < 2}
-              className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                activeBoardView === 'opponent'
-                  ? 'bg-[#93DD35] text-[#111612] font-bold'
-                  : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
-              }`}
+              className={`px-3 py-1.5   text-xs font-mono uppercase tracking-wide transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${activeBoardView === 'opponent'
+                ? 'bg-[#93DD35] text-[#111612] font-bold'
+                : 'bg-[#202621] text-[#C2CDC3] hover:bg-[#2E3830]'
+                }`}
             >
               Opponent's Board
             </button>
@@ -386,11 +383,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               id="guess-character-btn"
               disabled={!guessCharacterId || gameOver !== null}
               onClick={() => guessCharacterId && setShowGuessModal(true)}
-              className={`ml-auto px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${
-                guessCharacterId && gameOver === null
-                  ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
-                  : 'bg-[#202621] text-[#C2CDC3]/50 cursor-not-allowed opacity-50'
-              }`}
+              className={`ml-auto px-3 py-1.5   text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${guessCharacterId && gameOver === null
+                ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
+                : 'bg-[#202621] text-[#C2CDC3]/50 cursor-not-allowed opacity-50'
+                }`}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -417,7 +413,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
                 type="button"
                 id="done-eliminating-btn"
                 onClick={sendEliminationDone}
-                className="shrink-0 px-3 py-1.5 rounded-lg bg-[#93DD35] hover:bg-[#85c82e] active:scale-[0.97] text-[#111612] font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                className="shrink-0 px-3 py-1.5   bg-[#93DD35] hover:bg-[#85c82e] active:scale-[0.97] text-[#111612] font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />

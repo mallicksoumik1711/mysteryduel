@@ -85,19 +85,17 @@ export const DeckSelector: React.FC<DeckSelectorProps> = ({ selectedDeck, onSele
             <div
               key={item.id}
               onClick={() => onSelectDeck(item.id)}
-              className={`group relative p-3 rounded-md border transition-all cursor-pointer flex items-center justify-between ${
-                isSelected
-                  ? 'bg-gradient-to-r from-[#93DD35]/15 via-[#202621] to-[#202621] border-[#93DD35]/60 shadow-lg shadow-black/40'
-                  : 'bg-[#171C18]/60 border-[#2E3830] hover:border-[#93DD35]/40 hover:bg-[#202621]'
-              }`}
+              className={`group relative p-3   border transition-all cursor-pointer flex items-center justify-between ${isSelected
+                ? 'bg-gradient-to-r from-[#93DD35]/15 via-[#202621] to-[#202621] border-[#93DD35]/60 shadow-lg shadow-black/40'
+                : 'bg-[#171C18]/60 border-[#2E3830] hover:border-[#93DD35]/40 hover:bg-[#202621]'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
-                    isSelected
-                      ? 'bg-[#93DD35] text-[#171C18] shadow-md shadow-[#93DD35]/20 font-bold'
-                      : 'bg-[#2E3830]/50 text-[#C2CDC3] group-hover:text-[#93DD35]'
-                  }`}
+                  className={`w-9 h-9   flex items-center justify-center transition-colors ${isSelected
+                    ? 'bg-[#93DD35] text-[#171C18] shadow-md shadow-[#93DD35]/20 font-bold'
+                    : 'bg-[#2E3830]/50 text-[#C2CDC3] group-hover:text-[#93DD35]'
+                    }`}
                 >
                   {item.icon}
                 </div>
@@ -107,11 +105,10 @@ export const DeckSelector: React.FC<DeckSelectorProps> = ({ selectedDeck, onSele
                       {item.title}
                     </p>
                     <span
-                      className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded ${
-                        isSelected
-                          ? 'bg-[#93DD35]/20 text-[#93DD35] border border-[#93DD35]/40'
-                          : 'bg-[#2E3830]/40 text-[#C2CDC3]'
-                      }`}
+                      className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded ${isSelected
+                        ? 'bg-[#93DD35]/20 text-[#93DD35] border border-[#93DD35]/40'
+                        : 'bg-[#2E3830]/40 text-[#C2CDC3]'
+                        }`}
                     >
                       {item.badge}
                     </span>
@@ -121,9 +118,8 @@ export const DeckSelector: React.FC<DeckSelectorProps> = ({ selectedDeck, onSele
               </div>
 
               <div
-                className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
-                  isSelected ? 'border-[#93DD35] bg-[#93DD35]' : 'border-[#2E3830] bg-transparent'
-                }`}
+                className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${isSelected ? 'border-[#93DD35] bg-[#93DD35]' : 'border-[#2E3830] bg-transparent'
+                  }`}
               >
                 {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-[#171C18]" />}
               </div>

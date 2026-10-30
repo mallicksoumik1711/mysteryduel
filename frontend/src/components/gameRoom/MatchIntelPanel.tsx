@@ -18,7 +18,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
   waitingForAnswer = false,
   opponentConnected = false,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830] rounded-xl backdrop-blur-sm shadow-xl overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -34,7 +34,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
 
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-3">
       {/* Turn Status Widget */}
-      <div className="shrink-0 bg-[#171C18]/80 border border-[#2E3830] rounded-lg p-2.5 shadow-inner">
+      <div className="shrink-0 bg-[#171C18]/80 border border-[#2E3830]   p-2.5 shadow-inner">
         {opponentConnected ? (
           <TurnIndicator
             isYourTurn={isYourTurn}
@@ -70,11 +70,10 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
             logs.map((log) => (
               <div
                 key={log.id}
-                className={`p-2.5 rounded-lg border transition-all ${
-                  log.sender === 'You'
-                    ? 'bg-[#93DD35]/10 border-[#93DD35]/30 text-[#FFFFFF] ml-2'
-                    : 'bg-[#171C18] border-[#2E3830] text-[#C2CDC3] mr-2 shadow-sm'
-                }`}
+                className={`p-2.5   border transition-all ${log.sender === 'You'
+                  ? 'bg-[#93DD35]/10 border-[#93DD35]/30 text-[#FFFFFF] ml-2'
+                  : 'bg-[#171C18] border-[#2E3830] text-[#C2CDC3] mr-2 shadow-sm'
+                  }`}
               >
                 <div className="flex items-center justify-between text-[9px] text-[#C2CDC3]/70 font-mono mb-1">
                   <span className={`font-bold ${log.sender === 'You' ? 'text-[#93DD35]' : 'text-[#FFFFFF]'}`}>
@@ -87,11 +86,10 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
                   <div className="mt-1.5 pt-1.5 border-t border-[#2E3830] flex items-center justify-between">
                     <span className="text-[9px] font-mono uppercase text-[#C2CDC3]/60">Response</span>
                     <span
-                      className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border shadow-sm ${
-                        log.answer === 'Yes'
-                          ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/30'
-                          : 'bg-red-500/15 text-red-300 border-red-500/30'
-                      }`}
+                      className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border shadow-sm ${log.answer === 'Yes'
+                        ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/30'
+                        : 'bg-red-500/15 text-red-300 border-red-500/30'
+                        }`}
                     >
                       {log.answer}
                     </span>
@@ -105,7 +103,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
 
       {/* Secret Character Card */}
       <div className="shrink-0 pt-2 border-t border-[#2E3830]">
-        <div className="relative group overflow-hidden bg-gradient-to-br from-[#171C18] to-[#101311] p-2.5 rounded-lg border border-[#93DD35]/40 shadow-md flex items-center gap-3">
+        <div className="relative group overflow-hidden bg-gradient-to-br from-[#171C18] to-[#101311] p-2.5   border border-[#93DD35]/40 shadow-md flex items-center gap-3">
           <div className="absolute top-0 right-0 w-12 h-12 bg-[#93DD35]/10 blur-lg rounded-full pointer-events-none" />
 
           <div className="relative w-11 h-14 rounded bg-[#171C18] border border-[#93DD35]/40 overflow-hidden shrink-0 shadow">

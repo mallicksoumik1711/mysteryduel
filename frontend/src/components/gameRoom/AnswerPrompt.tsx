@@ -32,7 +32,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#93DD35]/8 blur-[120px]" />
     </div>
 
-    <div className="relative w-full max-w-md mx-4 rounded-lg border border-[#93DD35]/40 bg-gradient-to-b from-[#1a2119] to-[#111612] shadow-2xl shadow-[#93DD35]/10 overflow-hidden">
+    <div className="relative w-full max-w-md mx-4   border border-[#93DD35]/40 bg-gradient-to-b from-[#1a2119] to-[#111612] shadow-2xl shadow-[#93DD35]/10 overflow-hidden">
       {/* Top accent bar */}
       <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#93DD35] to-transparent" />
 
@@ -49,9 +49,9 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
 
         {/* Secret character reminder */}
         {secretCharacter && (
-          <div className="w-full rounded-md border border-[#93DD35]/20 bg-[#0d1210]/60 p-3 flex items-center gap-3">
+          <div className="w-full   border border-[#93DD35]/20 bg-[#0d1210]/60 p-3 flex items-center gap-3">
             {/* Avatar */}
-            <div className="relative shrink-0 w-25 h-25 rounded-md overflow-hidden border border-[#93DD35]/30 shadow-[0_0_14px_rgba(147,221,53,0.2)]">
+            <div className="relative shrink-0 w-25 h-25   overflow-hidden border border-[#93DD35]/30 shadow-[0_0_14px_rgba(147,221,53,0.2)]">
               <img
                 src={secretCharacter.imageUrl}
                 alt={secretCharacter.name}
@@ -103,7 +103,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
           <button
             id="answer-yes-btn"
             onClick={() => onAnswer(true)}
-            className="flex-1 py-3 rounded-xl bg-[#93DD35] hover:bg-[#7ec82b] active:scale-[0.97] text-[#111612] font-black text-sm uppercase tracking-widest transition-all duration-150 shadow-lg shadow-[#93DD35]/20 flex items-center justify-center gap-2 cursor-pointer"
+            className="flex-1 py-3   bg-[#93DD35] hover:bg-[#7ec82b] active:scale-[0.97] text-[#111612] font-black text-sm uppercase tracking-widest transition-all duration-150 shadow-lg shadow-[#93DD35]/20 flex items-center justify-center gap-2 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -114,7 +114,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
           <button
             id="answer-no-btn"
             onClick={() => onAnswer(false)}
-            className="flex-1 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 active:scale-[0.97] border border-red-500/40 hover:border-red-400/60 text-red-300 hover:text-red-200 font-black text-sm uppercase tracking-widest transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer"
+            className="flex-1 py-3   bg-red-500/10 hover:bg-red-500/20 active:scale-[0.97] border border-red-500/40 hover:border-red-400/60 text-red-300 hover:text-red-200 font-black text-sm uppercase tracking-widest transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
