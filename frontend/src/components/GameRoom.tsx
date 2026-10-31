@@ -395,6 +395,18 @@ export const GameRoom: React.FC<GameRoomProps> = ({
             </button>
           </div>
 
+          {/* Info Panel */}
+          <div className="shrink-0 px-3.5 py-2 border-b border-[#2E3830] bg-[#171C18]/50 flex items-center gap-2.5">
+            <svg className="w-3.5 h-3.5 shrink-0 text-[#93DD35]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-[10px] font-mono text-[#C2CDC3]/70 leading-relaxed">
+              <span className="text-[#93DD35]/80 font-semibold">Single click</span> a character to select them, then tap{' '}
+              <span className="text-[#93DD35]/80 font-semibold">Guess Character</span> for final selection.{' '}
+              <span className="text-[#93DD35]/80 font-semibold">Double-click</span> to eliminate them.
+            </p>
+          </div>
+
           {/* Elimination Phase Action Banner for active player */}
           {socketState.isEliminating && (
             <div className="shrink-0 px-3.5 py-2.5 bg-gradient-to-r from-[#93DD35]/20 via-[#171C18] to-[#93DD35]/10 border-b border-[#93DD35]/40 flex items-center justify-between gap-3 shadow-md animate-fade-in">
