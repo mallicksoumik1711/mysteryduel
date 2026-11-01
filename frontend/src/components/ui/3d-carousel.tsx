@@ -4,9 +4,6 @@ interface FanCarouselProps {
   images: string[];
 }
 
-// 1. Inverted logic for Concave Surround (U-Shape)
-// Outer cards are brought forward (+Z, larger scale, highest zIndex)
-// Center card is pushed back (-Z, smaller scale, lowest zIndex)
 const SLOT_STYLES: Record<number, { rotateY: number; translateX: number; translateZ: number; scale: number; opacity: number; zIndex: number }> = {
   [-4]: { rotateY: 105, translateX: -610, translateZ: 330, scale: 1.85, opacity: 1.00, zIndex: 50 },
   [-3]: { rotateY: 88, translateX: -510, translateZ: 200, scale: 1.45, opacity: 1.00, zIndex: 40 },
@@ -20,7 +17,7 @@ const SLOT_STYLES: Record<number, { rotateY: number; translateX: number; transla
 };
 
 const VISIBLE_COUNT = 9;
-const HALF = Math.floor(VISIBLE_COUNT / 2); // 4
+const HALF = Math.floor(VISIBLE_COUNT / 2);
 
 export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
   const total = images.length;
@@ -30,7 +27,6 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
   const handlePrev = () => setCenterIndex((p) => (p - 1 + total) % total);
   const handleNext = () => setCenterIndex((p) => (p + 1) % total);
 
-  // Calculate current slot offset for each image
   const currentOffsets: Record<number, number> = {};
   images.forEach((_, imgIndex) => {
     let offset = imgIndex - centerIndex;
@@ -50,8 +46,6 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
         className="relative w-full max-w-7xl h-full flex items-center justify-center"
         style={{ perspective: '1000px', perspectiveOrigin: '50% 50%' }}
       >
-        {/* Render elements in stable image order so React never re-orders DOM nodes.
-            Re-ordering DOM nodes in React cancels CSS transitions in browsers when navigating backwards. */}
         {images.map((imgUrl, imgIndex) => {
           const offset = currentOffsets[imgIndex];
           const s = SLOT_STYLES[offset];
@@ -77,9 +71,9 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
               }}
             >
               <div
-                className={`
+                className="
                   relative
-                  w-[140px] sm:w-[165px] md:w-[185px]
+                  w-[185px]
                   aspect-[3/4]
                   rounded-xl
                   overflow-hidden
@@ -87,7 +81,7 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
                   [clip-path:inset(0_round_0.75rem)]
                   transition-all duration-700
                   shadow-[0_20px_50px_rgba(0,0,0,0.6)]
-                `}
+                "
               >
                 <img
                   src={imgUrl}
@@ -103,22 +97,22 @@ export const FanCarousel: React.FC<FanCarouselProps> = ({ images }) => {
         })}
       </div>
 
-      {/* Nav Arrows with higher z-index so outer 3D cards cannot intercept clicks */}
+      {/* Nav Arrows */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 sm:left-10 z-[100] p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
+        className="absolute left-2 sm:left-6 z-[100] p-2.5 sm:p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
         aria-label="Previous"
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-2 sm:right-10 z-[100] p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
+        className="absolute right-2 sm:right-6 z-[100] p-2.5 sm:p-3 rounded-full bg-black/50 border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all backdrop-blur-md cursor-pointer active:scale-95 shadow-lg"
         aria-label="Next"
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
