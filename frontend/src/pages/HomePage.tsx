@@ -13,7 +13,11 @@ const characterHeroImages = [
   'https://i.pinimg.com/736x/2f/50/ed/2f50edb4c04c487b4428bb58684a8e46.jpg',
   'https://i.pinimg.com/736x/c3/6e/ed/c36eed741fed20b9b96a4b498dce6752.jpg',
   'https://i.pinimg.com/1200x/2c/93/3d/2c933d3104a2de9f0a0570f43a25a68b.jpg',
-  'https://i.pinimg.com/736x/2c/4d/de/2c4dde5fe518bc9baab8c09aa341f94c.jpg'
+  'https://i.pinimg.com/736x/2c/4d/de/2c4dde5fe518bc9baab8c09aa341f94c.jpg',
+  'https://i.pinimg.com/736x/bf/2c/1a/bf2c1ac28175dce21eddb9cd0aa37e39.jpg',
+  'https://i.pinimg.com/736x/3e/08/b2/3e08b251c3298a06db831a7562010d2d.jpg',
+  'https://i.pinimg.com/1200x/27/b2/82/27b2824b7dcd617301557c47065433e5.jpg',
+  'https://i.pinimg.com/736x/47/02/53/4702535c8f68a29f81aa98f5221a51c9.jpg'
 ];
 
 const HomePage: React.FC = () => {
