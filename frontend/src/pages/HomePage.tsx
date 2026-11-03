@@ -5,19 +5,19 @@ import { NoiseOverlay } from '@/components/ui/NoiseOverlay';
 import { Gamepad2 } from 'lucide-react';
 
 const characterHeroImages = [
-  'https://i.pinimg.com/736x/9a/8d/d8/9a8dd8cccc7aa06063a217ef1b1b1304.jpg',
-  'https://i.pinimg.com/736x/28/61/dc/2861dc5a65037a98e46909a973d29083.jpg',
-  'https://i.pinimg.com/1200x/d5/89/95/d58995c0b21f75c86a6735643ef69cde.jpg',
-  'https://i.pinimg.com/736x/a7/b6/45/a7b6459d58233a281b939d529fed2d81.jpg',
-  'https://i.pinimg.com/736x/33/66/ca/3366cadb5437c4bfae1f08b6c0968111.jpg',
-  'https://i.pinimg.com/736x/2f/50/ed/2f50edb4c04c487b4428bb58684a8e46.jpg',
-  'https://i.pinimg.com/736x/c3/6e/ed/c36eed741fed20b9b96a4b498dce6752.jpg',
-  'https://i.pinimg.com/1200x/2c/93/3d/2c933d3104a2de9f0a0570f43a25a68b.jpg',
-  'https://i.pinimg.com/736x/2c/4d/de/2c4dde5fe518bc9baab8c09aa341f94c.jpg',
-  'https://i.pinimg.com/736x/bf/2c/1a/bf2c1ac28175dce21eddb9cd0aa37e39.jpg',
-  'https://i.pinimg.com/736x/3e/08/b2/3e08b251c3298a06db831a7562010d2d.jpg',
-  'https://i.pinimg.com/1200x/27/b2/82/27b2824b7dcd617301557c47065433e5.jpg',
-  'https://i.pinimg.com/736x/47/02/53/4702535c8f68a29f81aa98f5221a51c9.jpg'
+  '/carousel/img1.jpg',
+  '/carousel/img2.jpg',
+  '/carousel/img3.jpg',
+  '/carousel/img4.jpg',
+  '/carousel/img5.jpg',
+  '/carousel/img6.jpg',
+  '/carousel/img7.jpg',
+  '/carousel/img8.jpg',
+  '/carousel/img9.jpg',
+  '/carousel/img10.jpg',
+  '/carousel/img11.jpg',
+  '/carousel/img12.jpg',
+  '/carousel/img13.jpg',
 ];
 
 const HomePage: React.FC = () => {
@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
       style={{
         backgroundImage: `
         linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
-        url('https://i.pinimg.com/736x/20/59/5e/20595ec67835acca47786d245daaabe2.jpg')
+        url('background-mysteryduel.jpg')
       `,
       }}
     >
