@@ -4,22 +4,51 @@ interface CreateRoomSubmitButtonProps {
   label?: string;
 }
 
-export const CreateRoomSubmitButton: React.FC<CreateRoomSubmitButtonProps> = ({
+export const CreateRoomSubmitButton: React.FC<
+  CreateRoomSubmitButtonProps
+> = ({
   label = 'GENERATE ROOM & START',
 }) => {
   return (
     <button
       type="submit"
-      className="w-full py-3.5   bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#93DD35]/25 active:scale-98 flex items-center justify-center gap-2 group"
+      className="
+        w-full min-h-12
+        py-3.5 px-4
+        bg-[#93DD35]
+        hover:bg-[#85c82e]
+        text-[#171C18]
+        font-black
+        text-xs
+        uppercase tracking-widest
+        transition-all
+        cursor-pointer
+        shadow-lg shadow-[#93DD35]/25
+        active:scale-[0.98]
+        flex items-center justify-center
+        gap-2
+        group
+        text-center
+      "
     >
       <span>{label}</span>
+
       <svg
-        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+        className="
+          w-4 h-4 shrink-0
+          group-hover:translate-x-1
+          transition-transform
+        "
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2.5}
+          d="M14 5l7 7m0 0l-7 7m7-7H3"
+        />
       </svg>
     </button>
   );
