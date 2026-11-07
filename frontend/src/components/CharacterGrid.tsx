@@ -105,7 +105,7 @@ export const CharacterGrid: React.FC<CharacterGridProps> = (props) => {
   const { characters, selected, onSelect } = props;
   return (
     <div className="lg:col-span-8 h-full overflow-y-auto pr-1 custom-scrollbar">
-      <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-8 xl:grid-cols-10 gap-3.5 pb-2">
+      <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-8 xl:grid-cols-8 gap-3.5 pb-2">
         {characters.map((char) => (
           <PickCard
             key={char.id}
