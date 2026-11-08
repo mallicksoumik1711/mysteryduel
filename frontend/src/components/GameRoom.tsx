@@ -476,6 +476,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
                 )}
 
                 <CharacterGrid
+                  mode="board"
                   characters={characters}
                   boardState={displayedBoardState}
                   onCharacterClick={handleCharacterClick}
