@@ -18,7 +18,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
   waitingForAnswer = false,
   opponentConnected = false,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-[380px] sm:h-[400px] lg:h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
       <div className="flex items-center gap-2">

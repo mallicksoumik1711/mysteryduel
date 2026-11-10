@@ -284,7 +284,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
 
   return (
     <div
-      className="relative h-screen w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
+      className="relative h-[100dvh] min-h-[100svh] w-full bg-[#111612] text-[#FFFFFF] font-sans flex flex-col overflow-hidden bg-center"
       style={{
         backgroundImage: `
           linear-gradient(rgba(4, 5, 4, 0.8), rgba(5, 8, 6, 0.92)),
@@ -311,7 +311,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
         />
       )}
 
-      <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 overflow-hidden">
+      <main className="relative z-10 flex-1 min-h-0 w-full max-w-[1800px] mx-auto p-2.5 sm:p-4 grid grid-cols-1 auto-rows-max lg:auto-rows-fr lg:grid-cols-12 gap-3 sm:gap-3.5 lg:gap-4 overflow-y-auto overflow-x-hidden lg:overflow-hidden">
         {secretCharacter && (
           <MatchIntelPanel
             isYourTurn={isYourTurn}
@@ -322,9 +322,9 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           />
         )}
 
-        <section className="lg:col-span-6 flex flex-col h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
+        <section className="lg:col-span-6 flex flex-col h-[min(78dvh,720px)] min-h-[520px] lg:h-full lg:min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
           {/* Tactical Board Header */}
-          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between gap-3">
+          <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <div className="w-1.5 h-3.5 bg-[#93DD35] rounded-full shadow-[0_0_8px_rgba(147,221,53,0.5)]" />
               <h2 className="text-[11px] font-bold text-[#FFFFFF] uppercase tracking-widest font-mono">
@@ -334,7 +334,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               </h2>
             </div>
 
-            <div className="flex items-center gap-2.5 font-mono text-[10px] shrink-0">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[9px] sm:text-[10px] shrink-0">
               <div className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C2CDC3]/50" />
                 <span className="text-[#C2CDC3]">Available</span>
@@ -351,7 +351,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           </div>
 
           {/* Board View Switcher */}
-          <div className="shrink-0 px-3 py-2 flex items-center gap-2 border-b border-[#2E3830] bg-[#171C18]/30">
+          <div className="shrink-0 px-2 sm:px-3 py-2 flex flex-wrap items-center gap-2 border-b border-[#2E3830] bg-[#171C18]/30">
             <button
               type="button"
               onClick={() => setActiveBoardView('mine')}
@@ -383,7 +383,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
               id="guess-character-btn"
               disabled={!guessCharacterId || gameOver !== null}
               onClick={() => guessCharacterId && setShowGuessModal(true)}
-              className={`ml-auto px-3 py-1.5   text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${guessCharacterId && gameOver === null
+              className={`ml-auto px-2 sm:px-3 py-1.5   text-xs font-mono uppercase tracking-wide transition-all duration-200 flex items-center gap-1.5 ${guessCharacterId && gameOver === null
                 ? 'bg-[#93DD35] text-[#111612] font-black shadow-[0_0_12px_rgba(147,221,53,0.45)] scale-[1.03]'
                 : 'bg-[#202621] text-[#C2CDC3]/50 cursor-not-allowed opacity-50'
                 }`}
@@ -451,7 +451,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
           )}
 
           {/* Character Grid */}
-          <div className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+          <div className="p-2.5 sm:p-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
             {loadingCharacters ? (
               <div className="flex items-center justify-center h-full">
                 <div className="w-6 h-6 border-2 border-t-[#93DD35] border-b-[#2E3830] border-r-[#2E3830] rounded-full animate-spin" />

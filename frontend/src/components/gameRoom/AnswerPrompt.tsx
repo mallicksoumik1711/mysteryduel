@@ -1,10 +1,9 @@
-/**
- * AnswerPrompt
- * ============
- * A modal-style overlay that appears when the opponent has asked you a question.
- * Blocks interaction with the board until you answer Yes or No.
- * Shows your secret character so you can answer truthfully.
- */
+//  * AnswerPrompt
+//  * ============
+//  * A modal-style overlay that appears when the opponent has asked you a question.
+//  * Blocks interaction with the board until you answer Yes or No.
+//  * Shows your secret character so you can answer truthfully.
+//  *
 
 import React from 'react';
 import type { Character } from '../../types';
@@ -21,7 +20,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
   secretCharacter,
 }) => (
   <div
-    className="fixed inset-0 z-50 flex items-center justify-center"
+    className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
     style={{ background: 'rgba(10, 14, 11, 0.85)', backdropFilter: 'blur(8px)' }}
     role="dialog"
     aria-modal="true"
@@ -32,11 +31,11 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#93DD35]/8 blur-[120px]" />
     </div>
 
-    <div className="relative w-full max-w-md mx-4   border border-[#93DD35]/40 bg-gradient-to-b from-[#1a2119] to-[#111612] shadow-2xl shadow-[#93DD35]/10 overflow-hidden">
+    <div className="relative w-full max-w-md max-h-[calc(100dvh-1.5rem)] my-auto mx-auto border border-[#93DD35]/40 bg-gradient-to-b from-[#1a2119] to-[#111612] shadow-2xl shadow-[#93DD35]/10 overflow-hidden">
       {/* Top accent bar */}
       <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#93DD35] to-transparent" />
 
-      <div className="p-6 flex flex-col items-center gap-5">
+      <div className="p-4 sm:p-6 flex flex-col items-center gap-4 sm:gap-5 overflow-y-auto">
         {/* Label */}
         <div className="text-center space-y-1">
           <span className="block text-[10px] font-mono font-bold text-[#93DD35] uppercase tracking-[0.2em]">
@@ -51,7 +50,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
         {secretCharacter && (
           <div className="w-full   border border-[#93DD35]/20 bg-[#0d1210]/60 p-3 flex items-center gap-3">
             {/* Avatar */}
-            <div className="relative shrink-0 w-25 h-25   overflow-hidden border border-[#93DD35]/30 shadow-[0_0_14px_rgba(147,221,53,0.2)]">
+            <div className="relative shrink-0 w-16 h-20 sm:w-20 sm:h-24   overflow-hidden border border-[#93DD35]/30 shadow-[0_0_14px_rgba(147,221,53,0.2)]">
               <img
                 src={secretCharacter.imageUrl}
                 alt={secretCharacter.name}
@@ -99,7 +98,7 @@ export const AnswerPrompt: React.FC<AnswerPromptProps> = ({
         )}
 
         {/* Answer buttons */}
-        <div className="flex gap-3 w-full">
+        <div className="flex flex-col xs:flex-row sm:flex-row gap-2 sm:gap-3 w-full">
           <button
             id="answer-yes-btn"
             onClick={() => onAnswer(true)}
