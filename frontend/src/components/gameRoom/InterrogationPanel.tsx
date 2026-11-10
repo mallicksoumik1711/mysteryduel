@@ -37,7 +37,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   isEliminating = false,
   onDoneEliminating,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm overflow-hidden">
+  <section className="lg:col-span-3 flex flex-col h-[460px] sm:h-[480px] lg:h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm overflow-hidden">
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -166,3 +166,4 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
     </div>
   </section>
 );
+

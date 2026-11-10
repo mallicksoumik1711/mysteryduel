@@ -64,7 +64,7 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="guess-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
     >
       {/* Backdrop */}
       <div
@@ -73,14 +73,14 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
       />
 
       {/* Panel */}
-      <div className="relative z-10 w-full max-w-md   border border-[#2E3830] bg-[#141A15] shadow-[0_0_80px_rgba(147,221,53,0.14)] overflow-hidden">
+      <div className="relative z-10 w-full max-w-md max-h-[calc(100dvh-1.5rem)] my-auto overflow-y-auto border border-[#2E3830] bg-[#141A15] shadow-[0_0_80px_rgba(147,221,53,0.14)] overflow-hidden">
         {/* Top accent bar */}
         <div className="h-[3px] w-full bg-gradient-to-r from-[#93DD35]/0 via-[#93DD35] to-[#93DD35]/0" />
 
-        <div className="px-7 pt-7 pb-8 flex flex-col items-center text-center gap-6">
+        <div className="px-4 sm:px-7 pt-5 sm:pt-7 pb-6 sm:pb-8 flex flex-col items-center text-center gap-4 sm:gap-6">
 
           {/* ── Avatar ── */}
-          <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] border-[#93DD35]/60 shadow-[0_0_28px_rgba(147,221,53,0.3)] shrink-0">
+          <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-[3px] border-[#93DD35]/60 shadow-[0_0_28px_rgba(147,221,53,0.3)] shrink-0">
             <img
               src={character.imageUrl}
               alt={character.name}
@@ -128,7 +128,7 @@ export const GuessConfirmModal: React.FC<GuessConfirmModalProps> = ({
           <div className="w-full border-t border-[#2E3830]" />
 
           {/* ── Actions ── */}
-          <div className="flex gap-3 w-full londrina-solid-regular">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full londrina-solid-regular">
             <button
               type="button"
               id="guess-modal-cancel-btn"

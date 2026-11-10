@@ -33,7 +33,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
       style={{
         background: 'rgba(10, 13, 11, 0.92)',
         backdropFilter: 'blur(16px)',
@@ -54,7 +54,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
 
       {/* Card */}
       <div
-        className="relative z-10 w-full max-w-sm   overflow-hidden"
+        className="relative z-10 w-full max-w-sm max-h-[calc(100dvh-1.5rem)] overflow-y-auto overflow-x-hidden"
         style={{
           background: 'linear-gradient(160deg, #141A15 0%, #0D110E 100%)',
           border: `1px solid ${accentColor}40`,
@@ -71,7 +71,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
           }}
         />
 
-        <div className="px-8 pt-8 pb-9 flex flex-col items-center gap-6 text-center">
+        <div className="px-5 sm:px-8 pt-5 sm:pt-8 pb-6 sm:pb-9 flex flex-col items-center gap-4 sm:gap-6 text-center">
 
           {/* Headline */}
           <div className="space-y-1">
@@ -81,7 +81,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
             >
               {isWinner ? 'Mystery Solved' : 'Game Over'}
             </p>
-            <h2 className="text-3xl font-black text-white tracking-wider londrina-solid-regular">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wider londrina-solid-regular">
               {isWinner ? 'You Win!' : 'You Lose!'}
             </h2>
             <p className="text-sm text-[#C2CDC3]/70 leading-relaxed">
