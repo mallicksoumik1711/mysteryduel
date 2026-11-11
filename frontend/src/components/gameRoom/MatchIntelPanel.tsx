@@ -9,6 +9,8 @@ interface MatchIntelPanelProps {
   secretCharacter: Character;
   waitingForAnswer?: boolean;
   opponentConnected?: boolean;
+  className?: string;
+  onClose?: () => void;
 }
 
 export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
@@ -17,8 +19,10 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
   secretCharacter,
   waitingForAnswer = false,
   opponentConnected = false,
+  className = '',
+  onClose,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-[380px] sm:h-[400px] lg:h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm shadow-xl overflow-hidden">
+  <section className={`flex flex-col h-full min-h-0 border border-[#2E3830] backdrop-blur-sm shadow-xl overflow-hidden ${className}`}>
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] bg-[#171C18]/40 flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -27,9 +31,23 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
           Match Intel
         </h2>
       </div>
-      <span className="text-[9px] font-mono text-[#C2CDC3] uppercase px-1.5 py-0.5 rounded bg-[#171C18] border border-[#2E3830]">
-        LIVE LOG
-      </span>
+      <div className="flex items-center gap-2">
+        <span className="text-[9px] font-mono text-[#C2CDC3] uppercase px-1.5 py-0.5 bg-[#171C18] border border-[#2E3830]">
+          LIVE LOG
+        </span>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 text-[#C2CDC3] hover:text-[#FFFFFF] hover:bg-[#202621] transition-colors cursor-pointer"
+            aria-label="Close match intel"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
     </div>
 
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-3">
@@ -86,7 +104,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
                   <div className="mt-1.5 pt-1.5 border-t border-[#2E3830] flex items-center justify-between">
                     <span className="text-[9px] font-mono uppercase text-[#C2CDC3]/60">Response</span>
                     <span
-                      className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border shadow-sm ${log.answer === 'Yes'
+                      className={`text-[9px] font-mono font-bold px-1.5 py-0.5 border shadow-sm ${log.answer === 'Yes'
                         ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/30'
                         : 'bg-red-500/15 text-red-300 border-red-500/30'
                         }`}
@@ -106,7 +124,7 @@ export const MatchIntelPanel: React.FC<MatchIntelPanelProps> = ({
         <div className="relative group overflow-hidden bg-gradient-to-br from-[#171C18] to-[#101311] p-2.5   border border-[#93DD35]/40 shadow-md flex items-center gap-3">
           <div className="absolute top-0 right-0 w-12 h-12 bg-[#93DD35]/10 blur-lg rounded-full pointer-events-none" />
 
-          <div className="relative w-11 h-14 rounded bg-[#171C18] border border-[#93DD35]/40 overflow-hidden shrink-0 shadow">
+          <div className="relative w-11 h-14 bg-[#171C18] border border-[#93DD35]/40 overflow-hidden shrink-0 shadow">
             <img
               src={secretCharacter.imageUrl}
               alt="Your secret character"

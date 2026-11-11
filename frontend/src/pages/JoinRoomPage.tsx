@@ -50,7 +50,7 @@ const JoinRoomPage: React.FC = () => {
             </h1>
           </div>
 
-          <span className="text-[9px] sm:text-xs font-mono text-[#C2CDC3] bg-[#171C18] px-2 sm:px-2.5 py-1 rounded border border-[#2E3830] whitespace-nowrap shrink-0">
+          <span className="text-[9px] sm:text-xs font-mono text-[#C2CDC3] bg-[#171C18] px-2 sm:px-2.5 py-1 border border-[#2E3830] whitespace-nowrap shrink-0">
             DIRECT ACCESS
           </span>
         </div>
@@ -130,7 +130,7 @@ const JoinRoomPage: React.FC = () => {
                   </svg>
                 </span>
               ) : (
-                <span className="text-[9px] sm:text-[10px] font-mono text-[#C2CDC3]/60 bg-[#2E3830]/50 px-1.5 sm:px-2 py-0.5 rounded border border-[#2E3830]">
+                <span className="text-[9px] sm:text-[10px] font-mono text-[#C2CDC3]/60 bg-[#2E3830]/50 px-1.5 sm:px-2 py-0.5 border border-[#2E3830]">
                   CODE
                 </span>
               )}

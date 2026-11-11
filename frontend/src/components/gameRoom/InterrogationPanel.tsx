@@ -22,6 +22,8 @@ interface InterrogationPanelProps {
   isEliminating?: boolean;
   /** Callback to notify that current user finished elimination */
   onDoneEliminating?: () => void;
+  className?: string;
+  onClose?: () => void;
 }
 
 export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
@@ -36,8 +38,10 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
   isOpponentEliminating = false,
   isEliminating = false,
   onDoneEliminating,
+  className = '',
+  onClose,
 }) => (
-  <section className="lg:col-span-3 flex flex-col h-[460px] sm:h-[480px] lg:h-full min-h-0 border border-[#2E3830]   backdrop-blur-sm overflow-hidden">
+  <section className={`flex flex-col h-full min-h-0 border border-[#2E3830] backdrop-blur-sm overflow-hidden ${className}`}>
     {/* Header */}
     <div className="shrink-0 px-3.5 py-2.5 border-b border-[#2E3830] flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -46,24 +50,38 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
           Interrogation
         </h2>
       </div>
-      <span
-        className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${isOpponentEliminating
-          ? 'bg-amber-500/10 text-amber-300 border-amber-500/30 animate-pulse'
-          : isEliminating
-            ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/40 shadow-[0_0_10px_rgba(147,221,53,0.2)]'
-            : isYourTurn
-              ? 'bg-[#93DD35]/10 text-[#93DD35] border-[#93DD35]/30'
-              : 'bg-[#171C18] text-[#C2CDC3]/50 border-[#2E3830]'
-          }`}
-      >
-        {isOpponentEliminating
-          ? 'OPPONENT ELIMINATING'
-          : isEliminating
-            ? 'ELIMINATION PHASE'
-            : isYourTurn
-              ? 'YOUR TURN'
-              : 'WAITING'}
-      </span>
+      <div className="flex items-center gap-2">
+        <span
+          className={`text-[9px] font-mono font-bold px-1.5 py-0.5 border ${isOpponentEliminating
+            ? 'bg-amber-500/10 text-amber-300 border-amber-500/30 animate-pulse'
+            : isEliminating
+              ? 'bg-[#93DD35]/15 text-[#93DD35] border-[#93DD35]/40 shadow-[0_0_10px_rgba(147,221,53,0.2)]'
+              : isYourTurn
+                ? 'bg-[#93DD35]/10 text-[#93DD35] border-[#93DD35]/30'
+                : 'bg-[#171C18] text-[#C2CDC3]/50 border-[#2E3830]'
+            }`}
+        >
+          {isOpponentEliminating
+            ? 'OPPONENT ELIMINATING'
+            : isEliminating
+              ? 'ELIMINATION PHASE'
+              : isYourTurn
+                ? 'YOUR TURN'
+                : 'WAITING'}
+        </span>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 text-[#C2CDC3] hover:text-[#FFFFFF] hover:bg-[#202621] transition-colors cursor-pointer"
+            aria-label="Close interrogation"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
     </div>
 
     <div className="p-3 flex-1 min-h-0 flex flex-col gap-2">
@@ -150,7 +168,7 @@ export const InterrogationPanel: React.FC<InterrogationPanelProps> = ({
                       e.stopPropagation();
                       onAskQuestion(q.text);
                     }}
-                    className="w-full mt-2 py-1.5 rounded bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-1"
+                    className="w-full mt-2 py-1.5 bg-[#93DD35] hover:bg-[#85c82e] text-[#171C18] font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-1"
                   >
                     <span>Submit Question</span>
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

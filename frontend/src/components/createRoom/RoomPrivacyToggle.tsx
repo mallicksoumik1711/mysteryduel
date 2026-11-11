@@ -37,7 +37,7 @@ export const RoomPrivacyToggle: React.FC<
             className={`
               text-[9px] font-mono font-bold
               px-1.5 py-0.5
-              rounded border
+              border
               whitespace-nowrap
               ${
                 isPrivate
