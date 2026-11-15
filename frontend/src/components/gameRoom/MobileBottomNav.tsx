@@ -1,4 +1,5 @@
 import React from 'react';
+import{ Logs } from 'lucide-react'; 
 
 interface MobileBottomNavProps {
   activeDrawer: 'intel' | 'interrogation' | null;
@@ -29,22 +30,17 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       <button
         type="button"
         onClick={() => onOpenDrawer('intel')}
-        className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 border text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer ${
-          isEliminating
+        className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 border text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer ${isEliminating
             ? 'bg-[#93DD35]/15 border-[#93DD35] text-[#93DD35]'
             : isOpponentEliminating || waitingForAnswer
               ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
               : 'bg-[#171C18] hover:bg-[#202621] border-[#2E3830] text-[#C2CDC3]'
-        }`}
+          }`}
         aria-label="Open Match Intel panel"
         aria-expanded={activeDrawer === 'intel'}
       >
         {/* Hamburger icon */}
-        <div className="flex flex-col justify-center gap-[3px] w-4 h-3.5 shrink-0">
-          <span className="w-full h-[2px] bg-[#93DD35] rounded-full" />
-          <span className="w-3/4 h-[2px] bg-[#93DD35] rounded-full" />
-          <span className="w-full h-[2px] bg-[#93DD35] rounded-full" />
-        </div>
+        <Logs className="w-5 h-5 sm:w-7 sm:h-7" />
         <span className="truncate">Match Intel</span>
 
         {isEliminating ? (
@@ -66,32 +62,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       <button
         type="button"
         onClick={() => onOpenDrawer('interrogation')}
-        className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 border text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer ${
-          isYourTurn && gameStarted && !isEliminating && !isOpponentEliminating && !waitingForAnswer
+        className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 border text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer ${isYourTurn && gameStarted && !isEliminating && !isOpponentEliminating && !waitingForAnswer
             ? 'bg-[#93DD35]/15 border-[#93DD35] text-[#93DD35]'
             : 'bg-[#171C18] hover:bg-[#202621] border-[#2E3830] text-[#C2CDC3]'
-        }`}
+          }`}
         aria-label="Open Interrogation panel"
         aria-expanded={activeDrawer === 'interrogation'}
       >
         {/* Hamburger icon */}
-        <div className="flex flex-col justify-center items-end gap-[3px] w-4 h-3.5 shrink-0">
-          <span
-            className={`w-full h-[2px] rounded-full ${
-              isYourTurn && gameStarted ? 'bg-[#93DD35]' : 'bg-[#C2CDC3]'
-            }`}
-          />
-          <span
-            className={`w-3/4 h-[2px] rounded-full ${
-              isYourTurn && gameStarted ? 'bg-[#93DD35]' : 'bg-[#C2CDC3]'
-            }`}
-          />
-          <span
-            className={`w-full h-[2px] rounded-full ${
-              isYourTurn && gameStarted ? 'bg-[#93DD35]' : 'bg-[#C2CDC3]'
-            }`}
-          />
-        </div>
+        <Logs className="w-5 h-5 sm:w-7 sm:h-7" />
         <span className="truncate">Interrogation</span>
 
         {isYourTurn && gameStarted && !isEliminating && !isOpponentEliminating && !waitingForAnswer && (

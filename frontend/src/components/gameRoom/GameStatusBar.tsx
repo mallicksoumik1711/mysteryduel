@@ -81,7 +81,7 @@ export const GameStatusBar: React.FC<GameStatusBarProps> = ({
     } else if (isYourTurn) {
       dotClass = 'bg-[#93DD35] animate-pulse';
       textClass = 'text-[#93DD35] font-bold tracking-wider';
-      label = 'YOUR TURN — SELECT QUESTION';
+      label = 'YOUR TURN, SELECT QUESTION';
       hint = 'Select or Guess';
     }
 
