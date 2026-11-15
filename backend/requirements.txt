@@ -1,14 +1,17 @@
 # MysteryDuel backend dependencies
 # Install with: pip install -r requirements.txt
 
+# API framework + ASGI server
+# uvicorn[standard] includes: websockets, httptools, watchfiles
 fastapi>=0.111.0
 uvicorn[standard]>=0.29.0
+
+# Data validation
 pydantic>=2.7.0
 
-# Database
+# Database (PostgreSQL via SQLAlchemy ORM)
 sqlalchemy>=2.0.0
 psycopg[binary]>=3.2.0
-python-dotenv>=1.0.0
 
-# TODO: Add authentication library when auth is added.
-# e.g. python-jose, passlib
+# Config / environment
+python-dotenv>=1.0.0
