@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Bottom Embedded Text */}
-          <div className="absolute bottom-2 md:bottom-10 left-1/2 -translate-x-1/2 z-20 w-[90%] max-w-md text-center pointer-events-none drop-shadow-2xl">
+          <div className="absolute bottom-2 md:bottom-10 left-1/2 -translate-x-1/2 z-20 w-[100%] max-w-xl text-center pointer-events-none drop-shadow-2xl">
             <p className="text-[#A2B1A4] text-[11px] sm:text-sm leading-snug sm:leading-relaxed px-3 py-1.5 bg-black/20 backdrop-blur-sm shadow-inner">
               Bring your party to life with real-time multiplayer deduction. Ask strategic questions, unravel clues, and unmask the hidden identities before time runs out.
             </p>
