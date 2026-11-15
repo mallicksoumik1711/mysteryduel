@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FanCarousel } from '@/components/ui/3d-carousel';
 import { NoiseOverlay } from '@/components/ui/NoiseOverlay';
-import { Gamepad2 } from 'lucide-react';
+import { MessageCircleQuestionMark } from 'lucide-react';
 
 const characterHeroImages = [
   '/carousel/img1.jpg',
@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
           {/* Top Embedded Text */}
           <div className="absolute top-0 md:top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center drop-shadow-xl pointer-events-none">
             <div className="w-10 h-10 sm:w-12 sm:h-12 mb-2 md:mb-3 rounded-full bg-[#93DD35] text-[#111612] flex items-center justify-center shadow-[0_0_30px_rgba(147,221,53,0.3)]">
-              <Gamepad2 className="w-5 h-5 sm:w-7 sm:h-7" />
+              <MessageCircleQuestionMark className="w-5 h-5 sm:w-7 sm:h-7" />
             </div>
             <h1 className="londrina-solid-regular text-5xl sm:text-5xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
               Mystery<span className="text-[#93DD35]">Duel</span>?
