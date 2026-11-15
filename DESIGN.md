@@ -197,6 +197,7 @@ module.exports = {
     },
   },
 };
+```
 
 ## Practice Visual Restraint
 
@@ -402,17 +403,48 @@ The game should remain usable even if animations are disabled or reduced.
 
 Build reusable components around meaningful responsibilities.
 
-For example:
+The following components are currently implemented:
 
 ```text
-GameBoard
-CharacterGrid
-CharacterCard
-QuestionPanel
-QuestionButton
-GameHeader
-TurnIndicator
-GameResult
+Pages
+  HomePage
+  CreateRoomPage
+  JoinRoomPage
+  PickCharacterPage
+  GameRoomPage
+
+Game Room
+  GameRoom              (main layout orchestrator)
+  GameHeader            (room code, player info, turn state)
+  GameStatusBar         (turn indicator bar)
+  TacticsPanel          (question selection panel)
+  InterrogationLog      (history of asked questions and answers)
+  AnswerPrompt          (Yes/No answer UI for the opponent)
+  GuessConfirmModal     (confirmation modal before submitting a guess)
+  GameOverScreen        (win/lose result screen)
+  MatchInfo             (displays match metadata)
+  MobileBottomNav       (mobile bottom navigation tabs)
+  MobileQuestionSheet   (mobile slide-up question picker)
+
+Characters
+  CharacterCard         (single character tile with state)
+  CharacterGrid         (full board grid of character cards)
+
+Create Room
+  CreateRoomForm
+  CreateRoomHeader
+  CreateRoomLayout
+  DeckPreview
+  MatchConfig
+
+Pick Character
+  CharacterPicker
+  PickCharacterLayout
+
+Shared UI
+  NoiseOverlay          (subtle texture overlay)
+  RoomPageShell         (shared shell layout for lobby pages)
+  3d-carousel           (image carousel on the home page)
 ```
 
 Avoid creating components purely because a piece of markup exists.
@@ -443,7 +475,7 @@ characters.map((character) => (
 
 Questions should also come from data.
 
-This allows the same UI to work when we eventually replace mock data with data from FastAPI.
+This allows the same UI to work when we eventually replace mock data with data from the FastAPI backend.
 
 ## Game State and UI State
 
@@ -472,9 +504,9 @@ loading state
 modal visibility
 ```
 
-The backend will eventually be authoritative for multiplayer game state.
+The backend WebSocket manager is the authoritative source of truth for multiplayer game state.
 
-The frontend should not assume that its local state is the source of truth for the game.
+The frontend should not assume its local state is the source of truth for the game. All state changes are driven by server messages received over the WebSocket connection.
 
 ## Review Before Considering a Screen Finished
 
