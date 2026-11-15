@@ -72,14 +72,14 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 z-30 shrink-0">
           <button
             onClick={() => navigate('/create-room')}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#93DD35] text-[#171C18] font-black text-[13px] uppercase tracking-wider hover:bg-[#85c82e] transition-all shadow-[0_0_30px_rgba(147,221,53,0.3)] active:scale-95 cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 bg-[#93DD35] text-[#171C18] font-black text-[13px] uppercase tracking-wider hover:bg-[#85c82e] transition-all shadow-[0_0_30px_rgba(147,221,53,0.3)] active:scale-95 cursor-pointer"
           >
             Create new room
           </button>
 
           <button
             onClick={() => navigate('/join-room')}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#202621]/40 border border-[#2E3830] font-bold text-[13px] uppercase tracking-wider hover:bg-[#2E3830] hover:text-[#FFFFFF] hover:border-[#93DD35]/40 transition-all active:scale-95 cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 bg-[#202621]/40 border border-[#2E3830] font-bold text-[13px] uppercase tracking-wider hover:bg-[#2E3830] hover:text-[#FFFFFF] hover:border-[#93DD35]/40 transition-all active:scale-95 cursor-pointer"
           >
             Join existing room
           </button>
